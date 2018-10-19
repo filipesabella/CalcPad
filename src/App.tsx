@@ -27,14 +27,23 @@ a * 2`;
   }
 
   public render(): React.ReactNode {
+    const { value, results } = this.state;
+
+    const textToRender = value.split('\n').map((line, i) => {
+      return <div key={i}>{line}</div>;
+    });
+
     return <div className="app">
-      <textarea
-        autoFocus={true}
-        onChange={e => this.onChange(e)}
-        value={this.state.value}></textarea>
+      <div className="textContainer">
+        <div className="text">{textToRender}</div>
+        <textarea
+          autoFocus={true}
+          onChange={e => this.onChange(e)}
+          value={value}></textarea>
+      </div>
 
       <div className="results">
-        {this.state.results.map((result, i) =>
+        {results.map((result, i) =>
           <div key={i}>{result}</div>)}
       </div>
     </div>;
