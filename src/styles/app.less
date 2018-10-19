@@ -1,3 +1,7 @@
+:root {
+  --font-size: 2em;
+}
+
 html,
 body {
   margin: 0;
@@ -8,14 +12,15 @@ body {
 
   textarea,
   .results {
-    font-size: 2em;
+    font-size: var(--font-size);
     font-family: 'Roboto Mono';
+    padding: .5em;
   }
 
   textarea {
+    line-height: var(--font-size);
     width: 80vw;
     height: 100vh;
-    padding: 0;
     margin: 0;
     border: 0;
     outline: 0;
@@ -27,5 +32,9 @@ body {
     background: red;
     display: flex;
     flex-direction: column;
+
+    div {
+      height: var(--font-size);
+    }
   }
 }

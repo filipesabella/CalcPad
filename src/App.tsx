@@ -17,7 +17,9 @@ export class App extends React.Component<{}, State> {
     };
 
     const value = `1 + 2
-20 * 33`;
+20 * 33
+a = 20
+a * 2`;
     this.state = {
       value,
       results: doit(value),
@@ -49,5 +51,29 @@ export class App extends React.Component<{}, State> {
 
 function doit(text: string): string[] {
   const lines = text.split('\n');
-  return lines.map(line => eval(line));
+  return lines.map((line, i) => {
+    try {
+      if (line === '') {
+        return '';
+      } else {
+        return eval(lines.slice(0, i + 1).map(transform).join('\n'));
+      }
+    } catch (e) {
+      // console.error(e);
+      // hehe :v
+      return '';
+    }
+  });
+}
+
+function transform(text: string): string {
+  if (text.includes('=')) {
+    // trick so that `eval` returns the value of the assignment
+    // receives `a = 1` and returns
+    // `var a
+    //  a = 1`
+    return 'var ' + text.split('=')[0] + '\n' + text;
+  } else {
+    return text;
+  }
 }
