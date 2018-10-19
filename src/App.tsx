@@ -6,7 +6,7 @@ export class App extends React.Component {
   public render(): React.ReactNode {
     return <div className="app">
       <textarea
-        autofocus="true"
+        autoFocus={true}
         onChange={e => this.onchange(e)}></textarea>
       <div className="results"></div>
     </div>;
