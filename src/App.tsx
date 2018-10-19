@@ -2,18 +2,52 @@ import * as React from 'react';
 
 import './styles/app.less';
 
-export class App extends React.Component {
+interface State {
+  results: string[];
+  value: string;
+}
+
+export class App extends React.Component<{}, State> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      results: [],
+      value: '',
+    };
+
+    const value = `1 + 2
+20 * 33`;
+    this.state = {
+      value,
+      results: doit(value),
+    };
+  }
+
   public render(): React.ReactNode {
     return <div className="app">
       <textarea
         autoFocus={true}
-        onChange={e => this.onchange(e)}></textarea>
-      <div className="results"></div>
+        onChange={e => this.onChange(e)}
+        value={this.state.value}></textarea>
+
+      <div className="results">
+        {this.state.results.map((result, i) =>
+          <div key={i}>{result}</div>)}
+      </div>
     </div>;
   }
 
-  private onchange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+  private onChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const value = e.target.value;
-    console.log(value);
+    this.setState({
+      value,
+      results: doit(value)
+    });
   }
+}
+
+function doit(text: string): string[] {
+  const lines = text.split('\n');
+  return lines.map(line => eval(line));
 }
