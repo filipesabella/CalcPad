@@ -19,10 +19,12 @@ export class App extends React.Component<{}, State> {
     const value = `1 + 2
 20 * 33
 a = 20
-a * 2`;
+a * 2
+asd
+a * a`;
     this.state = {
       value,
-      results: doit(value),
+      results: textToResults(value),
     };
   }
 
@@ -53,30 +55,46 @@ a * 2`;
     const value = e.target.value;
     this.setState({
       value,
-      results: doit(value)
+      results: textToResults(value)
     });
   }
 }
 
-function doit(text: string): string[] {
+/**
+ * Receives
+ * 1 + 2
+ * a = 20
+ * a * 2
+ *
+ * and returns
+ * [3, 20, 40]
+ */
+function textToResults(text: string): string[] {
   const lines = text.split('\n');
+
+  let assignments = '';
   return lines.map((line, i) => {
     try {
       if (line === '') {
         return '';
       } else {
-        return eval(lines.slice(0, i + 1).map(transform).join('\n'));
+        const transformedLine = transform(line);
+        const result = eval(assignments + transformedLine);
+        if (isAssignment(line)) {
+          assignments += transformedLine + '\n';
+        }
+        return result.toFixed(4);
       }
     } catch (e) {
       // console.error(e);
       // hehe :v
-      return '';
+      return 'ERR';
     }
   });
 }
 
 function transform(text: string): string {
-  if (text.includes('=')) {
+  if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment
     // receives `a = 1` and returns
     // `var a
@@ -85,4 +103,8 @@ function transform(text: string): string {
   } else {
     return text;
   }
+}
+
+function isAssignment(text: string): boolean {
+  return text.includes('=');
 }
