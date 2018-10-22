@@ -110,7 +110,11 @@ function textToResults(text: string): string[] {
         if (isAssignment(line)) {
           assignments += transformedLine + '\n';
         }
-        return result.toFixed(4);
+        const numberToDisplay = Math.round(result) !== result
+          ? result.toFixed(2)
+          : result;
+
+        return numberToDisplay;
       }
     } catch (e) {
       // console.error(e);
