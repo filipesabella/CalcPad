@@ -8,6 +8,9 @@ interface State {
 }
 
 export class App extends React.Component<{}, State> {
+  textRef: React.RefObject<HTMLDivElement> = React.createRef();
+  textAreaRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
+
   constructor(props: {}) {
     super(props);
 
@@ -21,7 +24,14 @@ export class App extends React.Component<{}, State> {
 a = 20
 a * 2
 asd
-a * a`;
+a * a
+asd
+qwe
+zxc
+asd
+wer
+sdf
+xcv`;
     this.state = {
       value,
       results: textToResults(value),
@@ -35,13 +45,18 @@ a * a`;
       return <div key={i}>{line}</div>;
     });
 
+    this.resizeTextArea();
+
     return <div className="app">
       <div className="textContainer">
-        <div className="text">{textToRender}</div>
+        <div
+          className="text"
+          ref={this.textRef}>{textToRender}</div>
         <textarea
           autoFocus={true}
           onChange={e => this.onChange(e)}
-          value={value}></textarea>
+          value={value}
+          ref={this.textAreaRef}></textarea>
       </div>
 
       <div className="results">
@@ -49,6 +64,18 @@ a * a`;
           <div key={i}>{result}</div>)}
       </div>
     </div>;
+  }
+
+  public componentDidMount(): void {
+    this.resizeTextArea();
+  }
+
+  private resizeTextArea(): void {
+
+    if (this.textAreaRef.current) {
+      this.textAreaRef.current.style.height =
+        this.textRef.current!.clientHeight + 'px';
+    }
   }
 
   private onChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
@@ -95,7 +122,7 @@ function textToResults(text: string): string[] {
 
 function transform(text: string): string {
   if (isAssignment(text)) {
-    // trick so that `eval` returns the value of the assignment
+    // trick so that `eval` returns the value of the assignment.
     // receives `a = 1` and returns
     // `var a
     //  a = 1`
