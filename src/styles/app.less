@@ -23,19 +23,14 @@ body {
 
   textarea,
   .texts {
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    font-family: 'Roboto Mono';
-    padding: .5em;
-    color: var(--text-color);
-  }
-
-  textarea,
-  .texts {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    font-family: 'Roboto Mono';
+    color: var(--text-color);
   }
 
   textarea {
@@ -52,6 +47,7 @@ body {
     .line {
       display: flex;
       flex-direction: row;
+      padding: 0 0.5em;
 
       &.current {
         background: var(--current-line-bg-color);
