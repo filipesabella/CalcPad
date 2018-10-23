@@ -148,6 +148,8 @@ function transform(text: string): string {
     return 'var ' + variable + '\n' + variable + ' = ' + transform(expression);
   } else if (isComment(text)) {
     return '// ' + text;
+  } else if (text.match(/\d+k/i)) {
+    return text.replace(/k/i, '000');
   } else {
     return text;
   }
