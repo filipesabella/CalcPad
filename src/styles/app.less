@@ -2,6 +2,8 @@
   --font-size: 1.4em;
   --line-height: 1.8em;
   --text-color: rgb(227, 230, 232);
+  --bg-color: rgb(33, 34, 38);
+  --current-line-bg-color: rgb(39, 41, 45);
 }
 
 html,
@@ -17,7 +19,7 @@ body {
 
 .app {
   flex: 1;
-  background: rgb(33, 34, 38);
+  background: var(--bg-color);
 
   textarea,
   .texts {
@@ -25,7 +27,7 @@ body {
     line-height: var(--line-height);
     font-family: 'Roboto Mono';
     padding: .5em;
-    color: rgb(227, 230, 232);
+    color: var(--text-color);
   }
 
   textarea,
@@ -50,6 +52,10 @@ body {
     .line {
       display: flex;
       flex-direction: row;
+
+      &.current {
+        background: var(--current-line-bg-color);
+      }
 
       .text {
         width: 80%;
