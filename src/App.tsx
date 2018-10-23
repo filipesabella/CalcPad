@@ -51,13 +51,13 @@ E / 2`;
     const linesToRender = value.split('\n').map(textToNode);
 
     return <div className="app">
-      <div
-        className="texts"
-        ref={this.textRef}>{linesToRender.map((line, i) =>
+      <div className="texts" ref={this.textRef}>
+        {linesToRender.map((line, i) =>
           <div className="line" key={i}>
             <div className="text">{line}</div>
             <div className="result">{results[i]}</div>
-          </div>)}</div>
+          </div>)}
+      </div>
       <textarea
         id="textarea"
         autoFocus={true}
