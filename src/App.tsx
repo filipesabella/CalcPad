@@ -148,7 +148,9 @@ function textToNode(text: string, index: number):
     const variable = text.substring(0, text.indexOf('=')).trim();
     // add any amount of spaces the user may have added around
     // the `=` sign
-    const equals = text.replace(/[^\s*=\s*]/g, '');
+    const equals = text.substring(
+      text.indexOf(' '),
+      text.indexOf('=') + countSpaces(text.trim().split('=')[1]) + 1);
     const expression = text.substring(text.indexOf('=') + 1).trim();
     return <div key={index}>
       <span className="variable">{variable}</span>
