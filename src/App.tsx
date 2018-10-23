@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import './styles/app.less';
 
+const keywords = ['sqrt'];
+
 interface State {
   results: string[];
   value: string;
@@ -26,7 +28,8 @@ a * 2
 asd
 # comment test
 a * a
-2 ^ 3 ^ 2`;
+2 ^ 3 ^ 2
+b = sqrt 9 + 2`;
     this.state = {
       value,
       results: textToResults(value),
@@ -122,17 +125,38 @@ function textToResults(text: string): string[] {
 function textToNode(text: string, index: number):
   React.ReactElement<HTMLDivElement> {
   if (isAssignment(text)) {
-    const variable = text.substring(0, text.indexOf('='));
-    const rest = text.substring(text.indexOf('='));
+    const variable = text.substring(0, text.indexOf('=')).trim();
+    // add any amount of spaces the user may have added around
+    // the `=` sign
+    const equals = text.substring(
+      text.indexOf(' '),
+      text.indexOf('=') + countSpaces(text.trim().split('=')[1]) + 1);
+    const expression = text.substring(text.indexOf('=') + 1).trim();
     return <div key={index}>
       <span className="variable">{variable}</span>
-      <span>{rest}</span>
+      <span>{equals}</span>
+      <span>{textToNode(expression, index)}</span>
     </div>;
   } else if (isComment(text)) {
     return <div key={index}><span className="comment">{text}</span></div>;
   } else {
-    return <div key={index}>{text}</div>;
+    return <div key={index}>{keywordToNode(text)}</div>;
   }
+}
+
+function keywordToNode(text: string):
+  React.ReactElement<HTMLElement>[] {
+  const els: React.ReactElement<HTMLElement>[] = [];
+  const words = text.split(' ');
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    if (keywords.indexOf(word) >= 0) {
+      els.push(<span className="keyword">{word + ' '}</span>);
+    } else {
+      els.push(<>{word + ' '}</>);
+    }
+  }
+  return els;
 }
 
 /**
@@ -171,4 +195,8 @@ function splitAssignment(text: string): [string, string] {
   const variable = text.substring(0, text.indexOf('='));
   const expression = text.substring(text.indexOf('='));
   return [variable, expression];
+}
+
+function countSpaces(s: string): number {
+  return s.length - s.trimLeft().length;
 }
