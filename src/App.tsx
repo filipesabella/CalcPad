@@ -29,7 +29,10 @@ asd
 # comment test
 a * a
 2 ^ 3 ^ 2
-b = sqrt 9 + 2k`;
+b = sqrt 9 + 2k
+20% of 10
+20% on 10
+20% off 10`;
     this.state = {
       value,
       results: textToResults(value),
@@ -155,16 +158,15 @@ function textToNode(text: string, index: number):
   }
 }
 
-function keywordToNode(text: string):
-  React.ReactElement<HTMLElement>[] {
+function keywordToNode(text: string): React.ReactElement<HTMLElement>[] {
   const els: React.ReactElement<HTMLElement>[] = [];
   const words = text.split(' ');
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
     if (keywords.indexOf(word) >= 0) {
-      els.push(<span className="keyword">{word + ' '}</span>);
+      els.push(<span className="keyword" key={i}>{word + ' '}</span>);
     } else {
-      els.push(<>{word + ' '}</>);
+      els.push(<span key={i}>{word + ' '}</span>);
     }
   }
   return els;
@@ -189,8 +191,21 @@ function transform(text: string): string {
     while (text.match(/\d+k/i)) {
       text = text.replace(/k/i, '000');
     }
+
     while (text.match(/sqrt\s+(\d+)/)) {
       text = text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
+    }
+
+    while (text.match(/(\d+)% of (\d+)/)) {
+      text = text.replace(/(\d+)% of (\d+)/, '$2 * $1 / 100');
+    }
+
+    while (text.match(/(\d+)% on (\d+)/)) {
+      text = text.replace(/(\d+)% on (\d+)/, '$2 * $1 / 100 + $2');
+    }
+
+    while (text.match(/(\d+)% off (\d+)/)) {
+      text = text.replace(/(\d+)% off (\d+)/, '$2 - $2 * $1 / 100');
     }
 
     return text;
