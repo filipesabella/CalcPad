@@ -108,7 +108,7 @@ function textToResults(text: string): string[] {
       if (line === '' || isComment(line)) {
         return '';
       } else {
-        const transformedLine = transform(line);
+        const transformedLine = parse(line);
         const result = eval(assignments + transformedLine);
 
         if (isAssignment(line)) {
@@ -179,9 +179,9 @@ function keywordToNode(text: string): React.ReactElement<HTMLElement>[] {
 }
 
 /**
- * Transforms input text into a string that can be `eval`d.
+ * Parses input text into a string that can be `eval`d.
  */
-function transform(text: string): string {
+function parse(text: string): string {
   text = text.replace(/\^/g, '**');
   if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment.
@@ -190,7 +190,7 @@ function transform(text: string): string {
     //  a = 1`
     const variable = text.substring(0, text.indexOf('=')).trim();
     const expression = text.substring(text.indexOf('=') + 1).trim();
-    return 'var ' + variable + '\n' + variable + ' = ' + transform(expression);
+    return 'var ' + variable + '\n' + variable + ' = ' + parse(expression);
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
