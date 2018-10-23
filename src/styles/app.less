@@ -1,6 +1,7 @@
 :root {
-  --font-size: 2em;
-  --text-color: black;
+  --font-size: 1.4em;
+  --line-height: 1.8em;
+  --text-color: rgb(227, 230, 232);
 }
 
 html,
@@ -8,15 +9,25 @@ body {
   margin: 0;
 }
 
-.app {
+#root {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app {
+  flex: 1;
+  display: flex;
+  background: rgb(33, 34, 38);
 
   textarea,
   .text,
   .results {
     font-size: var(--font-size);
+    line-height: var(--line-height);
     font-family: 'Roboto Mono';
     padding: .5em;
+    color: rgb(227, 230, 232);
   }
 
   .textContainer {
@@ -30,7 +41,6 @@ body {
       left: 0;
       top: 0;
       right: 0;
-      line-height: var(--font-size);
     }
 
     textarea {
@@ -47,19 +57,20 @@ body {
       color: var(--text-color);
 
       div {
-        height: var(--font-size);
+        height: var(--line-height);
       }
     }
   }
 
   .results {
     width: 20vw;
-    background: red;
+    color: rgb(155, 207, 77);
+    text-align: right;
     display: flex;
     flex-direction: column;
 
     div {
-      height: var(--font-size);
+      height: var(--line-height);
     }
   }
 }
