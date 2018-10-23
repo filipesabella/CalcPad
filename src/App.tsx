@@ -34,9 +34,7 @@ a * a`;
   public render(): React.ReactNode {
     const { value, results } = this.state;
 
-    const textToRender = value.split('\n').map((line, i) => {
-      return <div key={i}>{line}</div>;
-    });
+    const textToRender = value.split('\n').map(textToNode);
 
     this.resizeTextArea();
 
@@ -65,7 +63,6 @@ a * a`;
   }
 
   private resizeTextArea(): void {
-
     if (this.textAreaRef.current) {
       this.textAreaRef.current.style.height =
         this.textRef.current!.clientHeight + 'px';
@@ -116,6 +113,20 @@ function textToResults(text: string): string[] {
       return 'ERR';
     }
   });
+}
+
+function textToNode(text: string, index: number)
+  : React.ReactElement<HTMLDivElement> {
+  if (isAssignment(text)) {
+    const variable = text.substring(0, text.indexOf('='));
+    const rest = text.substring(text.indexOf('='));
+    return <div key={index}>
+      <span className="variable">{variable}</span>
+      <span>{rest}</span>
+    </div>;
+  } else {
+    return <div key={index}>{text}</div>;
+  }
 }
 
 function transform(text: string): string {
