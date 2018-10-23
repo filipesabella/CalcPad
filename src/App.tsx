@@ -25,7 +25,8 @@ a = 20
 a * 2
 asd
 # comment test
-a * a`;
+a * a
+2 ^ 3 ^ 2`;
     this.state = {
       value,
       results: textToResults(value),
@@ -138,6 +139,7 @@ function textToNode(text: string, index: number):
  * Transforms input text into a string that can be `eval`d.
  */
 function transform(text: string): string {
+  text = text.replace(/\^/g, '**');
   if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment.
     // receives `a = 1` and returns
