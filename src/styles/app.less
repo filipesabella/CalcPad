@@ -17,12 +17,10 @@ body {
 
 .app {
   flex: 1;
-  display: flex;
   background: rgb(33, 34, 38);
 
   textarea,
-  .text,
-  .results {
+  .texts {
     font-size: var(--font-size);
     line-height: var(--line-height);
     font-family: 'Roboto Mono';
@@ -30,66 +28,70 @@ body {
     color: rgb(227, 230, 232);
   }
 
-  .textContainer {
-    position: relative;
-    width: 80vw;
-    margin: 0;
+  textarea,
+  .texts {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+  }
 
-    textarea,
-    .text {
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-    }
+  textarea {
+    border: 0;
+    outline: 0;
+    width: 80%;
+    resize: none;
+    color: transparent;
+    background: transparent;
+    caret-color: var(--text-color);
+  }
 
-    textarea {
-      border: 0;
-      outline: 0;
-      width: 100%;
-      resize: none;
-      color: transparent;
-      background: transparent;
-      caret-color: var(--text-color);
-    }
+  .texts {
+    .line {
+      display: flex;
+      flex-direction: row;
 
-    .text {
-      color: var(--text-color);
+      .text {
+        width: 80%;
+        color: var(--text-color);
+        flex: 1;
 
-      div {
-        height: var(--line-height);
-        white-space: pre;
-      }
-
-      span {
         div {
-          display: inline-block;
+          height: var(--line-height);
+          white-space: pre;
+        }
+
+        span {
+          div {
+            display: inline-block;
+          }
+        }
+
+        .variable {
+          color: rgb(115, 189, 234);
+        }
+
+        .comment {
+          color: rgb(246, 195, 80);
+        }
+
+        .keyword {
+          color: rgb(193, 211, 210);
         }
       }
 
-      .variable {
-        color: rgb(115, 189, 234);
+      .result {
+        width: 20%;
+        color: rgb(155, 207, 77);
+        text-align: right;
+        vertical-align: bottom;
+        display: flex;
+        flex-direction: column;
+
+        div {
+          height: var(--line-height);
+        }
       }
-
-      .comment {
-        color: rgb(246, 195, 80);
-      }
-
-      .keyword {
-        color: rgb(193, 211, 210);
-      }
-    }
-  }
-
-  .results {
-    width: 20vw;
-    color: rgb(155, 207, 77);
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-
-    div {
-      height: var(--line-height);
     }
   }
 }

@@ -44,29 +44,26 @@ E / 2`;
   }
 
   public render(): React.ReactNode {
-    const { value, results } = this.state;
-
-    const textToRender = value.split('\n').map(textToNode);
-
     this.resizeTextArea();
 
-    return <div className="app">
-      <div className="textContainer">
-        <div
-          className="text"
-          ref={this.textRef}>{textToRender}</div>
-        <textarea
-          id="textarea"
-          autoFocus={true}
-          onChange={e => this.onChange(e)}
-          value={value}
-          ref={this.textAreaRef}></textarea>
-      </div>
+    const { value, results } = this.state;
 
-      <div className="results">
-        {results.map((result, i) =>
-          <div key={i}>{result}</div>)}
-      </div>
+    const linesToRender = value.split('\n').map(textToNode);
+
+    return <div className="app">
+      <div
+        className="texts"
+        ref={this.textRef}>{linesToRender.map((line, i) =>
+          <div className="line" key={i}>
+            <div className="text">{line}</div>
+            <div className="result">{results[i]}</div>
+          </div>)}</div>
+      <textarea
+        id="textarea"
+        autoFocus={true}
+        onChange={e => this.onChange(e)}
+        value={value}
+        ref={this.textAreaRef}></textarea>
     </div>;
   }
 
@@ -124,7 +121,7 @@ function textToResults(text: string): string[] {
     } catch (e) {
       // console.error(e);
       // hehe :v
-      return 'ERR';
+      return '-';
     }
   });
 }
