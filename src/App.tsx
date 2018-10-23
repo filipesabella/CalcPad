@@ -152,6 +152,8 @@ function transform(text: string): string {
     return '// ' + text;
   } else if (text.match(/\d+k/i)) {
     return text.replace(/k/i, '000');
+  } else if (text.match(/sqrt\s+(\d+)/)) {
+    return text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
   } else {
     return text;
   }
