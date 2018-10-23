@@ -24,14 +24,7 @@ export class App extends React.Component<{}, State> {
 a = 20
 a * 2
 asd
-a * a
-asd
-qwe
-zxc
-asd
-wer
-sdf
-xcv`;
+a * a`;
     this.state = {
       value,
       results: textToResults(value),
@@ -53,6 +46,7 @@ xcv`;
           className="text"
           ref={this.textRef}>{textToRender}</div>
         <textarea
+          id="textarea"
           autoFocus={true}
           onChange={e => this.onChange(e)}
           value={value}
