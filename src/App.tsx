@@ -19,7 +19,7 @@ export class App extends React.Component<{}, State> {
       value: '',
     };
 
-    const value = `1 + 2
+    let value = `1 + 2
 20 * 33
 a = 20
 a * 2
@@ -99,9 +99,11 @@ function textToResults(text: string): string[] {
       } else {
         const transformedLine = transform(line);
         const result = eval(assignments + transformedLine);
+
         if (isAssignment(line)) {
           assignments += transformedLine + '\n';
         }
+
         const numberToDisplay = Math.round(result) !== result
           ? result.toFixed(2)
           : result;
@@ -141,7 +143,9 @@ function transform(text: string): string {
     // receives `a = 1` and returns
     // `var a
     //  a = 1`
-    return 'var ' + text.split('=')[0] + '\n' + text;
+    const variable = text.substring(0, text.indexOf('=')).trim();
+    const expression = text.substring(text.indexOf('=') + 1).trim();
+    return 'var ' + variable + '\n' + variable + ' = ' + transform(expression);
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
@@ -155,4 +159,10 @@ function isAssignment(text: string): boolean {
 
 function isComment(text: string): boolean {
   return text.trim().startsWith('#');
+}
+
+function splitAssignment(text: string): [string, string] {
+  const variable = text.substring(0, text.indexOf('='));
+  const expression = text.substring(text.indexOf('='));
+  return [variable, expression];
 }
