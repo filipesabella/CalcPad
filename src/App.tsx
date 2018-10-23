@@ -188,10 +188,10 @@ function transform(text: string): string {
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
-    if (text.match(/\d+k/i)) {
+    while (text.match(/\d+k/i)) {
       text = text.replace(/k/i, '000');
     }
-    if (text.match(/sqrt\s+(\d+)/)) {
+    while (text.match(/sqrt\s+(\d+)/)) {
       text = text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
     }
 
