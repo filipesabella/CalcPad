@@ -122,6 +122,19 @@ function textToResults(text: string): string[] {
   });
 }
 
+// receives
+// a = sqrt 9 + 2
+// returns
+// <div key={index}>
+//   <span className="variable">a</span>
+//   <span> = </span>
+//   <span>
+//     <div key={index}>
+//       <span className="keyword">sqrt </span>
+//       <span>9 + 2</span>
+//     </div>
+//   </span>
+// </div>
 function textToNode(text: string, index: number):
   React.ReactElement<HTMLDivElement> {
   if (isAssignment(text)) {
