@@ -216,16 +216,16 @@ function parse(text: string): string {
 }
 
 function parseMultipliers(text: string): string {
-  while (text.match(/\d+k/i)) {
-    text = text.replace(/(\d+)k/i, '$1000');
+  while (text.match(/(\d+\.?\d*)k/i)) {
+    text = text.replace(/(\d+\.?\d*)k/i, '$1 * 1e3');
   }
 
-  while (text.match(/\d+M/)) {
-    text = text.replace(/(\d+)M/, '$1000000');
+  while (text.match(/(\d+\.?\d*)M/)) {
+    text = text.replace(/(\d+\.?\d*)M/, '$1 * 1e6');
   }
 
-  while (text.match(/\d+\s?billion/)) {
-    text = text.replace(/(\d+)\s?billion/, '$1000000000');
+  while (text.match(/(\d+\.?\d*)\s?billion/)) {
+    text = text.replace(/(\d+\.?\d*)\s?billion/, '$1 * 1e9');
   }
 
   return text;
