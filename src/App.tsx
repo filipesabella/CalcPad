@@ -29,7 +29,7 @@ asd
 # comment test
 a * a
 2 ^ 3 ^ 2
-b = sqrt 9 + 2`;
+b = sqrt 9 + 2k`;
     this.state = {
       value,
       results: textToResults(value),
@@ -187,11 +187,14 @@ function transform(text: string): string {
     return 'var ' + variable + '\n' + variable + ' = ' + transform(expression);
   } else if (isComment(text)) {
     return '// ' + text;
-  } else if (text.match(/\d+k/i)) {
-    return text.replace(/k/i, '000');
-  } else if (text.match(/sqrt\s+(\d+)/)) {
-    return text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
   } else {
+    if (text.match(/\d+k/i)) {
+      text = text.replace(/k/i, '000');
+    }
+    if (text.match(/sqrt\s+(\d+)/)) {
+      text = text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
+    }
+
     return text;
   }
 }
