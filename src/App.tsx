@@ -24,6 +24,7 @@ export class App extends React.Component<{}, State> {
 a = 20
 a * 2
 asd
+# comment test
 a * a`;
     this.state = {
       value,
@@ -93,7 +94,7 @@ function textToResults(text: string): string[] {
   let assignments = '';
   return lines.map((line, i) => {
     try {
-      if (line === '') {
+      if (line === '' || isComment(line)) {
         return '';
       } else {
         const transformedLine = transform(line);
@@ -115,8 +116,8 @@ function textToResults(text: string): string[] {
   });
 }
 
-function textToNode(text: string, index: number)
-  : React.ReactElement<HTMLDivElement> {
+function textToNode(text: string, index: number):
+  React.ReactElement<HTMLDivElement> {
   if (isAssignment(text)) {
     const variable = text.substring(0, text.indexOf('='));
     const rest = text.substring(text.indexOf('='));
@@ -124,11 +125,16 @@ function textToNode(text: string, index: number)
       <span className="variable">{variable}</span>
       <span>{rest}</span>
     </div>;
+  } else if (isComment(text)) {
+    return <div key={index}><span className="comment">{text}</span></div>;
   } else {
     return <div key={index}>{text}</div>;
   }
 }
 
+/**
+ * Transforms input text into a string that can be `eval`d.
+ */
 function transform(text: string): string {
   if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment.
@@ -136,6 +142,8 @@ function transform(text: string): string {
     // `var a
     //  a = 1`
     return 'var ' + text.split('=')[0] + '\n' + text;
+  } else if (isComment(text)) {
+    return '// ' + text;
   } else {
     return text;
   }
@@ -143,4 +151,8 @@ function transform(text: string): string {
 
 function isAssignment(text: string): boolean {
   return text.includes('=');
+}
+
+function isComment(text: string): boolean {
+  return text.trim().startsWith('#');
 }
