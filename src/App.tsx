@@ -30,9 +30,11 @@ asd
 a * a
 2 ^ 3 ^ 2
 b = sqrt 9 + 2k
-20% of 10
-20% on 10
-20% off 10`;
+20% of 10K
+20% on 10M
+20% off 10 billion
+2 * PI
+E / 2`;
     this.state = {
       value,
       results: textToResults(value),
@@ -214,6 +216,14 @@ function transform(text: string): string {
 
     while (text.match(/(\d+)% off (\d+)/)) {
       text = text.replace(/(\d+)% off (\d+)/, '$2 - $2 * $1 / 100');
+    }
+
+    while (text.match(/(\s|^)PI(\s|$)/i)) {
+      text = text.replace(/(\s|^)PI(\s|$)/i, '3.1415926536');
+    }
+
+    while (text.match(/(\s|^)E(\s|$)/)) {
+      text = text.replace(/(\s|^)E(\s|$)/, '2.7182818285');
     }
 
     return text;
