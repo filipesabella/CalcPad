@@ -2,7 +2,9 @@ import * as React from 'react';
 
 import './styles/app.less';
 
-const keywords = ['sqrt'];
+const funs = ['sqrt', 'round', 'ceil', 'floor', 'sin', 'cos', 'tan'];
+const keywords = ['PI', 'E'].concat(funs);
+
 
 interface State {
   results: string[];
@@ -190,44 +192,68 @@ function transform(text: string): string {
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
-    while (text.match(/\d+k/i)) {
-      text = text.replace(/(\d+)k/i, '$1000');
-    }
-
-    while (text.match(/\d+M/)) {
-      text = text.replace(/(\d+)M/, '$1000000');
-    }
-
-    while (text.match(/\d+\s?billion/)) {
-      text = text.replace(/(\d+)\s?billion/, '$1000000000');
-    }
-
-    while (text.match(/sqrt\s+(\d+)/)) {
-      text = text.replace(/sqrt\s+(\d+)/, 'Math.sqrt($1)');
-    }
-
-    while (text.match(/(\d+)% of (\d+)/)) {
-      text = text.replace(/(\d+)% of (\d+)/, '$2 * $1 / 100');
-    }
-
-    while (text.match(/(\d+)% on (\d+)/)) {
-      text = text.replace(/(\d+)% on (\d+)/, '$2 * $1 / 100 + $2');
-    }
-
-    while (text.match(/(\d+)% off (\d+)/)) {
-      text = text.replace(/(\d+)% off (\d+)/, '$2 - $2 * $1 / 100');
-    }
-
-    while (text.match(/(\s|^)PI(\s|$)/i)) {
-      text = text.replace(/(\s|^)PI(\s|$)/i, '3.1415926536');
-    }
-
-    while (text.match(/(\s|^)E(\s|$)/)) {
-      text = text.replace(/(\s|^)E(\s|$)/, '2.7182818285');
-    }
-
+    text = parseMultipliers(text);
+    text = parsePercentages(text);
+    text = parseContants(text);
+    text = parseFunctions(text);
     return text;
   }
+}
+
+function parseMultipliers(text: string): string {
+  while (text.match(/\d+k/i)) {
+    text = text.replace(/(\d+)k/i, '$1000');
+  }
+
+  while (text.match(/\d+M/)) {
+    text = text.replace(/(\d+)M/, '$1000000');
+  }
+
+  while (text.match(/\d+\s?billion/)) {
+    text = text.replace(/(\d+)\s?billion/, '$1000000000');
+  }
+
+  return text;
+}
+
+function parsePercentages(text: string): string {
+  while (text.match(/(\d+)% of (\d+)/)) {
+    text = text.replace(/(\d+)% of (\d+)/, '$2 * $1 / 100');
+  }
+
+  while (text.match(/(\d+)% on (\d+)/)) {
+    text = text.replace(/(\d+)% on (\d+)/, '$2 * $1 / 100 + $2');
+  }
+
+  while (text.match(/(\d+)% off (\d+)/)) {
+    text = text.replace(/(\d+)% off (\d+)/, '$2 - $2 * $1 / 100');
+  }
+
+  return text;
+}
+
+function parseContants(text: string): string {
+  while (text.match(/(\s|^)PI(\s|$)/i)) {
+    text = text.replace(/(\s|^)PI(\s|$)/i, '3.1415926536');
+  }
+
+  while (text.match(/(\s|^)E(\s|$)/)) {
+    text = text.replace(/(\s|^)E(\s|$)/, '2.7182818285');
+  }
+
+  return text;
+}
+
+function parseFunctions(text: string): string {
+  for (let i = 0; i < funs.length; i++) {
+    const fun = funs[i];
+    const regexp = new RegExp(fun + '\\s+([^(\\s|$)]+)');
+    while (text.match(regexp)) {
+      text = text.replace(regexp, 'Math.' + fun + '($1)');
+    }
+  }
+
+  return text;
 }
 
 function isAssignment(text: string): boolean {
