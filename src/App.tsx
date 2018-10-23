@@ -279,12 +279,6 @@ function isComment(text: string): boolean {
   return text.trim().startsWith('#');
 }
 
-function splitAssignment(text: string): [string, string] {
-  const variable = text.substring(0, text.indexOf('='));
-  const expression = text.substring(text.indexOf('='));
-  return [variable, expression];
-}
-
 function countSpaces(s: string): number {
   return s.length - s.trimLeft().length;
 }
