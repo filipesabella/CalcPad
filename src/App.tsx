@@ -9,6 +9,7 @@ const keywords = ['PI', 'E'].concat(funs);
 interface State {
   results: string[];
   value: string;
+  currentLine: number;
 }
 
 export class App extends React.Component<{}, State> {
@@ -21,6 +22,7 @@ export class App extends React.Component<{}, State> {
     this.state = {
       results: [],
       value: '',
+      currentLine: 0,
     };
 
     let value = `1 + 2
@@ -40,20 +42,22 @@ E / 2`;
     this.state = {
       value,
       results: textToResults(value),
+      currentLine: 0,
     };
   }
 
   public render(): React.ReactNode {
     this.resizeTextArea();
 
-    const { value, results } = this.state;
+    const { value, results, currentLine } = this.state;
 
     const linesToRender = value.split('\n').map(textToNode);
 
     return <div className="app">
       <div className="texts" ref={this.textRef}>
         {linesToRender.map((line, i) =>
-          <div className="line" key={i}>
+          <div key={i}
+            className={'line ' + (currentLine === i ? 'current' : '')}>
             <div className="text">{line}</div>
             <div className="result">{results[i]}</div>
           </div>)}
@@ -62,6 +66,8 @@ E / 2`;
         id="textarea"
         autoFocus={true}
         onChange={e => this.onChange(e)}
+        onClick={_ => this.cursorChanged()}
+        onKeyUp={_ => this.cursorChanged()}
         value={value}
         ref={this.textAreaRef}></textarea>
     </div>;
@@ -84,6 +90,16 @@ E / 2`;
       value,
       results: textToResults(value)
     });
+  }
+
+  private cursorChanged(): void {
+    if (this.textAreaRef.current) {
+      this.setState({
+        currentLine: this.textAreaRef.current.value
+          .substr(0, this.textAreaRef.current.selectionStart)
+          .split('\n').length - 1
+      });
+    }
   }
 }
 
