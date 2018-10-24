@@ -19,8 +19,8 @@ app.on('ready', () => {
 
   let mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
-  })
+    height: 600,
+  });
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, './build/index.html'),
