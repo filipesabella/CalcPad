@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { isAssignment, isComment } from './parser';
-
-const funs = ['sqrt', 'round', 'ceil', 'floor', 'sin', 'cos', 'tan'];
-const keywords = ['PI', 'E'].concat(funs);
+import { isAssignment, isComment, keywords } from './parser';
 
 // receives
 // a = sqrt 9 + 2
