@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { textToNode } from './renderer';
 import { textToResults } from './evaluator';
+import { Store } from './store';
 
 const Mousetrap = require('mousetrap');
 const remote = (window as any).require('electron').remote;
@@ -15,46 +16,39 @@ interface State {
   currentLine: number;
 }
 
+const store = new Store();
+
 export class App extends React.Component<{}, State> {
   textRef: React.RefObject<HTMLDivElement> = React.createRef();
   textAreaRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
+  currentFile: string | null;
 
   constructor(props: {}) {
     super(props);
 
+    this.currentFile = store.getLastFile();
+    this.setTitle();
+
     this.state = {
       results: [],
-      value: '',
-      currentLine: 0,
-    };
-
-    let value = `1 + 2
-20 * 33
-a = 20
-a * 2
-asd
-# comment test
-a * a
-2 ^ 3 ^ 2
-b = sqrt 9 + 2k
-20% of 10K
-20% on 10M
-20% off 10 billion
-2 * PI
-E / 2`;
-    this.state = {
-      value,
-      results: textToResults(value),
+      value: store.getLastFileContent(),
       currentLine: 0,
     };
 
     Mousetrap.bind(['command+s', 'ctrl+s'], () => {
-      this.showSaveDialog();
+      if (store.isTempFile()) {
+        this.showSaveDialog();
+      }
       return false;
     });
 
     Mousetrap.bind(['command+o', 'ctrl+o'], () => {
       this.showOpenDialog();
+      return false;
+    });
+
+    Mousetrap.bind(['command+n', 'ctrl+n'], () => {
+      this.newFile();
       return false;
     });
   }
@@ -89,11 +83,6 @@ E / 2`;
 
   public componentDidMount(): void {
     this.resizeTextArea();
-
-    Mousetrap.bind('/', () => {
-      console.log('argh');
-      return false;
-    });
   }
 
   private resizeTextArea(): void {
@@ -109,6 +98,8 @@ E / 2`;
       value,
       results: textToResults(value)
     });
+
+    store.save(value);
   }
 
   private cursorChanged(): void {
@@ -122,12 +113,13 @@ E / 2`;
   }
 
   private showSaveDialog(): void {
-    console.log('???');
     dialog.showSaveDialog(null, {
       title: 'Save'
     }, (file: string) => {
-      console.log('saveaaa', file);
       if (!file) return; // user cancelled
+
+      fs.writeFileSync(file, this.state.value);
+      store.setLastFile(file);
     });
   }
 
@@ -135,17 +127,40 @@ E / 2`;
     dialog.showOpenDialog(null, {
       title: 'Open',
       properties: ['openFile'],
-    }, (file: string) => {
-      if (!file || file.length === 0) return;
+    }, (files: string) => {
+      if (!files || files.length === 0) return; // user cancelled
 
-      const contents = fs.readFileSync(file[0]).toString();
+      const file = files[0];
+
+      const contents = fs.readFileSync(file).toString();
       this.setState({
         value: contents,
         results: textToResults(contents),
       });
 
-      remote.BrowserWindow.getAllWindows()[0].setTitle(
-        'PCalc - ' + file[0].toString());
+      store.setLastFile(file);
+      this.currentFile = file;
+      this.setTitle();
     });
   }
+
+  private newFile() {
+    this.currentFile = null;
+    store.setLastFile(null);
+    this.setState({
+      results: [],
+      value: '',
+      currentLine: 0,
+    });
+    this.setTitle();
+  }
+
+  private setTitle() {
+    const title = store.isTempFile()
+      ? 'PCalc'
+      : 'PCalc - ' + this.currentFile;
+
+    remote.BrowserWindow.getAllWindows()[0].setTitle(title);
+  }
+
 }
