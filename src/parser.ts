@@ -1,3 +1,6 @@
+const funs = ['sqrt', 'round', 'ceil', 'floor', 'sin', 'cos', 'tan'];
+export const keywords = ['PI', 'E'].concat(funs);
+
 /**
  * Parses input text into a string that can be `eval`d.
  */
