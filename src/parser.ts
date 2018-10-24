@@ -42,16 +42,16 @@ function parseMultipliers(text: string): string {
 }
 
 function parsePercentages(text: string): string {
-  while (text.match(/(\d+)% of (\d+)/)) {
-    text = text.replace(/(\d+)% of (\d+)/, '$2 * $1 / 100');
+  while (text.match(/(\d+\.?\d*)% of (\d+\.?\d*)/)) {
+    text = text.replace(/(\d+\.?\d*)% of (\d+\.?\d*)/, '$2 * $1 / 100');
   }
 
-  while (text.match(/(\d+)% on (\d+)/)) {
-    text = text.replace(/(\d+)% on (\d+)/, '$2 * $1 / 100 + $2');
+  while (text.match(/(\d+\.?\d*)% on (\d+\.?\d*)/)) {
+    text = text.replace(/(\d+\.?\d*)% on (\d+\.?\d*)/, '$2 * $1 / 100 + $2');
   }
 
-  while (text.match(/(\d+)% off (\d+)/)) {
-    text = text.replace(/(\d+)% off (\d+)/, '$2 - $2 * $1 / 100');
+  while (text.match(/(\d+\.?\d*)% off (\d+\.?\d*)/)) {
+    text = text.replace(/(\d+\.?\d*)% off (\d+\.?\d*)/, '$2 - $2 * $1 / 100');
   }
 
   return text;
