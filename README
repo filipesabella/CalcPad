@@ -1,0 +1,8 @@
+# Start parcel bundler
+
+yarn dev
+
+# Start electron
+
+yarn run start-dev
+
