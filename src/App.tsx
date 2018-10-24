@@ -143,6 +143,9 @@ E / 2`;
         value: contents,
         results: textToResults(contents),
       });
+
+      remote.BrowserWindow.getAllWindows()[0].setTitle(
+        'PCalc - ' + file[0].toString());
     });
   }
 }
