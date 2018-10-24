@@ -2,7 +2,7 @@
 const electron = require('electron')
 const {
   app,
-  BrowserWindow
+  BrowserWindow,
 } = electron
 const path = require('path');
 const url = require('url');
