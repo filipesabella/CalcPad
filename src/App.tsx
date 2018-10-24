@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { textToNode } from './renderer';
+import { textToResults } from './evaluator';
+
+const Mousetrap = require('mousetrap');
+const remote = (window as any).require('electron').remote;
+const dialog = remote.dialog;
+const fs = remote.require('fs');
 
 import './styles/app.less';
-import { textToResults } from './evaluator';
 
 interface State {
   results: string[];
@@ -42,6 +47,16 @@ E / 2`;
       results: textToResults(value),
       currentLine: 0,
     };
+
+    Mousetrap.bind(['command+s', 'ctrl+s'], () => {
+      this.showSaveDialog();
+      return false;
+    });
+
+    Mousetrap.bind(['command+o', 'ctrl+o'], () => {
+      this.showOpenDialog();
+      return false;
+    });
   }
 
   public render(): React.ReactNode {
@@ -62,6 +77,7 @@ E / 2`;
       </div>
       <textarea
         id="textarea"
+        className="mousetrap"
         autoFocus={true}
         onChange={e => this.onChange(e)}
         onClick={_ => this.cursorChanged()}
@@ -73,6 +89,11 @@ E / 2`;
 
   public componentDidMount(): void {
     this.resizeTextArea();
+
+    Mousetrap.bind('/', () => {
+      console.log('argh');
+      return false;
+    });
   }
 
   private resizeTextArea(): void {
@@ -98,5 +119,30 @@ E / 2`;
           .split('\n').length - 1
       });
     }
+  }
+
+  private showSaveDialog(): void {
+    console.log('???');
+    dialog.showSaveDialog(null, {
+      title: 'Save'
+    }, (file: string) => {
+      console.log('saveaaa', file);
+      if (!file) return; // user cancelled
+    });
+  }
+
+  private showOpenDialog(): void {
+    dialog.showOpenDialog(null, {
+      title: 'Open',
+      properties: ['openFile'],
+    }, (file: string) => {
+      if (!file || file.length === 0) return;
+
+      const contents = fs.readFileSync(file[0]).toString();
+      this.setState({
+        value: contents,
+        results: textToResults(contents),
+      });
+    });
   }
 }
