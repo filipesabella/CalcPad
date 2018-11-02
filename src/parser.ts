@@ -75,15 +75,13 @@ function parseConstants(text: string): string {
 }
 
 function parseFunctions(text: string): string {
-  for (let i = 0; i < funs.length; i++) {
-    const fun = funs[i];
+  return funs.reduce((text, fun) => {
     const regexp = new RegExp(fun + '\\s+([^(\\s|$)]+)');
     while (text.match(regexp)) {
       text = text.replace(regexp, 'Math.' + fun + '($1)');
     }
-  }
-
-  return text;
+    return text;
+  }, text);
 }
 
 function parseConversions(text: string): string {
@@ -127,11 +125,8 @@ function normaliseConversions(text: string): string {
     ['kelvin', 'K'],
   ];
 
-  for (let i = 0; i < conversions.length; i++) {
-    const [from, to] = conversions[i];
-    text = text.replace(new RegExp(from, 'i'), to);
-  }
-  return text;
+  return conversions.reduce((acc, [from, to]) =>
+    text = text.replace(new RegExp(from, 'i'), to), text);
 }
 
 export function isAssignment(text: string): boolean {
