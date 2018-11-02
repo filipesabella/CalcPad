@@ -1,5 +1,9 @@
+const convert = require('convert-units');
+
 const funs = ['sqrt', 'round', 'ceil', 'floor', 'sin', 'cos', 'tan'];
-export const keywords = ['PI', 'E'].concat(funs);
+export const keywords = [
+  'PI', 'E', 'in', 'to',
+].concat(funs);
 
 /**
  * Parses input text into a string that can be `eval`d.
@@ -17,9 +21,10 @@ export function parse(text: string): string {
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
+    text = parseConversions(text);
     text = parseMultipliers(text);
     text = parsePercentages(text);
-    text = parseContants(text);
+    text = parseConstants(text);
     text = parseFunctions(text);
     return text;
   }
@@ -57,7 +62,7 @@ function parsePercentages(text: string): string {
   return text;
 }
 
-function parseContants(text: string): string {
+function parseConstants(text: string): string {
   while (text.match(/(\s|^)PI(\s|$)/i)) {
     text = text.replace(/(\s|^)PI(\s|$)/i, '3.1415926536');
   }
@@ -78,6 +83,54 @@ function parseFunctions(text: string): string {
     }
   }
 
+  return text;
+}
+
+function parseConversions(text: string): string {
+  if (text.includes(' in ') || text.includes(' to ')) {
+    text = normaliseConversions(text);
+
+    const regex = /(\d+\.?\d*)\s*([^\s]+)\s+(in|to)\s+([^(\s|$)]+)/i;
+    const match = text.match(regex);
+    if (match) {
+      const [_, value, from, __, to] = match;
+      try {
+        const converted = convert(value).from(from).to(to);
+        text = text.replace(regex, converted);
+      } catch (e) {
+        // heh
+        // console.error(e);
+      }
+    }
+
+  }
+  return text;
+}
+
+function normaliseConversions(text: string): string {
+  const conversions = [
+    ['tbs', 'Tbs'],
+    ['cups', 'cup'],
+    ['pint', 'pnt'],
+    ['gallon', 'gal'],
+    ['weeks', 'week'],
+    ['months', 'month'],
+    ['years', 'year'],
+    ['foot', 'ft'],
+    ['feet', 'ft'],
+    ['kb', 'KB'],
+    ['gb', 'GB'],
+    ['mb', 'MB'],
+    ['tb', 'TB'],
+    ['celsius', 'C'],
+    ['farenheit', 'F'],
+    ['kelvin', 'K'],
+  ];
+
+  for (let i = 0; i < conversions.length; i++) {
+    const [from, to] = conversions[i];
+    text = text.replace(new RegExp(from, 'i'), to);
+  }
   return text;
 }
 
