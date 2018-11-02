@@ -29,9 +29,11 @@ export class App extends React.Component<{}, State> {
     this.currentFile = store.getLastFile();
     this.setTitle();
 
+    const value = store.getLastFileContent();
+
     this.state = {
-      results: [],
-      value: store.getLastFileContent(),
+      results: textToResults(value),
+      value,
       currentLine: 0,
     };
 
