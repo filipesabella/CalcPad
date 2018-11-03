@@ -4,7 +4,9 @@ const convert = require('convert-units');
  * Parses input text into a string that can be `eval`d.
  */
 export function parse(text: string): string {
+  // cheeky handling of pow
   text = text.replace(/\^/g, '**');
+
   if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment.
     // receives `a = 1` and returns
