@@ -3,7 +3,6 @@ import { textToNode } from './renderer';
 import { textToResults } from './evaluator';
 import { Store } from './store';
 
-const Mousetrap = require('mousetrap');
 const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
 
@@ -31,21 +30,6 @@ export class App extends React.Component<{}, State> {
       value,
       currentLine: 0,
     };
-
-    Mousetrap.bind(['command+s', 'ctrl+s'], () => {
-      this.showSaveDialog();
-      return false;
-    });
-
-    Mousetrap.bind(['command+o', 'ctrl+o'], () => {
-      this.showOpenDialog();
-      return false;
-    });
-
-    Mousetrap.bind(['command+n', 'ctrl+n'], () => {
-      this.newFile();
-      return false;
-    });
 
     // sent by the menus
     ipcRenderer.on('new-file', () => this.newFile());
