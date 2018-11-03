@@ -38,9 +38,7 @@ export class App extends React.Component<{}, State> {
     };
 
     Mousetrap.bind(['command+s', 'ctrl+s'], () => {
-      if (store.isTempFile()) {
-        this.showSaveDialog();
-      }
+      this.showSaveDialog();
       return false;
     });
 
@@ -113,12 +111,15 @@ export class App extends React.Component<{}, State> {
       this.setState({
         currentLine: this.textAreaRef.current.value
           .substr(0, this.textAreaRef.current.selectionStart)
-          .split('\n').length - 1
+          .split('\n').length - 1,
       });
     }
   }
 
   private showSaveDialog(): void {
+    // we already save on change
+    if (!store.isTempFile()) return;
+
     dialog.showSaveDialog(null, {
       title: 'Save'
     }, (file: string) => {
