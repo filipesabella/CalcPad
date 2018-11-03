@@ -16,12 +16,14 @@ export function parse(text: string): string {
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
-    text = parseConversions(text);
-    text = parseMultipliers(text);
-    text = parsePercentages(text);
-    text = parseConstants(text);
-    text = parseFunctions(text);
-    return text;
+    // the order here is important
+    return [
+      parseConversions,
+      parseMultipliers,
+      parsePercentages,
+      parseConstants,
+      parseFunctions,
+    ].reduce((text, fn) => fn(text), text);
   }
 }
 
