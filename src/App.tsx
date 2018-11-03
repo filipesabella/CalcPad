@@ -77,7 +77,7 @@ export class App extends React.Component<{}, State> {
         autoFocus={true}
         onChange={e => this.onChange(e)}
         onClick={_ => this.cursorChanged()}
-        onKeyUp={_ => this.cursorChanged()}
+        onKeyDown={_ => this.cursorChanged()}
         value={value}
         ref={this.textAreaRef}></textarea>
     </div>;
@@ -106,11 +106,16 @@ export class App extends React.Component<{}, State> {
 
   private cursorChanged(): void {
     if (this.textAreaRef.current) {
-      this.setState({
-        currentLine: this.textAreaRef.current.value
-          .substr(0, this.textAreaRef.current.selectionStart)
-          .split('\n').length - 1,
-      });
+      const ref = this.textAreaRef.current;
+      // using timeout otherwise it lags one event because of the
+      // keydown instead of keyup
+      setTimeout(() => {
+        this.setState({
+          currentLine: this.state.value
+            .substr(0, ref.selectionStart)
+            .split('\n').length - 1,
+        });
+      }, 0);
     }
   }
 
