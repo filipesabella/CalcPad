@@ -178,6 +178,13 @@ export class App extends React.Component<{}, State> {
   private savePreferences(preferences: Preferences): void {
     store.savePreferences(preferences);
     this.setState({ preferences });
+
+    // recalculate results as precision might have been changed
+    this.setState(s => ({
+      results: textToResults(
+        s.value,
+        preferences.decimalPlaces),
+    }));
   }
 
   private setPreferences(preferences: Preferences): void {
