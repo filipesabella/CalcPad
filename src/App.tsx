@@ -5,7 +5,6 @@ import { Store } from './store';
 
 const Mousetrap = require('mousetrap');
 const { remote, ipcRenderer } = (window as any).require('electron');
-const fs = remote.require('fs');
 const { dialog } = remote;
 
 import './styles/app.less';
@@ -128,8 +127,7 @@ export class App extends React.Component<{}, State> {
     }, (file: string) => {
       if (!file) return; // user cancelled
 
-      fs.writeFileSync(file, this.state.value);
-      store.setLastFile(file);
+      store.saveFile(file, this.state.value);
     });
   }
 
@@ -140,10 +138,8 @@ export class App extends React.Component<{}, State> {
     }, (files: string) => {
       if (!files || files.length === 0) return; // user cancelled
 
-      const file = files[0];
+      const contents = store.open(files[0]);
 
-      const contents = fs.readFileSync(file).toString();
-      store.setLastFile(file);
       this.setState({
         value: contents,
         results: textToResults(contents),
@@ -153,8 +149,7 @@ export class App extends React.Component<{}, State> {
   }
 
   private newFile() {
-    store.setLastFile(null);
-    store.save('');
+    store.newFile();
     this.setState({
       results: [],
       value: '',
