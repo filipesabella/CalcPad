@@ -30,19 +30,18 @@ export function parse(text: string): string {
 }
 
 function parseMultipliers(text: string): string {
-  while (text.match(/(\d+\.?\d*)k/i)) {
-    text = text.replace(/(\d+\.?\d*)k/i, '$1000');
-  }
+  const multipliers: [RegExp, number][] = [
+    [/(\d+\.?\d*)k/i, 1e3],
+    [/(\d+\.?\d*)M/i, 1e6],
+    [/(\d+\.?\d*)\s*billion/i, 1e9],
+  ];
 
-  while (text.match(/(\d+\.?\d*)M/)) {
-    text = text.replace(/(\d+\.?\d*)M/, '$1000000');
-  }
-
-  while (text.match(/(\d+\.?\d*)\s?billion/)) {
-    text = text.replace(/(\d+\.?\d*)\s?billion/, '$1000000000');
-  }
-
-  return text;
+  return multipliers.reduce((text, [regexp, multi]) => {
+    while (text.match(regexp)) {
+      text = text.replace(regexp, (_, num) => '' + parseFloat(num) * multi);
+    }
+    return text;
+  }, text);
 }
 
 function parsePercentages(text: string): string {
