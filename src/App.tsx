@@ -27,13 +27,14 @@ export class App extends React.Component<{}, State> {
     super(props);
 
     const value = store.getLastFileContent();
+    const preferences = store.loadPreferences();
 
     this.state = {
-      results: textToResults(value),
+      results: textToResults(value, preferences.decimalPlaces),
       value,
       currentLine: 0,
-      showPreferences: true,
-      preferences: store.loadPreferences(),
+      showPreferences: false,
+      preferences,
     };
 
     // sent by the menus
