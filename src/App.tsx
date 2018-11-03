@@ -79,7 +79,7 @@ export class App extends React.Component<{}, State> {
         ref={this.textAreaRef}></textarea>
       {showPreferences && <PreferencesDialog
         preferences={preferences}
-        close={() => this.setState({ showPreferences: false })}
+        close={() => this.closePreferencesDialog()}
         save={(preferences: Preferences) => this.savePreferences(preferences)}
       />}
     </div>;
@@ -185,6 +185,11 @@ export class App extends React.Component<{}, State> {
         s.value,
         preferences.decimalPlaces),
     }));
+  }
+
+  private closePreferencesDialog(): void {
+    this.setState({ showPreferences: false });
+    this.textAreaRef.current!.focus();
   }
 
   private setPreferences(preferences: Preferences): void {
