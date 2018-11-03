@@ -25,7 +25,6 @@ export class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.setTitle();
 
     const value = store.getLastFileContent();
 
@@ -56,6 +55,7 @@ export class App extends React.Component<{}, State> {
   }
 
   public render(): React.ReactNode {
+    this.setTitle();
     this.resizeTextArea();
 
     const { value, results, currentLine } = this.state;
@@ -138,13 +138,12 @@ export class App extends React.Component<{}, State> {
       const file = files[0];
 
       const contents = fs.readFileSync(file).toString();
+      store.setLastFile(file);
       this.setState({
         value: contents,
         results: textToResults(contents),
       });
 
-      store.setLastFile(file);
-      this.setTitle();
     });
   }
 
@@ -156,7 +155,6 @@ export class App extends React.Component<{}, State> {
       value: '',
       currentLine: 0,
     });
-    this.setTitle();
   }
 
   private setTitle() {
