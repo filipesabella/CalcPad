@@ -62,6 +62,12 @@ app.on('ready', () => {
       label: 'Open',
       accelerator: process.platform === 'darwin' ? 'Cmd+O' : 'Ctrl+O',
       click: () => mainWindow.webContents.send('open-file'),
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Preferences',
+      accelerator: process.platform === 'darwin' ? 'Cmd+,' : 'Ctrl+,',
+      click: () => mainWindow.webContents.send('open-preferences'),
     }]
   }, {
     label: 'Edit',

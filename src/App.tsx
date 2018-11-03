@@ -7,11 +7,13 @@ const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
 
 import './styles/app.less';
+import { PreferencesDialog } from './PreferencesDialog';
 
 interface State {
   results: string[];
   value: string;
   currentLine: number;
+  showPreferences: boolean;
 }
 
 const store = new Store();
@@ -29,19 +31,21 @@ export class App extends React.Component<{}, State> {
       results: textToResults(value),
       value,
       currentLine: 0,
+      showPreferences: true,
     };
 
     // sent by the menus
     ipcRenderer.on('new-file', () => this.newFile());
     ipcRenderer.on('save-file', () => this.showSaveDialog());
     ipcRenderer.on('open-file', () => this.showOpenDialog());
+    ipcRenderer.on('open-preferences', () => this.showPreferences());
   }
 
   public render(): React.ReactNode {
     this.setTitle();
     this.resizeTextArea();
 
-    const { value, results, currentLine } = this.state;
+    const { value, results, currentLine, showPreferences } = this.state;
 
     const linesToRender = value.split('\n').map(textToNode);
 
@@ -63,6 +67,7 @@ export class App extends React.Component<{}, State> {
         onKeyDown={_ => this.cursorChanged()}
         value={value}
         ref={this.textAreaRef}></textarea>
+      {showPreferences && <PreferencesDialog />}
     </div>;
   }
 
@@ -146,4 +151,9 @@ export class App extends React.Component<{}, State> {
     remote.BrowserWindow.getAllWindows()[0].setTitle(title);
   }
 
+  private showPreferences(): void {
+    this.setState({
+      showPreferences: true,
+    });
+  }
 }
