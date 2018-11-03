@@ -4,9 +4,9 @@ import { textToResults } from './evaluator';
 import { Store } from './store';
 
 const Mousetrap = require('mousetrap');
-const remote = (window as any).require('electron').remote;
-const dialog = remote.dialog;
+const { remote, ipcRenderer } = (window as any).require('electron');
 const fs = remote.require('fs');
+const { dialog } = remote;
 
 import './styles/app.less';
 
@@ -53,6 +53,10 @@ export class App extends React.Component<{}, State> {
       this.newFile();
       return false;
     });
+
+    ipcRenderer.on('new-file', () => this.newFile());
+    ipcRenderer.on('save-file', () => this.showSaveDialog());
+    ipcRenderer.on('open-file', () => this.showOpenDialog());
   }
 
   public render(): React.ReactNode {
