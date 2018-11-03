@@ -185,6 +185,24 @@ export class App extends React.Component<{}, State> {
       const style = document.documentElement.style;
       style.setProperty('--font-size', preferences.fontSize + 'px');
       style.setProperty('--line-height', preferences.fontSize + 10 + 'px');
+
+      const isDark = preferences.theme === 'dark';
+      style.setProperty('--text-color', isDark
+        ? 'rgb(227, 230, 232)'
+        : 'rgb(109, 125, 141)');
+
+      style.setProperty('--result-text-color', isDark
+        ? 'rgb(155, 207, 77)'
+        : 'rgb(155, 207, 77)');
+
+      style.setProperty('--bg-color', isDark
+        ? 'rgb(33, 34, 38)'
+        : 'rgb(255, 255, 255)');
+
+      style.setProperty('--current-line-bg-color', isDark
+        ? 'rgb(39, 41, 45)'
+        : 'rgb(250, 250, 250)');
+
     }
   }
 }
