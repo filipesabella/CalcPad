@@ -19,10 +19,13 @@ if (process.env.ELECTRON_START_URL) {
 let mainWindow;
 
 app.on('ready', () => {
+  const monitor = electron.screen.getPrimaryDisplay();
+  const width = monitor.size.width / (monitor.size.width > 2000 ? 3 : 2);
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: width,
+    height: monitor.size.height,
   });
+  mainWindow.setPosition(monitor.size.width - width, 0);
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, './build/index.html'),
