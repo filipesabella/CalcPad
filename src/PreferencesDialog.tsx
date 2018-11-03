@@ -37,8 +37,7 @@ export class PreferencesDialog extends React.Component<Props, State> {
           type="number"
           min="8"
           value={fontSize}
-          onChange={e => this.setState(
-            { fontSize: parseInt(e.target.value) }, this.save)} />
+          onChange={this.onChange('fontSize', 8)} />
         px
       </div>
       <div className="field">
@@ -49,8 +48,7 @@ export class PreferencesDialog extends React.Component<Props, State> {
           min="2"
           max="8"
           value={decimalPlaces}
-          onChange={e => this.setState(
-            { decimalPlaces: parseInt(e.target.value) }, this.save)} />
+          onChange={this.onChange('decimalPlaces', 2)} />
       </div>
       <div className="field">
         <label>Theme</label>
@@ -66,6 +64,18 @@ export class PreferencesDialog extends React.Component<Props, State> {
         <span onClick={() => close()}>Close</span>
       </div>
     </div>;
+  }
+
+  private onChange(key: keyof State, minValue: number) {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = parseInt(e.target.value);
+      if (!value || value < minValue) return;
+
+      this.setState(s => ({
+        ...s,
+        [key]: value,
+      }), this.save);
+    };
   }
 
   private save(): void {
