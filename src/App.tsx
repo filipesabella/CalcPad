@@ -14,6 +14,7 @@ interface State {
   value: string;
   currentLine: number;
   showPreferences: boolean;
+  preferences: Preferences;
 }
 
 const store = new Store();
@@ -32,6 +33,7 @@ export class App extends React.Component<{}, State> {
       value,
       currentLine: 0,
       showPreferences: true,
+      preferences: store.loadPreferences(),
     };
 
     // sent by the menus
@@ -45,10 +47,14 @@ export class App extends React.Component<{}, State> {
     this.setTitle();
     this.resizeTextArea();
 
-    const { value, results, currentLine, showPreferences } = this.state;
+    const {
+      value,
+      results,
+      currentLine,
+      showPreferences,
+      preferences, } = this.state;
 
-    const preferences = store.loadPreferences();
-    this.setPreferences(preferences);
+    this.setPreferences(this.state.preferences);
 
     const linesToRender = value.split('\n').map(textToNode);
 
@@ -93,7 +99,9 @@ export class App extends React.Component<{}, State> {
     const value = e.target.value;
     this.setState({
       value,
-      results: textToResults(value)
+      results: textToResults(
+        value,
+        this.state.preferences.decimalPlaces),
     });
 
     store.save(value);
@@ -136,7 +144,9 @@ export class App extends React.Component<{}, State> {
 
       this.setState({
         value: contents,
-        results: textToResults(contents),
+        results: textToResults(
+          contents,
+          this.state.preferences.decimalPlaces),
       });
     });
   }
@@ -166,7 +176,7 @@ export class App extends React.Component<{}, State> {
 
   private savePreferences(preferences: Preferences): void {
     store.savePreferences(preferences);
-    this.setPreferences(preferences);
+    this.setState({ preferences });
   }
 
   private setPreferences(preferences: Preferences): void {
