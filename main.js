@@ -24,8 +24,9 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: width,
     height: monitor.size.height,
+    x: monitor.size.width - width,
+    y: 0,
   });
-  mainWindow.setPosition(monitor.size.width - width, 0);
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, './build/index.html'),
