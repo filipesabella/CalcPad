@@ -1,31 +1,5 @@
 const convert = require('convert-units');
 
-export const keywords = [
-  // constants
-  'PI', 'E',
-  // conversion keywords
-  'in', 'to',
-  // math functions
-  'abs',
-  'acos',
-  'asin',
-  'atan',
-  'atan2',
-  'ceil',
-  'cos',
-  'exp',
-  'floor',
-  'log',
-  'max',
-  'min',
-  'pow',
-  'random',
-  'round',
-  'sin',
-  'sqrt',
-  'tan',
-];
-
 /**
  * Parses input text into a string that can be `eval`d.
  */
