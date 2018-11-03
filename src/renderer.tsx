@@ -1,5 +1,31 @@
 import * as React from 'react';
-import { isAssignment, isComment, keywords } from './parser';
+import { isAssignment, isComment, } from './parser';
+
+const keywords = [
+  // constants
+  'PI', 'E',
+  // conversion keywords
+  'in', 'to',
+  // math functions
+  'abs',
+  'acos',
+  'asin',
+  'atan',
+  'atan2',
+  'ceil',
+  'cos',
+  'exp',
+  'floor',
+  'log',
+  'max',
+  'min',
+  'pow',
+  'random',
+  'round',
+  'sin',
+  'sqrt',
+  'tan',
+];
 
 // receives
 // a = sqrt 9 + 2
