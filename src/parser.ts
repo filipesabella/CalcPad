@@ -1,9 +1,30 @@
 const convert = require('convert-units');
 
-const funs = ['sqrt', 'round', 'ceil', 'floor', 'sin', 'cos', 'tan'];
 export const keywords = [
-  'PI', 'E', 'in', 'to',
-].concat(funs);
+  // constants
+  'PI', 'E',
+  // conversion keywords
+  'in', 'to',
+  // math functions
+  'abs',
+  'acos',
+  'asin',
+  'atan',
+  'atan2',
+  'ceil',
+  'cos',
+  'exp',
+  'floor',
+  'log',
+  'max',
+  'min',
+  'pow',
+  'random',
+  'round',
+  'sin',
+  'sqrt',
+  'tan',
+];
 
 /**
  * Parses input text into a string that can be `eval`d.
@@ -75,13 +96,11 @@ function parseConstants(text: string): string {
 }
 
 function parseFunctions(text: string): string {
-  return funs.reduce((text, fun) => {
-    const regexp = new RegExp(fun + '\\s+([^(\\s|$)]+)');
-    while (text.match(regexp)) {
-      text = text.replace(regexp, 'Math.' + fun + '($1)');
-    }
-    return text;
-  }, text);
+  const regex = /(\s|^)(\w+)\((.*?)\)/;
+  while (text.match(regex)) {
+    text = text.replace(regex, 'Math.$2($3)');
+  }
+  return text;
 }
 
 function parseConversions(text: string): string {
