@@ -9,7 +9,7 @@ import { isComment, parse, isAssignment } from './parser';
  * and returns
  * [3, 20, 40]
  */
-export function textToResults(text: string): string[] {
+export function textToResults(text: string, decimalPlaces: number): string[] {
   const lines = text.split('\n');
 
   let assignments = '';
@@ -26,7 +26,7 @@ export function textToResults(text: string): string[] {
         }
 
         const numberToDisplay = Math.round(result) !== result
-          ? result.toFixed(2)
+          ? result.toFixed(decimalPlaces)
           : result;
 
         return numberToDisplay;
