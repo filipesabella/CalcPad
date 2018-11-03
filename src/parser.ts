@@ -46,19 +46,18 @@ function parseMultipliers(text: string): string {
 }
 
 function parsePercentages(text: string): string {
-  while (text.match(/(\d+\.?\d*)% of (\d+\.?\d*)/)) {
-    text = text.replace(/(\d+\.?\d*)% of (\d+\.?\d*)/, '$2 * $1 / 100');
-  }
+  const expressions: [RegExp, string][] = [
+    [/(\d+\.?\d*)%\s+of\s+([^\s]+|\([^\)]+\))/, '$2 * $1 / 100'],
+    [/(\d+\.?\d*)%\s+on\s+([^\s]+|\([^\)]+\))/, '$2 * $1 / 100 + $2'],
+    [/(\d+\.?\d*)%\s+off\s+([^\s]+|\([^\)]+\))/, '$2 - $2 * $1 / 100'],
+  ];
 
-  while (text.match(/(\d+\.?\d*)% on (\d+\.?\d*)/)) {
-    text = text.replace(/(\d+\.?\d*)% on (\d+\.?\d*)/, '$2 * $1 / 100 + $2');
-  }
-
-  while (text.match(/(\d+\.?\d*)% off (\d+\.?\d*)/)) {
-    text = text.replace(/(\d+\.?\d*)% off (\d+\.?\d*)/, '$2 - $2 * $1 / 100');
-  }
-
-  return text;
+  return expressions.reduce((text, [regexp, replacement]) => {
+    while (text.match(regexp)) {
+      text = text.replace(regexp, replacement);
+    }
+    return text;
+  }, text);
 }
 
 function parseConstants(text: string): string {
