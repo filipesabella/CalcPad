@@ -25,7 +25,6 @@ export class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-
     const value = store.getLastFileContent();
 
     this.state = {
@@ -49,6 +48,7 @@ export class App extends React.Component<{}, State> {
       return false;
     });
 
+    // sent by the menus
     ipcRenderer.on('new-file', () => this.newFile());
     ipcRenderer.on('save-file', () => this.showSaveDialog());
     ipcRenderer.on('open-file', () => this.showOpenDialog());
