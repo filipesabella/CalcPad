@@ -58,15 +58,19 @@ function parsePercentages(text: string): string {
 }
 
 function parseConstants(text: string): string {
-  while (text.match(/(\s|^)PI(\s|$)/i)) {
-    text = text.replace(/(\s|^)PI(\s|$)/i, '3.1415926536');
-  }
+  const constants = [
+    ['PI', '3.1415926536'],
+    ['E', '2.7182818285'],
+  ];
 
-  while (text.match(/(\s|^)E(\s|$)/)) {
-    text = text.replace(/(\s|^)E(\s|$)/, '2.7182818285');
-  }
+  return constants.reduce((text, [name, value]) => {
+    const re = new RegExp(`(\\s|^)${name}(\\s|$)`, 'i');
+    while (text.match(re)) {
+      text = text.replace(re, value);
+    }
 
-  return text;
+    return text;
+  }, text);
 }
 
 function parseFunctions(text: string): string {
