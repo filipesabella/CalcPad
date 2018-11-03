@@ -154,6 +154,7 @@ export class App extends React.Component<{}, State> {
   private newFile() {
     this.currentFile = null;
     store.setLastFile(null);
+    store.save('');
     this.setState({
       results: [],
       value: '',
