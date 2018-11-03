@@ -109,9 +109,7 @@ export class App extends React.Component<{}, State> {
     dialog.showSaveDialog(null, {
       title: 'Save'
     }, (file: string) => {
-      if (!file) return; // user cancelled
-
-      store.saveFile(file, this.state.value);
+      file && store.saveFile(file, this.state.value);
     });
   }
 
@@ -128,7 +126,6 @@ export class App extends React.Component<{}, State> {
         value: contents,
         results: textToResults(contents),
       });
-
     });
   }
 
