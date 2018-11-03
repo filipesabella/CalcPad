@@ -44,7 +44,7 @@ app.on('ready', () => {
   })
 
   const menu = Menu.buildFromTemplate([{
-    label: 'PCalc',
+    label: 'CalcPad',
     submenu: [{
       role: 'quit',
     }]

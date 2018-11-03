@@ -164,8 +164,8 @@ export class App extends React.Component<{}, State> {
 
   private setTitle() {
     const title = store.isTempFile()
-      ? 'PCalc'
-      : 'PCalc - ' + store.getLastFile();
+      ? 'CalcPad'
+      : 'CalcPad - ' + store.getLastFile();
 
     remote.BrowserWindow.getAllWindows()[0].setTitle(title);
   }
