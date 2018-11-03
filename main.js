@@ -39,6 +39,50 @@ app.on('ready', () => {
     mainWindow = null;
   })
 
+  const menu = Menu.buildFromTemplate([{
+    label: 'PCalc',
+    submenu: [{
+      role: 'quit',
+    }]
+  }, {
+    label: 'File',
+    submenu: [{
+      label: 'New',
+      accelerator: process.platform === 'darwin' ? 'Cmd+N' : 'Ctrl+N',
+      click: () => mainWindow.webContents.send('new-file'),
+    }, {
+      label: 'Save',
+      accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
+      click: () => mainWindow.webContents.send('save-file'),
+    }, {
+      label: 'Open',
+      accelerator: process.platform === 'darwin' ? 'Cmd+O' : 'Ctrl+O',
+      click: () => mainWindow.webContents.send('open-file'),
+    }]
+  }, {
+    label: 'Edit',
+    submenu: [{
+      role: 'undo'
+    }, {
+      role: 'redo'
+    }, {
+      type: 'separator'
+    }, {
+      role: 'cut'
+    }, {
+      role: 'copy'
+    }, {
+      role: 'paste'
+    }, {
+      role: 'delete'
+    }, {
+      role: 'selectall'
+    }, {
+      role: 'toggledevtools'
+    }, ]
+  }, ]);
+
+  Menu.setApplicationMenu(menu);
 })
 
 app.on('window-all-closed', () => {
