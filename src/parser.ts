@@ -37,7 +37,7 @@ function parseMultipliers(text: string): string {
   }
 
   while (text.match(/(\d+\.?\d*)\s?billion/)) {
-    text = text.replace(/(\d+\.?\d*)\s?billion/, '$1 * 1e9');
+    text = text.replace(/(\d+\.?\d*)\s?billion/, '$1000000000');
   }
 
   return text;
