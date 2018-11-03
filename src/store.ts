@@ -7,15 +7,28 @@ interface Data {
 }
 
 export class Store {
-  private path: string;
-  private data: Data;
+  private configFile: string;
   private tempFile: string;
+  private data: Data;
 
   constructor() {
     const userDataPath = electron.remote.app.getPath('userData');
-    this.path = path.join(userDataPath, 'config.json');
+    this.configFile = path.join(userDataPath, 'config.json');
     this.tempFile = path.join(userDataPath, 'scratch-file.txt');
-    this.data = parseDataFile(this.path);
+
+    try {
+      fs.mkdirSync(userDataPath);
+    } catch (e) { }
+
+    // touch
+    if (!fs.existsSync(this.tempFile)) {
+      fs.closeSync(fs.openSync(this.tempFile, 'w'));
+    }
+    if (!fs.existsSync(this.configFile)) {
+      fs.closeSync(fs.openSync(this.configFile, 'w'));
+    }
+
+    this.data = parseDataFile(this.configFile);
   }
 
   public getLastFile(): string | null {
@@ -44,7 +57,7 @@ export class Store {
   }
 
   private store(): void {
-    fs.writeFileSync(this.path, JSON.stringify(this.data));
+    fs.writeFileSync(this.configFile, JSON.stringify(this.data));
   }
 }
 
