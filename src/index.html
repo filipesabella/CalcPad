@@ -11,7 +11,13 @@
   <script src="./index.tsx"></script>
   <script>
     document.onclick = (e) => {
-      // document.getElementById('textarea').focus();
+      let target = e.target;
+      while (target.className !== 'app') {
+        if (target.className === 'preferencesDialog') return;
+        target = target.parentNode;
+      }
+
+      document.getElementById('textarea').focus();
     }
   </script>
 </body>
