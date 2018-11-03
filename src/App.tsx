@@ -21,12 +21,10 @@ const store = new Store();
 export class App extends React.Component<{}, State> {
   textRef: React.RefObject<HTMLDivElement> = React.createRef();
   textAreaRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
-  currentFile: string | null;
 
   constructor(props: {}) {
     super(props);
 
-    this.currentFile = store.getLastFile();
     this.setTitle();
 
     const value = store.getLastFileContent();
@@ -146,13 +144,11 @@ export class App extends React.Component<{}, State> {
       });
 
       store.setLastFile(file);
-      this.currentFile = file;
       this.setTitle();
     });
   }
 
   private newFile() {
-    this.currentFile = null;
     store.setLastFile(null);
     store.save('');
     this.setState({
@@ -166,7 +162,7 @@ export class App extends React.Component<{}, State> {
   private setTitle() {
     const title = store.isTempFile()
       ? 'PCalc'
-      : 'PCalc - ' + this.currentFile;
+      : 'PCalc - ' + store.getLastFile();
 
     remote.BrowserWindow.getAllWindows()[0].setTitle(title);
   }
