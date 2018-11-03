@@ -18,10 +18,10 @@ export function parse(text: string): string {
   } else {
     // the order here is important
     return [
-      parseConversions,
-      parseMultipliers,
-      parsePercentages,
       parseConstants,
+      parseMultipliers,
+      parseConversions,
+      parsePercentages,
       parseFunctions,
     ].reduce((text, fn) => fn(text), text);
   }
@@ -29,11 +29,11 @@ export function parse(text: string): string {
 
 function parseMultipliers(text: string): string {
   while (text.match(/(\d+\.?\d*)k/i)) {
-    text = text.replace(/(\d+\.?\d*)k/i, '$1 * 1e3');
+    text = text.replace(/(\d+\.?\d*)k/i, '$1000');
   }
 
   while (text.match(/(\d+\.?\d*)M/)) {
-    text = text.replace(/(\d+\.?\d*)M/, '$1 * 1e6');
+    text = text.replace(/(\d+\.?\d*)M/, '$1000000');
   }
 
   while (text.match(/(\d+\.?\d*)\s?billion/)) {
