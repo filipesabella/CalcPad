@@ -48,6 +48,7 @@ export class App extends React.Component<{}, State> {
     const { value, results, currentLine, showPreferences } = this.state;
 
     const preferences = store.loadPreferences();
+    this.setPreferences(preferences);
 
     const linesToRender = value.split('\n').map(textToNode);
 
@@ -165,5 +166,14 @@ export class App extends React.Component<{}, State> {
 
   private savePreferences(preferences: Preferences): void {
     store.savePreferences(preferences);
+    this.setPreferences(preferences);
+  }
+
+  private setPreferences(preferences: Preferences): void {
+    if (document.documentElement) {
+      const style = document.documentElement.style;
+      style.setProperty('--font-size', preferences.fontSize + 'px');
+      style.setProperty('--line-height', preferences.fontSize + 10 + 'px');
+    }
   }
 }
