@@ -68,7 +68,7 @@ function parseConstants(text: string): string {
   return constants.reduce((text, [name, value]) => {
     const re = new RegExp(`(\\s|^)${name}(\\s|$)`, 'i');
     while (text.match(re)) {
-      text = text.replace(re, value);
+      text = text.replace(re, `$1${value}$2`);
     }
 
     return text;
