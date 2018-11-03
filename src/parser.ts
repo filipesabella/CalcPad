@@ -36,9 +36,9 @@ function parseMultipliers(text: string): string {
     [/(\d+\.?\d*)\s*billion/i, 1e9],
   ];
 
-  return multipliers.reduce((text, [regexp, multi]) => {
-    while (text.match(regexp)) {
-      text = text.replace(regexp, (_, num) => '' + parseFloat(num) * multi);
+  return multipliers.reduce((text, [regex, multi]) => {
+    while (text.match(regex)) {
+      text = text.replace(regex, (_, num) => '' + parseFloat(num) * multi);
     }
     return text;
   }, text);
@@ -51,9 +51,9 @@ function parsePercentages(text: string): string {
     [/(\d+\.?\d*)%\s+off\s+([^\s]+|\(.*?\))/, '$2 - $2 * $1 / 100'],
   ];
 
-  return expressions.reduce((text, [regexp, replacement]) => {
-    while (text.match(regexp)) {
-      text = text.replace(regexp, replacement);
+  return expressions.reduce((text, [regex, replacement]) => {
+    while (text.match(regex)) {
+      text = text.replace(regex, replacement);
     }
     return text;
   }, text);
