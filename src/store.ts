@@ -1,9 +1,12 @@
+import { Preferences } from './PreferencesDialog';
+
 const electron = (window as any).require('electron');
 const path = electron.remote.require('path');
 const fs = electron.remote.require('fs');
 
 interface Config {
   lastFile: string | null;
+  preferences: Preferences;
 }
 
 export class Store {
@@ -71,18 +74,41 @@ export class Store {
     this.setLastFile(file);
   }
 
+  public loadPreferences(): Preferences {
+    return this.config.preferences;
+  }
+
+  public savePreferences(preferences: Preferences): void {
+    this.config.preferences = preferences;
+    this.storeConfig();
+  }
+
   private setLastFile(lastFile: string | null): void {
     this.config.lastFile = lastFile;
+    this.storeConfig();
+  }
+
+  private storeConfig() {
     fs.writeFileSync(this.configFile, JSON.stringify(this.config));
   }
 }
 
+const defaults: Config = {
+  lastFile: null,
+  preferences: {
+    fontSize: 24,
+    decimalPlaces: 2,
+    theme: 'dark',
+  }
+};
+
 function parseDataFile(filePath: string): Config {
   try {
-    return JSON.parse(fs.readFileSync(filePath)) as Config;
-  } catch (_) {
     return {
-      lastFile: null,
-    };
+      ...defaults,
+      ...JSON.parse(fs.readFileSync(filePath)),
+    } as Config;
+  } catch (_) {
+    return defaults;
   }
 }

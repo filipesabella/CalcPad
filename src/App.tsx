@@ -7,7 +7,7 @@ const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
 
 import './styles/app.less';
-import { PreferencesDialog } from './PreferencesDialog';
+import { PreferencesDialog, Preferences } from './PreferencesDialog';
 
 interface State {
   results: string[];
@@ -47,6 +47,8 @@ export class App extends React.Component<{}, State> {
 
     const { value, results, currentLine, showPreferences } = this.state;
 
+    const preferences = store.loadPreferences();
+
     const linesToRender = value.split('\n').map(textToNode);
 
     return <div className="app">
@@ -67,7 +69,11 @@ export class App extends React.Component<{}, State> {
         onKeyDown={_ => this.cursorChanged()}
         value={value}
         ref={this.textAreaRef}></textarea>
-      {showPreferences && <PreferencesDialog />}
+      {showPreferences && <PreferencesDialog
+        preferences={preferences}
+        close={() => this.setState({ showPreferences: false })}
+        save={(preferences: Preferences) => this.savePreferences(preferences)}
+      />}
     </div>;
   }
 
@@ -155,5 +161,9 @@ export class App extends React.Component<{}, State> {
     this.setState({
       showPreferences: true,
     });
+  }
+
+  private savePreferences(preferences: Preferences): void {
+    store.savePreferences(preferences);
   }
 }
