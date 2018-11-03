@@ -2,6 +2,7 @@
   --font-size: 24px;
   --line-height: 34px;
   --text-color: rgb(227, 230, 232);
+  --result-text-color: rgb(155, 207, 77);
   --bg-color: rgb(33, 34, 38);
   --current-line-bg-color: rgb(39, 41, 45);
 }
@@ -20,6 +21,7 @@ body {
 .app {
   flex: 1;
   background: var(--bg-color);
+  font-family: 'Roboto Mono';
 
   textarea,
   .texts {
@@ -29,7 +31,6 @@ body {
     right: 0;
     font-size: var(--font-size);
     line-height: var(--line-height);
-    font-family: 'Roboto Mono';
   }
 
   textarea {
@@ -84,9 +85,9 @@ body {
         }
       }
 
-      .result {
+      .resualt {
         width: 20%;
-        color: rgb(155, 207, 77);
+        color: var(--result-text-color);
         text-align: right;
         vertical-align: bottom;
         display: flex;
@@ -94,6 +95,57 @@ body {
 
         div {
           height: var(--line-height);
+        }
+      }
+    }
+  }
+
+  .preferencesDialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14em;
+    padding: 1.5em;
+    background: var(--current-line-bg-color);
+    border: 1px solid black;
+    color: #fff;
+
+    .field {
+      margin-bottom: 1em;
+
+      label {
+        display: inline-block;
+        width: 9em;
+      }
+
+      input {
+        border: 1px solid black;
+        padding: .3em;
+        margin-right: 1em;
+
+        &.fontSize,
+        &.decimalPlaces {
+          width: 3em;
+        }
+      }
+    }
+
+    .buttons {
+      float: right;
+      margin-top: 1.5em;
+
+      span {
+        display: inline-block;
+        margin-left: 1em;
+
+        &.ok {
+          text-decoration: underline;
+        }
+
+        &:hover {
+          color: var(--result-text-color);
+          cursor: pointer;
         }
       }
     }
