@@ -105,6 +105,8 @@ function parseConversions(text: string): string {
   return text;
 }
 
+// normalises commonly used units to something usable
+// by the `convert-units` lib
 function normaliseConversions(text: string): string {
   const conversions = [
     ['tbs', 'Tbs'],
