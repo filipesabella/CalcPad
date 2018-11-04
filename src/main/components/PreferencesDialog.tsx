@@ -18,10 +18,11 @@ export class PreferencesDialog extends React.Component<Props, State> {
   constructor(p: Props) {
     super(p);
 
+    const { fontSize, decimalPlaces, theme } = p.preferences;
     this.state = {
-      fontSize: p.preferences.fontSize,
-      decimalPlaces: p.preferences.decimalPlaces,
-      theme: p.preferences.theme,
+      fontSize,
+      decimalPlaces,
+      theme,
     };
   }
 
