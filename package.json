@@ -11,7 +11,7 @@
     "test": "mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
-    "ship": "yarn run build && cp assets/* build/ && build -mwl -p always"
+    "ship": "yarn run build && cp assets/* build/ && GH_TOKEN=`cat token` build -mwl -p always"
   },
   "build": {
     "appId": "filipesabella.CalcPad",
