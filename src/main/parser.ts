@@ -32,7 +32,7 @@ export function parse(text: string): string {
 function parseMultipliers(text: string): string {
   const multipliers: [RegExp, number][] = [
     [/(\d+\.?\d*)k/i, 1e3],
-    [/(\d+\.?\d*)M/i, 1e6],
+    [/(\d+\.?\d*)M/, 1e6],
     [/(\d+\.?\d*)\s*billion/i, 1e9],
   ];
 
@@ -76,7 +76,7 @@ function parseConstants(text: string): string {
 }
 
 function parseFunctions(text: string): string {
-  const regex = /(\s|^)(\w+)\((.*?)\)/;
+  const regex = /(\s|^)(\w+)\s*\((.*?)\)/;
   while (text.match(regex)) {
     text = text.replace(regex, 'Math.$2($3)');
   }
