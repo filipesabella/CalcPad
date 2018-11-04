@@ -3,4 +3,3 @@ node_modules
 build
 target
 dist
-electron-builder.yml
