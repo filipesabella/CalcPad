@@ -8,6 +8,7 @@ const {
 
 const path = require('path');
 const url = require('url');
+const windowStateKeeper = require('electron-window-state');
 
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
@@ -20,12 +21,17 @@ let mainWindow;
 app.on('ready', () => {
   const monitor = electron.screen.getPrimaryDisplay();
   const width = monitor.size.width / (monitor.size.width > 2000 ? 3 : 2);
-  mainWindow = new BrowserWindow({
-    width: width,
-    height: monitor.size.height,
-    x: monitor.size.width - width,
-    y: 0,
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: width,
+    defaultHeight: monitor.size.height,
   });
+  mainWindow = new BrowserWindow({
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+  });
+  mainWindowState.manage(mainWindow);
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, './build/index.html'),
