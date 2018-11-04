@@ -1,4 +1,3 @@
-// Basic init
 const electron = require('electron');
 
 const {
@@ -93,7 +92,7 @@ app.on('ready', () => {
   }, ]);
 
   Menu.setApplicationMenu(menu);
-})
+});
 
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
