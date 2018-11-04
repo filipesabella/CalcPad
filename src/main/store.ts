@@ -1,4 +1,4 @@
-import { Preferences } from './PreferencesDialog';
+import { Preferences } from './components/PreferencesDialog';
 
 const electron = (window as any).require('electron');
 const path = electron.remote.require('path');
