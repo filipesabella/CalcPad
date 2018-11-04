@@ -8,4 +8,9 @@ yarn run start-dev
 
 # Shipping it to github releases
 
-GH_TOKEN=TOKEN_WITH_REPO_RIGHTS yarn ship
+Create a `token` file in the root with your github token with
+full repository rights.
+
+Then:
+
+yarn ship
