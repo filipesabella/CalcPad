@@ -1,5 +1,5 @@
-import { describe, it } from 'mocha';
 import * as assert from 'assert';
+import { describe, it } from 'mocha';
 import { parse } from '../main/parser';
 
 describe('parser', () => {
