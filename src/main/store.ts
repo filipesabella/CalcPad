@@ -9,6 +9,7 @@ interface Config {
   preferences: Preferences;
 }
 
+// horrible mixed bag of user preferences and file handling
 export class Store {
   private configFile: string;
   private tempFile: string;
