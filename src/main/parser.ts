@@ -5,13 +5,7 @@ const convert = require('convert-units');
  */
 export function parse(text: string): string {
   if (isAssignment(text)) {
-    // trick so that `eval` returns the value of the assignment.
-    // receives `a = 1` and returns
-    // `var a
-    //  a = 1`
-    const variable = text.substring(0, text.indexOf('=')).trim();
-    const expression = text.substring(text.indexOf('=') + 1).trim();
-    return 'var ' + variable + '\n' + variable + ' = ' + parse(expression);
+    return parseAssignment(text);
   } else if (isComment(text)) {
     return '// ' + text;
   } else {
@@ -25,6 +19,17 @@ export function parse(text: string): string {
       parseFunctions,
     ].reduce((text, fn) => fn(text), text);
   }
+}
+
+function parseAssignment(text: string): string {
+  // trick so that `eval` returns the value of the assignment.
+  // Receives `a = 1`
+  // Returns
+  // `var a
+  //  a = 1`
+  const variable = text.substring(0, text.indexOf('=')).trim();
+  const expression = text.substring(text.indexOf('=') + 1).trim();
+  return 'var ' + variable + '\n' + variable + ' = ' + parse(expression);
 }
 
 function parseOperators(text: string): string {
