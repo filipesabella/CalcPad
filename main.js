@@ -57,13 +57,13 @@ app.on('ready', () => {
     };
 
     dialog.showMessageBox(dialogOpts, (response) => {
-      if (response === 0) autoUpdater.quitAndInstall()
+      if (response === 0) autoUpdater.quitAndInstall();
     });
   });
 
   autoUpdater.on('error', message => {
-    console.error('There was a problem updating the application')
-    console.error(message)
+    console.error('There was a problem updating the application');
+    console.error(message);
   });
 
   mainWindow.on('closed', () => {
