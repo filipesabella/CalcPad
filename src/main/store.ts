@@ -37,6 +37,11 @@ export class Store {
     }
 
     this.config = parseDataFile(this.configFile);
+
+    if (!fs.existsSync(this.config.lastFile)) {
+      this.config.lastFile = null;
+      this.storeConfig();
+    }
   }
 
   public getLastFile(): string | null {
