@@ -4,10 +4,10 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "parcel ./src/index.html -d build/",
+    "dev": "parcel ./src/main/index.html -d build/",
     "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
     "start": "electron .",
-    "build": "parcel build ./src/index.html -d build/ --public-url ./",
+    "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
