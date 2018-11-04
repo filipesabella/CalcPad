@@ -12,7 +12,6 @@ import { isComment, parse, isAssignment } from './parser';
 export function textToResults(
   text: string,
   decimalPlaces: number = 2): string[] {
-
   const lines = text.split('\n');
   return lines
     .map(line => [line, parse(line)])
