@@ -6,7 +6,7 @@
     "./src/**/*.tsx"
   ],
   "compilerOptions": {
-    "outDir": "target",
+    "outDir": "build",
     "target": "es6",
     "module": "commonjs",
     "noImplicitAny": true,
@@ -24,7 +24,7 @@
   },
   "exclude": [
     "node_modules",
-    "target"
+    "build"
   ],
   "formatCodeOptions": {
     "indentSize": 2,

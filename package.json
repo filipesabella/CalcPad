@@ -5,16 +5,14 @@
   "main": "main.js",
   "repository": "https://github.com/filipesabella/CalcPad",
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "dev": "parcel ./src/main/index.html -d build/",
     "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps",
     "test": "mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
-    "build": "build --mac",
-    "ship": "build --mac -p always"
+    "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
+    "ship:mac": "yarn run build && build --mac -p always",
+    "ship:win": "yarn run build && build --win -p always"
   },
   "build": {
     "appId": "filipesabella.CalcPad",

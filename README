@@ -6,3 +6,6 @@ yarn dev
 
 yarn run start-dev
 
+# Shipping it to github releases
+
+GH_TOKEN=TOKEN_WITH_REPO_RIGHTS yarn run ship:(mac|win)
