@@ -2,7 +2,7 @@
   "name": "calc-pad",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "dev": "parcel ./src/main/index.html -d build/",
     "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
@@ -20,7 +20,7 @@
       "category": "your.app.category.type"
     },
     "files": [
-      "main.js",
+      "src/main/main.js",
       "build/*"
     ]
   },
