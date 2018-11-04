@@ -4,6 +4,12 @@ export interface Preferences {
   fontSize: number;
   decimalPlaces: number;
   theme: 'dark' | 'light';
+  windowPosition: {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  } | null;
 }
 
 interface Props {
@@ -18,11 +24,12 @@ export class PreferencesDialog extends React.Component<Props, State> {
   constructor(p: Props) {
     super(p);
 
-    const { fontSize, decimalPlaces, theme } = p.preferences;
+    const { fontSize, decimalPlaces, theme, windowPosition } = p.preferences;
     this.state = {
       fontSize,
       decimalPlaces,
       theme,
+      windowPosition,
     };
   }
 

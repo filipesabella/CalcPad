@@ -33,14 +33,24 @@ app.on('ready', () => {
     slashes: true,
   });
 
-  mainWindow.loadURL(startUrl)
+  mainWindow.loadURL(startUrl);
 
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-  })
+  });
+
+  const windowSizeChanged = () => {
+    mainWindow.webContents.send('window-size-changed', {
+      position: mainWindow.getPosition(),
+      size: mainWindow.getSize(),
+    });
+  };
+
+  mainWindow.on('move', windowSizeChanged);
+  mainWindow.on('resize', windowSizeChanged);
 
   const menu = Menu.buildFromTemplate([{
     label: 'CalcPad',
