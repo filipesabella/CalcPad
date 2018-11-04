@@ -42,6 +42,7 @@ export class App extends React.Component<{}, State> {
     ipcRenderer.on('save-file', () => this.showSaveDialog());
     ipcRenderer.on('open-file', () => this.showOpenDialog());
     ipcRenderer.on('open-preferences', () => this.showPreferences());
+    ipcRenderer.on('window-size-changed', this.windowSizeChanged.bind(this));
   }
 
   public render(): React.ReactNode {
@@ -216,5 +217,20 @@ export class App extends React.Component<{}, State> {
         : 'rgb(250, 250, 250)');
 
     }
+  }
+
+  private windowSizeChanged(_: any,
+    args: { position: [number, number], size: [number, number] }): void {
+    const [x, y] = args.position;
+    const [width, height] = args.size;
+
+    const preferences = {
+      ...this.state.preferences,
+      windowPosition: {
+        x, y, width, height,
+      },
+    };
+
+    this.savePreferences(preferences);
   }
 }

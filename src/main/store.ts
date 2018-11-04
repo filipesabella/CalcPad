@@ -100,6 +100,7 @@ const defaults: Config = {
     fontSize: 24,
     decimalPlaces: 2,
     theme: 'dark',
+    windowPosition: null,
   }
 };
 
