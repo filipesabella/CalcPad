@@ -10,7 +10,9 @@
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "test": "mocha -r ts-node/register src/test/**.spec.ts",
+    "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts"
   },
   "build": {
     "appId": "parcel.reactjs.electron",
