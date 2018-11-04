@@ -29,7 +29,7 @@ function parseAssignment(text: string): string {
   //  a = 1`
   const variable = text.substring(0, text.indexOf('=')).trim();
   const expression = text.substring(text.indexOf('=') + 1).trim();
-  return 'var ' + variable + '\n' + variable + ' = ' + parse(expression);
+  return 'var ' + variable + ';\n' + variable + ' = ' + parse(expression) + ';';
 }
 
 function parseOperators(text: string): string {
