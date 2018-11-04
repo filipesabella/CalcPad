@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { textToNode } from './renderer';
-import { textToResults } from './evaluator';
-import { Store } from './store';
+import { textToNode } from '../renderer';
+import { textToResults } from '../evaluator';
+import { Store } from '../store';
 
 const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
