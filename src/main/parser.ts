@@ -4,9 +4,6 @@ const convert = require('convert-units');
  * Parses input text into a string that can be `eval`d.
  */
 export function parse(text: string): string {
-  // cheeky handling of pow
-  text = text.replace(/\^/g, '**');
-
   if (isAssignment(text)) {
     // trick so that `eval` returns the value of the assignment.
     // receives `a = 1` and returns
@@ -20,6 +17,7 @@ export function parse(text: string): string {
   } else {
     // the order here is important
     return [
+      parseOperators,
       parseConstants,
       parseMultipliers,
       parseConversions,
@@ -27,6 +25,10 @@ export function parse(text: string): string {
       parseFunctions,
     ].reduce((text, fn) => fn(text), text);
   }
+}
+
+function parseOperators(text: string): string {
+  return text.replace(/\^/g, '**');
 }
 
 function parseMultipliers(text: string): string {
