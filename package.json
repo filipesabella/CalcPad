@@ -3,7 +3,7 @@
   "description": "A diffent take on the calculator",
   "author": "Filipe Sabella",
   "repository": "https://github.com/filipesabella/CalcPad",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "main": "main.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -12,7 +12,7 @@
     "test": "mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
-    "ship": "yarn run build && cp assets/* build/ && GH_TOKEN=`cat token` CSC_NAME=com.apple.idms.appleid.prd.001840-10-ca5f7be0-af05-4293-a810-23c718d0d792 build -mwl -p always"
+    "ship": "yarn run build && cp assets/* build/ && GH_TOKEN=`cat token` build -mwl -p always"
   },
   "build": {
     "appId": "filipesabella.CalcPad",
