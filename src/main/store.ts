@@ -102,7 +102,7 @@ export class Store {
 const defaults: Config = {
   lastFile: null,
   preferences: {
-    fontSize: 24,
+    fontSize: 18,
     decimalPlaces: 2,
     theme: 'dark',
   }
