@@ -2,12 +2,12 @@ import * as React from 'react';
 import { textToNode } from '../renderer';
 import { textToResults } from '../evaluator';
 import { Store } from '../store';
+import { PreferencesDialog, Preferences } from './PreferencesDialog';
 
 const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
 
 import '../styles/app.less';
-import { PreferencesDialog, Preferences } from './PreferencesDialog';
 
 interface State {
   results: string[];
