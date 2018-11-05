@@ -1,19 +1,25 @@
-# Start parcel bundler
+# Development
 
-yarn dev
+## Running it
 
-# Start electron
+`yarn dev`
 
-yarn run start-dev
+`yarn run start-dev`
 
-# Shipping it to github releases
+## Running the tests
+
+`yarn test`
+
+or
+
+`yarn test:watch`
+
+## Shipping it to github releases
 
 Create a `token` file in the root with your github token with
-full repository rights.
+full repository rights, then:
 
-Then:
-
-yarn ship
+`yarn ship`
 
 ## Certificates and signatures
 
