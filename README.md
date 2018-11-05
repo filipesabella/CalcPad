@@ -1,3 +1,7 @@
+# Install
+
+Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest).
+
 # Development
 
 ## Running it
