@@ -31,7 +31,7 @@ export function parse(text: string): string {
 }
 
 function normaliseNumbers(text: string): string {
-  return text.replace(/([^0-9]|^)\.(\d+)/, '$10.$2');
+  return text.replace(/([^0-9]|^)\.(\d+)/g, '$10.$2');
 }
 
 function parseAssignment(text: string): string {
