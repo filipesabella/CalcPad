@@ -1,3 +1,11 @@
+// HERE BE DRAGONS
+// This is implemented in the most simplistic way: by converting the user
+// input text into something that can be `eval`ed in javascript.
+// Not only that, it's implemented via regular expressions, making the
+// code brittle and bug prone.
+// A better implementation would be to actually describe the CalcPad
+// format as a language and compile that down to javascript.
+
 const convert = require('convert-units');
 
 /**
