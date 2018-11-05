@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 import { parse } from '../main/parser';
+import { DefaultForex, Forex } from '../main/forex';
 
 describe('parser', () => {
   it('normalises numbers', () => {
@@ -70,13 +71,29 @@ describe('parser', () => {
     });
   });
 
-  it('parses conversions', () => {
-    assert.equal(parse('1m to cm'), '100');
-    assert.equal(parse('1m in cm'), '100');
-    assert.equal(parse('1m  in  cm'), '100');
-    assert.equal(parse('1K m  in  cm'), '100000');
-    assert.equal(parse('a = 1m  in  cm'), 'var a;\na = 100;');
-    assert.equal(parse('0 C in F'), '32');
+  describe('conversions', () => {
+    it('parses non-forex conversions', () => {
+      assert.equal(parse('1m to cm'), '100');
+      assert.equal(parse('1m in cm'), '100');
+      assert.equal(parse('1m  in  cm'), '100');
+      assert.equal(parse('1K m  in  cm'), '100000');
+      assert.equal(parse('a = 1m  in  cm'), 'var a;\na = 100;');
+      assert.equal(parse('0 C in F'), '32');
+    });
+
+    it('parses forex conversions', () => {
+      const forex: Forex = {
+        ...DefaultForex,
+        EUR: 1,
+        BRL: 4.2253,
+        USD: 1.137,
+      };
+      assert.equal(parse('1 BRL to USD', forex), 0.26909331881759874);
+      assert.equal(parse('1 USD to BRL', forex), 3.716182937554969);
+      assert.equal(parse('1 USD to EUR', forex), 0.8795074758135444);
+      assert.equal(parse('1 EUR to USD', forex), 1.137);
+      assert.equal(parse('1 EUR to EUR', forex), 1);
+    });
   });
 
   it('parses percentages', () => {
