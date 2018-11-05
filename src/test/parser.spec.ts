@@ -82,6 +82,12 @@ describe('parser', () => {
     assert.equal(parse('10% of (14 / 2)'), '(14 / 2) * 10 / 100');
 
     assert.equal(parse('(5% on 10) - 2'), '(10 * 5 / 100 + 10) - 2');
+    assert.equal(parse('10% of 14 + 5% of 20'), '14 * 10 / 100 + 20 * 5 / 100');
+    assert.equal(parse('(10% of 14) + (5% of 20)'),
+      '(14 * 10 / 100) + (20 * 5 / 100)');
+
+    assert.equal(parse('a% of 14'), '14 * a / 100');
+    assert.equal(parse('10% of a'), 'a * 10 / 100');
   });
 
   it('parses functions', () => {
