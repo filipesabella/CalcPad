@@ -139,6 +139,7 @@ function normaliseConversions(text: string): string {
     ['celsius', 'C'],
     ['farenheit', 'F'],
     ['kelvin', 'K'],
+    ['tbs', 'Tbs'],
   ];
 
   return conversions.reduce((acc, [from, to]) =>
