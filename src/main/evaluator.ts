@@ -24,15 +24,13 @@ export function textToResults(
         try {
           const result = eval(assignments + parsedLine);
 
-          if (isAssignment(line)) {
-            assignments += parsedLine + '\n';
-          }
-
           const numberToDisplay = Math.round(result) !== result
             ? result.toFixed(decimalPlaces)
             : result;
 
-          return [results.concat(numberToDisplay), assignments];
+          return [
+            results.concat(numberToDisplay),
+            assignments + (isAssignment(line) ? parsedLine + '\n' : '')];
         } catch (e) {
           // console.error(parsedLine);
           // console.error(e);
