@@ -17,7 +17,7 @@
   "build": {
     "appId": "filipesabella.CalcPad",
     "mac": {
-      "category": "productivity"
+      "category": "Utility"
     },
     "publish": [{
       "provider": "github",
