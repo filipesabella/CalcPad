@@ -3,6 +3,12 @@ import { describe, it } from 'mocha';
 import { parse } from '../main/parser';
 
 describe('parser', () => {
+  it('normalises numbers', () => {
+    assert.equal(parse('.3'), '0.3');
+    assert.equal(parse(' .3'), ' 0.3');
+    assert.equal(parse('(.3'), '(0.3');
+  });
+
   it('parses assignments', () => {
     assert.equal(parse('a = 1'), 'var a;\na = 1;');
     assert.equal(parse('a  =   1'), 'var a;\na = 1;');

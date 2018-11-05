@@ -19,6 +19,7 @@ export function parse(text: string): string {
   } else {
     // the order here is important
     return [
+      normaliseNumbers,
       parseOperators,
       parseConstants,
       parseMultipliers,
@@ -27,6 +28,10 @@ export function parse(text: string): string {
       parseFunctions,
     ].reduce((text, fn) => fn(text), text);
   }
+}
+
+function normaliseNumbers(text: string): string {
+  return text.replace(/(^|\s|\()\.(\d+)/, '$10.$2');
 }
 
 function parseAssignment(text: string): string {
