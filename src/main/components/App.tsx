@@ -104,7 +104,7 @@ export class App extends React.Component<{}, State> {
   private resizeTextArea(): void {
     if (this.textAreaRef.current) {
       this.textAreaRef.current.style.height =
-        this.textRef.current!.clientHeight + 'px';
+        this.textRef.current!.clientHeight + 10 + 'px';
     }
   }
 
