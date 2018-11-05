@@ -34,6 +34,7 @@ export function textToResults(
 
           return [results.concat(numberToDisplay), assignments];
         } catch (e) {
+          // console.error(parsedLine);
           // console.error(e);
           // hehe :v
           return [results.concat('-'), assignments];
