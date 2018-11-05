@@ -80,6 +80,8 @@ describe('parser', () => {
     assert.equal(parse('a = 10% of 100'), 'var a;\na = 100 * 10 / 100;');
 
     assert.equal(parse('10% of (14 / 2)'), '(14 / 2) * 10 / 100');
+
+    assert.equal(parse('(5% on 10) - 2'), '(10 * 5 / 100 + 10) - 2');
   });
 
   it('parses functions', () => {
