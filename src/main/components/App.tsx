@@ -3,6 +3,7 @@ import { textToNode } from '../renderer';
 import { textToResults } from '../evaluator';
 import { Store } from '../store';
 import { PreferencesDialog, Preferences } from './PreferencesDialog';
+import { requestForex, Forex, DefaultForex } from '../forex';
 
 const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
@@ -15,6 +16,7 @@ interface State {
   currentLine: number;
   showPreferences: boolean;
   preferences: Preferences;
+  forex: Forex;
 }
 
 const store = new Store();
@@ -30,11 +32,12 @@ export class App extends React.Component<{}, State> {
     const preferences = store.loadPreferences();
 
     this.state = {
-      results: textToResults(value, preferences.decimalPlaces),
+      results: textToResults(value, preferences.decimalPlaces, DefaultForex),
       value,
       currentLine: 0,
       showPreferences: false,
       preferences,
+      forex: DefaultForex,
     };
 
     // sent by the menus
@@ -42,6 +45,15 @@ export class App extends React.Component<{}, State> {
     ipcRenderer.on('save-file', () => this.showSaveDialog());
     ipcRenderer.on('open-file', () => this.showOpenDialog());
     ipcRenderer.on('open-preferences', () => this.showPreferences());
+  }
+
+  public componentWillMount(): void {
+    requestForex().then(forex => this.setState(s => ({
+      forex,
+      results: textToResults(s.value,
+        s.preferences.decimalPlaces,
+        forex),
+    })));
   }
 
   public render(): React.ReactNode {
@@ -102,7 +114,8 @@ export class App extends React.Component<{}, State> {
       value,
       results: textToResults(
         value,
-        this.state.preferences.decimalPlaces),
+        this.state.preferences.decimalPlaces,
+        this.state.forex),
     });
 
     store.save(value);
@@ -147,7 +160,8 @@ export class App extends React.Component<{}, State> {
         value: contents,
         results: textToResults(
           contents,
-          this.state.preferences.decimalPlaces),
+          this.state.preferences.decimalPlaces,
+          this.state.forex),
       });
     });
   }
@@ -183,7 +197,8 @@ export class App extends React.Component<{}, State> {
     this.setState(s => ({
       results: textToResults(
         s.value,
-        preferences.decimalPlaces),
+        preferences.decimalPlaces,
+        this.state.forex),
     }));
   }
 

@@ -1,4 +1,5 @@
 import { isComment, parse, isAssignment } from './parser';
+import { Forex, DefaultForex } from './forex';
 
 /**
  * Receives
@@ -11,10 +12,11 @@ import { isComment, parse, isAssignment } from './parser';
  */
 export function textToResults(
   text: string,
-  decimalPlaces: number = 2): string[] {
+  decimalPlaces: number = 2,
+  forex: Forex = DefaultForex): string[] {
   const lines = text.split('\n');
   return lines
-    .map(line => [line, parse(line)])
+    .map(line => [line, parse(line, forex)])
     .reduce<[string[], string]>(
       ([results, assignments], [line, parsedLine]) => {
         if (line.trim() === '' || isComment(line)) {

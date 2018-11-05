@@ -6,12 +6,14 @@
 // A better implementation would be to actually describe the CalcPad
 // format as a language and compile that down to javascript.
 
+import { Forex, DefaultForex } from './forex';
+
 const convert = require('convert-units');
 
 /**
  * Parses input text into a string that can be `eval`d.
  */
-export function parse(text: string): string {
+export function parse(text: string, forex: Forex = DefaultForex): string {
   if (isAssignment(text)) {
     return parseAssignment(text);
   } else if (isComment(text)) {
@@ -23,7 +25,7 @@ export function parse(text: string): string {
       parseOperators,
       parseConstants,
       parseMultipliers,
-      parseConversions,
+      parseConversions(forex),
       parsePercentages,
       parseFunctions,
     ].reduce((text, fn) => fn(text), text);
@@ -103,25 +105,36 @@ function parseFunctions(text: string): string {
   return text;
 }
 
-function parseConversions(text: string): string {
-  if (text.includes(' in ') || text.includes(' to ')) {
-    text = normaliseConversions(text);
+function parseConversions(forex: Forex) {
+  return (text: string): string => {
+    if (text.includes(' in ') || text.includes(' to ')) {
+      text = normaliseConversions(text);
 
-    const regex = /(\d+\.?\d*)\s*([^\s]+)\s+(in|to)\s+([^(\s|$)]+)/i;
-    const match = text.match(regex);
-    if (match) {
-      const [_, value, from, __, to] = match;
-      try {
-        const converted = convert(value).from(from).to(to);
-        text = text.replace(regex, converted);
-      } catch (e) {
-        // heh
-        // console.error(e);
+      const regex = /(\d+\.?\d*)\s*([^\s]+)\s+(in|to)\s+([^(\s|$)]+)/i;
+      const match = text.match(regex);
+      if (match) {
+        const [_, value, from, __, to] = match;
+        try {
+          let converted: number;
+          if (forex.hasOwnProperty(from)
+            && forex.hasOwnProperty(to)) {
+            const fromExchange = forex[from as keyof Forex];
+            const toExchange = forex[to as keyof Forex];
+
+            converted = toExchange * parseFloat(value) / fromExchange;
+          } else {
+            converted = convert(value).from(from).to(to);
+          }
+          text = text.replace(regex, '' + converted);
+        } catch (e) {
+          // catch and swallow conversion errors
+          // console.error(e);
+        }
       }
-    }
 
-  }
-  return text;
+    }
+    return text;
+  };
 }
 
 // normalises commonly used units to something usable
