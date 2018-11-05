@@ -6,6 +6,7 @@ describe('parser', () => {
   it('normalises numbers', () => {
     assert.equal(parse('0.3'), '0.3');
     assert.equal(parse('.3'), '0.3');
+    assert.equal(parse('.3 + .3'), '0.3 + 0.3');
     assert.equal(parse(' .3'), ' 0.3');
     assert.equal(parse('(.3'), '(0.3');
     assert.equal(parse('1 +.3'), '1 +0.3');
