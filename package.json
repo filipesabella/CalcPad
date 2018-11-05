@@ -3,7 +3,7 @@
   "description": "A diffent take on the calculator",
   "author": "Filipe Sabella",
   "repository": "https://github.com/filipesabella/CalcPad",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "main": "main.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
