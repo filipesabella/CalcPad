@@ -158,6 +158,8 @@ function normaliseConversions(text: string): string {
     ['farenheit', 'F'],
     ['kelvin', 'K'],
     ['tbs', 'Tbs'],
+    ['meter', 'm'],
+    ['meters', 'm'],
   ];
 
   return conversions.reduce((acc, [from, to]) =>
