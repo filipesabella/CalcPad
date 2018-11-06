@@ -9,12 +9,14 @@ const { remote, ipcRenderer } = (window as any).require('electron');
 const { dialog } = remote;
 
 import '../styles/app.less';
+import { Help } from './Help';
 
 interface State {
   results: string[];
   value: string;
   currentLine: number;
   showPreferences: boolean;
+  showHelp: boolean;
   preferences: Preferences;
   forex: Forex;
 }
@@ -36,6 +38,7 @@ export class App extends React.Component<{}, State> {
       value,
       currentLine: 0,
       showPreferences: false,
+      showHelp: true,
       preferences,
       forex: DefaultForex,
     };
@@ -45,6 +48,16 @@ export class App extends React.Component<{}, State> {
     ipcRenderer.on('save-file', () => this.showSaveDialog());
     ipcRenderer.on('open-file', () => this.showOpenDialog());
     ipcRenderer.on('open-preferences', () => this.showPreferences());
+    ipcRenderer.on('open-help', () => this.showHelp());
+
+    window.onkeyup = e => {
+      if (e.which === 27) { // escape
+        this.setState({
+          showPreferences: false,
+          showHelp: false,
+        });
+      }
+    };
   }
 
   public componentWillMount(): void {
@@ -65,6 +78,7 @@ export class App extends React.Component<{}, State> {
       results,
       currentLine,
       showPreferences,
+      showHelp,
       preferences, } = this.state;
 
     this.setPreferences(this.state.preferences);
@@ -94,6 +108,7 @@ export class App extends React.Component<{}, State> {
         close={() => this.closePreferencesDialog()}
         save={(preferences: Preferences) => this.savePreferences(preferences)}
       />}
+      {showHelp && <Help close={() => this.closeHelp()} />}
     </div>;
   }
 
@@ -231,5 +246,13 @@ export class App extends React.Component<{}, State> {
         : 'rgb(250, 250, 250)');
 
     }
+  }
+
+  private showHelp(): void {
+    this.setState({ showHelp: true, });
+  }
+
+  private closeHelp(): void {
+    this.setState({ showHelp: false, });
   }
 }

@@ -98,7 +98,11 @@ app.on('ready', () => {
       label: 'Preferences',
       accelerator: process.platform === 'darwin' ? 'Cmd+,' : 'Ctrl+,',
       click: () => mainWindow.webContents.send('open-preferences'),
-    }]
+    }, {
+      label: 'Help',
+      accelerator: process.platform === 'darwin' ? 'Cmd+?' : 'Ctrl+?',
+      click: () => mainWindow.webContents.send('open-help'),
+    }, ]
   }, {
     label: 'Edit',
     submenu: [{
