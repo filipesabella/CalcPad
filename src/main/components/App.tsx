@@ -38,7 +38,7 @@ export class App extends React.Component<{}, State> {
       value,
       currentLine: 0,
       showPreferences: false,
-      showHelp: true,
+      showHelp: false,
       preferences,
       forex: DefaultForex,
     };
