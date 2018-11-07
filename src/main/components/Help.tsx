@@ -72,10 +72,6 @@ export const Help = (props: Props) => {
         tan
       </code>
     </p>
-
-    <p><code></code></p>
-    <p><code></code></p>
-    <p><code></code></p>
     <div
       className="closeButton"
       onClick={_ => props.close()}>Close</div>
