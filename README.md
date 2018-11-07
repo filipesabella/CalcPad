@@ -1,36 +1,8 @@
-# Install
+CalcPad is a different take on the calculator.
+Runs on mac, linux, and windows.
 
-Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest).
+# Installation
 
-# Development
+Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for mac, linux or windows.
 
-## Running it
-
-`yarn dev`
-
-`yarn run start-dev`
-
-## Running the tests
-
-`yarn test`
-
-or
-
-`yarn test:watch`
-
-## Shipping it to github releases
-
-Create a `token` file in the root with your github token with
-full repository rights, then:
-
-`yarn ship`
-
-## Certificates and signatures
-
-For the auto updater to work on macs, you need:
-
-1. A valid mac developer certificate in your machine:
-https://github.com/electron/electron/issues/7476#issuecomment-339428399
-
-2. To sign the electron app:
-codesign --deep --force --verbose --sign - node_modules/electron/dist/Electron.app
+It auto-updates from then on.
