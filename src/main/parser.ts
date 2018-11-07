@@ -8,7 +8,25 @@
 
 import { Forex, DefaultForex } from './forex';
 
-const convert = require('convert-units');
+export const mathFunctions = [
+  'abs',
+  'acos',
+  'asin',
+  'atan',
+  'atan2',
+  'ceil',
+  'cos',
+  'exp',
+  'floor',
+  'log',
+  'max',
+  'min',
+  'pow',
+  'random',
+  'round',
+  'sin',
+  'sqrt',
+  'tan',];
 
 /**
  * Parses input text into a string that can be `eval`d.
@@ -26,8 +44,8 @@ export function parse(text: string, forex: Forex = DefaultForex): string {
       parseConstants,
       parseMultipliers,
       parseConversions(forex),
-      parsePercentages,
       parseFunctions,
+      parsePercentages,
     ].reduce((text, fn) => fn(text), text);
   }
 }
@@ -98,11 +116,9 @@ function parseConstants(text: string): string {
 }
 
 function parseFunctions(text: string): string {
-  const regex = /(\s|^)(\w+)\s*\((.*?)\)/;
-  while (text.match(regex)) {
-    text = text.replace(regex, 'Math.$2($3)');
-  }
-  return text;
+  const regex = new RegExp(
+    `(\\b)(${mathFunctions.join('|')})\\s*\\((.*?)\\)`, 'g');
+  return text.replace(regex, '$1Math.$2($3)');
 }
 
 function parseConversions(forex: Forex) {
@@ -110,26 +126,21 @@ function parseConversions(forex: Forex) {
     if (text.includes(' in ') || text.includes(' to ')) {
       text = normaliseConversions(text);
 
-      const regex = /(\d+\.?\d*)\s*([^\s]+)\s+(in|to)\s+([^(\s|$)]+)/i;
+      const regex = /(\d+\.?\d*|\w+)\s*([^\s]+)\s+(in|to)\s+([^(\s|$)]+)/i;
       const match = text.match(regex);
       if (match) {
         const [_, value, from, __, to] = match;
-        try {
-          let converted: number;
-          if (forex.hasOwnProperty(from)
-            && forex.hasOwnProperty(to)) {
-            const fromExchange = forex[from as keyof Forex];
-            const toExchange = forex[to as keyof Forex];
+        let converted: string;
+        if (forex.hasOwnProperty(from)
+          && forex.hasOwnProperty(to)) {
+          const fromExchange = forex[from as keyof Forex];
+          const toExchange = forex[to as keyof Forex];
 
-            converted = toExchange * parseFloat(value) / fromExchange;
-          } else {
-            converted = convert(value).from(from).to(to);
-          }
-          text = text.replace(regex, '' + converted);
-        } catch (e) {
-          // catch and swallow conversion errors
-          // console.error(e);
+          converted = `(${toExchange} * ${value} / ` + `${fromExchange})`;
+        } else {
+          converted = `convert(${value}).from('${from}').to('${to}')`;
         }
+        text = text.replace(regex, '' + converted);
       }
 
     }
@@ -158,8 +169,8 @@ function normaliseConversions(text: string): string {
     ['farenheit', 'F'],
     ['kelvin', 'K'],
     ['tbs', 'Tbs'],
-    ['meter', 'm'],
     ['meters', 'm'],
+    ['meter', 'm'],
   ];
 
   return conversions.reduce((acc, [from, to]) =>

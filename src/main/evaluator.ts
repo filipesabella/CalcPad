@@ -1,6 +1,8 @@
 import { isComment, parse, isAssignment } from './parser';
 import { Forex, DefaultForex } from './forex';
 
+const convert = require('convert-units');
+
 /**
  * Receives
  * 1 + 2
