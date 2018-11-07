@@ -61,7 +61,7 @@ export class App extends React.Component<{}, State> {
   }
 
   public componentWillMount(): void {
-    requestForex().then(forex => this.setState(s => ({
+    requestForex(store).then(forex => this.setState(s => ({
       forex,
       results: textToResults(s.value,
         s.preferences.decimalPlaces,

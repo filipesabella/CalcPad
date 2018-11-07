@@ -14,11 +14,13 @@ export class Store {
   private configFile: string;
   private tempFile: string;
   private config: Config;
+  private forexFile: string;
 
   constructor() {
     const userDataPath = electron.remote.app.getPath('userData');
     this.configFile = path.join(userDataPath, 'config.json');
     this.tempFile = path.join(userDataPath, 'scratch-file.txt');
+    this.forexFile = path.join(userDataPath, 'forex.json');
 
     try {
       fs.mkdirSync(userDataPath);
@@ -61,6 +63,22 @@ export class Store {
       fs.writeFileSync(this.tempFile, content);
     } else {
       fs.writeFileSync(this.getLastFile(), content);
+    }
+  }
+
+  public loadForex(): string | null {
+    try {
+      return fs.readFileSync(this.forexFile).toString();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  public writeForex(json: string): void {
+    try {
+      return fs.writeFileSync(this.forexFile, json);
+    } catch (e) {
+      console.error(e);
     }
   }
 
