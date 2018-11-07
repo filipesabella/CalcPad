@@ -1,6 +1,8 @@
 CalcPad is a different take on the calculator.
 Runs on mac, linux, and windows.
 
+![screenshot](https://raw.githubusercontent.com/filipesabella/CalcPad/master/screenshot.png)
+
 # Installation
 
 Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for mac, linux or windows.
