@@ -1,4 +1,5 @@
 CalcPad is a different take on the calculator.
+
 Runs on mac, linux, and windows.
 
 ![screenshot](https://raw.githubusercontent.com/filipesabella/CalcPad/master/screenshot.png)
@@ -11,7 +12,7 @@ It auto-updates from then on.
 
 # Functionality
 
-## Simple matha
+## Simple math
 
 ```
 1 + 1
