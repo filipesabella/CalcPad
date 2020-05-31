@@ -96,6 +96,7 @@ export class App extends React.Component<{}, State> {
       </div>
       <textarea
         id="textarea"
+        spellCheck={false}
         className="mousetrap"
         autoFocus={true}
         onChange={e => this.onChange(e)}
