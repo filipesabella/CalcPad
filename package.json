@@ -19,11 +19,13 @@
     "mac": {
       "category": "Utility"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "filipesabella",
-      "repo": "CalcPad"
-    }],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "filipesabella",
+        "repo": "CalcPad"
+      }
+    ],
     "files": [
       "main.js",
       "build/*"
@@ -51,5 +53,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "typeface-roboto-mono": "^0.0.75"
+  },
+  "resolutions": {
+    "set-value": "^2.0.1",
+    "kind-of": "^6.0.3"
   }
 }
