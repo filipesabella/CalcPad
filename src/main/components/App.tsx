@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { textToNode } from '../renderer';
 import { textToResults } from '../evaluator';
+import { DefaultForex, Forex, requestForex } from '../forex';
+import { textToNode } from '../renderer';
 import { Store } from '../store';
-import { PreferencesDialog, Preferences } from './PreferencesDialog';
-import { requestForex, Forex, DefaultForex } from '../forex';
+import { Help } from './Help';
+import { Preferences, PreferencesDialog } from './PreferencesDialog';
 
-const { remote, ipcRenderer } = (window as any).require('electron');
+const { remote, ipcRenderer } = window.require('electron');
 const { dialog } = remote;
 
-import '../styles/app.less';
-import { Help } from './Help';
+require('../styles/app.less');
 
 interface State {
   results: string[];

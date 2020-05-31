@@ -34,6 +34,9 @@ app.on('ready', () => {
     height: mainWindowState.height,
     x: mainWindowState.x,
     y: mainWindowState.y,
+    webPreferences: {
+      nodeIntegration: true,
+    }
   });
   mainWindowState.manage(mainWindow);
 
