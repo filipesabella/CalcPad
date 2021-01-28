@@ -37,7 +37,7 @@
     "@types/mocha": "^7.0.2",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
-    "electron": "^9.0.0",
+    "electron": "^9.4.0",
     "electron-builder": "^22.7.0",
     "electron-reload": "^1.5.0",
     "less": "^3.11.1",
