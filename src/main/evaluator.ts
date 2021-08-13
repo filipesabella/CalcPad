@@ -1,5 +1,4 @@
 import { Preferences } from './components/PreferencesDialog';
-import { DefaultForex, Forex } from './forex';
 import { isAssignment, isComment, parse } from './parser';
 
 const formatter = new Intl.NumberFormat();
@@ -15,11 +14,12 @@ const formatter = new Intl.NumberFormat();
  */
 export function textToResults(
   text: string,
-  { decimalPlaces, decimalSeparator, thousandsSeparator }: Preferences,
-  forex: Forex = DefaultForex): string[] {
+  { decimalPlaces,
+    decimalSeparator,
+    thousandsSeparator }: Preferences): string[] {
   const lines = text.split('\n');
   return lines
-    .map(line => [line, parse(line, forex)])
+    .map(line => [line, parse(line)])
     .reduce<[string[], string]>(
       ([results, assignments], [line, parsedLine]) => {
         if (line.trim() === '' || isComment(line)) {

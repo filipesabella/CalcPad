@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { textToResults } from '../evaluator';
-import { DefaultForex, Forex, requestForex } from '../forex';
 import { textToNode } from '../renderer';
 import { Store } from '../store';
 import { Help } from './Help';
@@ -18,7 +17,6 @@ interface State {
   showPreferences: boolean;
   showHelp: boolean;
   preferences: Preferences;
-  forex: Forex;
 }
 
 const store = new Store();
@@ -34,13 +32,12 @@ export class App extends React.Component<{}, State> {
     const preferences = store.loadPreferences();
 
     this.state = {
-      results: textToResults(value, preferences, DefaultForex),
+      results: textToResults(value, preferences),
       value,
       currentLine: 0,
       showPreferences: false,
       showHelp: false,
       preferences,
-      forex: DefaultForex,
     };
 
     // sent by the menus
@@ -58,15 +55,6 @@ export class App extends React.Component<{}, State> {
         });
       }
     };
-  }
-
-  public componentWillMount(): void {
-    requestForex(store).then(forex => this.setState(s => ({
-      forex,
-      results: textToResults(s.value,
-        s.preferences,
-        forex),
-    })));
   }
 
   public render(): React.ReactNode {
@@ -130,8 +118,7 @@ export class App extends React.Component<{}, State> {
       value,
       results: textToResults(
         value,
-        this.state.preferences,
-        this.state.forex),
+        this.state.preferences),
     });
 
     store.save(value);
@@ -176,8 +163,7 @@ export class App extends React.Component<{}, State> {
         value: contents,
         results: textToResults(
           contents,
-          this.state.preferences,
-          this.state.forex),
+          this.state.preferences),
       });
     });
   }
@@ -213,8 +199,7 @@ export class App extends React.Component<{}, State> {
     this.setState(s => ({
       results: textToResults(
         s.value,
-        preferences,
-        this.state.forex),
+        preferences),
     }));
   }
 

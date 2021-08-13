@@ -6,8 +6,6 @@
 // A better implementation would be to actually describe the CalcPad
 // format as a language and compile that down to javascript.
 
-import { Forex, DefaultForex } from './forex';
-
 export const mathFunctions = [
   'abs',
   'acos',
@@ -31,7 +29,7 @@ export const mathFunctions = [
 /**
  * Parses input text into a string that can be `eval`d.
  */
-export function parse(text: string, forex: Forex = DefaultForex): string {
+export function parse(text: string): string {
   if (isAssignment(text)) {
     return parseAssignment(text);
   } else if (isComment(text)) {
@@ -43,7 +41,7 @@ export function parse(text: string, forex: Forex = DefaultForex): string {
       parseOperators,
       parseConstants,
       parseMultipliers,
-      parseConversions(forex),
+      parseConversions(),
       parseFunctions,
       parsePercentages,
     ].reduce((text, fn) => fn(text), text);
@@ -121,7 +119,7 @@ function parseFunctions(text: string): string {
   return text.replace(regex, '$1Math.$2($3)');
 }
 
-function parseConversions(forex: Forex) {
+function parseConversions() {
   return (text: string): string => {
     if (text.includes(' in ') || text.includes(' to ')) {
       text = normaliseConversions(text);
@@ -130,16 +128,7 @@ function parseConversions(forex: Forex) {
       const match = text.match(regex);
       if (match) {
         const [_, value, from, __, to] = match;
-        let converted: string;
-        if (forex.hasOwnProperty(from)
-          && forex.hasOwnProperty(to)) {
-          const fromExchange = forex[from as keyof Forex];
-          const toExchange = forex[to as keyof Forex];
-
-          converted = `(${toExchange} * ${value} / ` + `${fromExchange})`;
-        } else {
-          converted = `convert(${value}).from('${from}').to('${to}')`;
-        }
+        const converted = `convert(${value}).from('${from}').to('${to}')`;
         text = text.replace(regex, '' + converted);
       }
 

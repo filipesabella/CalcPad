@@ -45,7 +45,6 @@ salaryAfterTax = 33% off salary
 ```
 1 foot in meters
 1 cup in tbs
-1 EUR in USD
 ```
 
 All supported units [here](https://github.com/ben-ng/convert-units#supported-units).
