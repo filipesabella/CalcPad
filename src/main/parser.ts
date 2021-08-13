@@ -162,6 +162,7 @@ function normaliseConversions(text: string): string {
     ['tbs', 'Tbs'],
     ['meters', 'm'],
     ['meter', 'm'],
+    ['miles', 'mi'],
   ];
 
   return conversions.reduce((acc, [from, to]) =>
