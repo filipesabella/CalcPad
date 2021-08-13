@@ -33,6 +33,9 @@ app.on('ready', () => {
     y: mainWindowState.y,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      webSecurity: false,
     }
   });
   mainWindowState.manage(mainWindow);
