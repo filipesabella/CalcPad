@@ -1,6 +1,6 @@
 CalcPad is a different take on the calculator.
 
-Runs on mac, linux, and windows.
+Runs on linux and windows.
 
 ![screenshot](https://raw.githubusercontent.com/filipesabella/CalcPad/master/screenshot.png)
 
@@ -20,10 +20,6 @@ It auto-updates from then on.
 2 ^ 3
 (10 + 5) / 7
 ```
-
-## Comments
-
-```# a comment```
 
 ## Assignments
 
@@ -77,3 +73,7 @@ All supported functions:
 ```
 abs acos asin atan atan2 ceil cos exp floor log max min pow random round sin sqrt tan
 ```
+
+## Comments
+
+```# a comment```
