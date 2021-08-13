@@ -27,12 +27,11 @@ export const Help = (props: Props) => {
     <h1>Conversions</h1>
     <p><code>1 foot in meters</code></p>
     <p><code>1 cup in tbs</code></p>
-    <p><code>1 EUR in USD</code></p>
     <p>
       All supported units&nbsp;
       <a
         target="blank"
-        href="https://github.com/ben-ng/convert-units#supported-units">
+        href="https://github.com/convert-units/convert-units#request-measures--units">
         here
       </a>.
     </p>
