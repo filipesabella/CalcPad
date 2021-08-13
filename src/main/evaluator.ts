@@ -1,7 +1,8 @@
-import { isComment, parse, isAssignment } from './parser';
-import { Forex, DefaultForex } from './forex';
+import { Preferences } from './components/PreferencesDialog';
+import { DefaultForex, Forex } from './forex';
+import { isAssignment, isComment, parse } from './parser';
 
-const convert = require('convert-units');
+const formatter = new Intl.NumberFormat();
 
 /**
  * Receives
@@ -14,7 +15,7 @@ const convert = require('convert-units');
  */
 export function textToResults(
   text: string,
-  decimalPlaces: number = 2,
+  { decimalPlaces, decimalSeparator, thousandsSeparator }: Preferences,
   forex: Forex = DefaultForex): string[] {
   const lines = text.split('\n');
   return lines
@@ -32,8 +33,16 @@ export function textToResults(
             ? result.toFixed(decimalPlaces)
             : result;
 
+          const formattedNumber = formatter
+            .formatToParts(numberToDisplay)
+            .map(part =>
+              part.type === 'group' ? thousandsSeparator
+                : part.type === 'decimal' ? decimalSeparator
+                  : part.value)
+            .join('');
+
           return [
-            results.concat(numberToDisplay),
+            results.concat(formattedNumber),
             assignments + (isAssignment(line) ? parsedLine + '\n' : '')];
         } catch (e) {
           // console.error(parsedLine);

@@ -21,6 +21,6 @@
       true
     ],
     "adjacent-overload-signatures": true,
-    "restrict-plus-operands": true
+    "restrict-plus-operands": false
   }
 }

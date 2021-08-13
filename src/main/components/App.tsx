@@ -34,7 +34,7 @@ export class App extends React.Component<{}, State> {
     const preferences = store.loadPreferences();
 
     this.state = {
-      results: textToResults(value, preferences.decimalPlaces, DefaultForex),
+      results: textToResults(value, preferences, DefaultForex),
       value,
       currentLine: 0,
       showPreferences: false,
@@ -64,7 +64,7 @@ export class App extends React.Component<{}, State> {
     requestForex(store).then(forex => this.setState(s => ({
       forex,
       results: textToResults(s.value,
-        s.preferences.decimalPlaces,
+        s.preferences,
         forex),
     })));
   }
@@ -130,7 +130,7 @@ export class App extends React.Component<{}, State> {
       value,
       results: textToResults(
         value,
-        this.state.preferences.decimalPlaces,
+        this.state.preferences,
         this.state.forex),
     });
 
@@ -176,7 +176,7 @@ export class App extends React.Component<{}, State> {
         value: contents,
         results: textToResults(
           contents,
-          this.state.preferences.decimalPlaces,
+          this.state.preferences,
           this.state.forex),
       });
     });
@@ -213,7 +213,7 @@ export class App extends React.Component<{}, State> {
     this.setState(s => ({
       results: textToResults(
         s.value,
-        preferences.decimalPlaces,
+        preferences,
         this.state.forex),
     }));
   }

@@ -33,7 +33,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
       decimalSeparator,
       thousandsSeparator,
     });
-  }, [fontSize, decimalPlaces, theme]);
+  }, [fontSize, decimalPlaces, theme, thousandsSeparator, decimalSeparator]);
 
   return <div className="preferencesDialog">
     <div className="field">
