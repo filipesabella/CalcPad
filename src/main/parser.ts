@@ -5,6 +5,8 @@
 // code brittle and bug prone.
 // A better implementation would be to actually describe the CalcPad
 // format as a language and compile that down to javascript.
+const convert = require('convert-units');
+(window as any).convert = convert;
 
 export const mathFunctions = [
   'abs',
