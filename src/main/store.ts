@@ -123,14 +123,21 @@ const defaults: Config = {
     fontSize: 18,
     decimalPlaces: 2,
     theme: 'dark',
+    decimalSeparator: '.',
+    thousandsSeparator: ',',
   }
 };
 
 function parseDataFile(filePath: string): Config {
   try {
+    const stored = JSON.parse(fs.readFileSync(filePath));
     return {
       ...defaults,
-      ...JSON.parse(fs.readFileSync(filePath)),
+      ...stored,
+      preferences: {
+        ...defaults.preferences,
+        ...stored.preferences,
+      }
     } as Config;
   } catch (_) {
     return defaults;
