@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 export interface Preferences {
   fontSize: number;
@@ -12,74 +13,52 @@ interface Props {
   save: (preferences: Preferences) => void;
 }
 
-interface State extends Preferences { }
+export const PreferencesDialog = ({ preferences, save, close }: Props) => {
+  const [fontSize, setFontSize] = useState(preferences.fontSize);
+  const [decimalPlaces, setDecimalPlaces] =
+    useState(preferences.decimalPlaces);
+  const [theme, setTheme] = useState(preferences.theme);
 
-export class PreferencesDialog extends React.Component<Props, State> {
-  constructor(p: Props) {
-    super(p);
-
-    const { fontSize, decimalPlaces, theme } = p.preferences;
-    this.state = {
+  useEffect(() => {
+    save({
       fontSize,
       decimalPlaces,
       theme,
-    };
-  }
+    });
+  }, [fontSize, decimalPlaces, theme]);
 
-  public render(): React.ReactNode {
-    const { preferences, close } = this.props;
-    const { fontSize, decimalPlaces, theme } = this.state;
-
-    return <div className="preferencesDialog">
-      <div className="field">
-        <label>Font Size</label>
-        <input
-          className="fontSize"
-          type="number"
-          min="8"
-          value={fontSize}
-          onChange={this.onChange('fontSize', 8)} />
-        px
-      </div>
-      <div className="field">
-        <label>Decimal Places</label>
-        <input
-          className="decimalPlaces"
-          type="number"
-          min="2"
-          max="8"
-          value={decimalPlaces}
-          onChange={this.onChange('decimalPlaces', 2)} />
-      </div>
-      <div className="field">
-        <label>Theme</label>
-        <select
-          value={theme}
-          onChange={e =>
-            this.setState({ theme: e.target.value as any }, this.save)}>
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
-        </select>
-      </div>
-      <div className="buttons">
-        <span onClick={() => close()}>Close</span>
-      </div>
-    </div>;
-  }
-
-  private onChange(key: keyof State, minValue: number) {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = parseInt(e.target.value);
-      if (!value || value < minValue) return;
-
-      this.setState(s => ({
-        ...s,
-        [key]: value,
-      }), this.save);
-    };
-  }
-
-  private save(): void {
-    this.props.save(this.state);
-  }
-}
+  return <div className="preferencesDialog">
+    <div className="field">
+      <label>Font Size</label>
+      <input
+        className="fontSize"
+        type="number"
+        min="8"
+        value={fontSize}
+        onChange={e => setFontSize(parseInt(e.target.value))} />
+      px
+    </div>
+    <div className="field">
+      <label>Decimal Places</label>
+      <input
+        className="decimalPlaces"
+        type="number"
+        min="2"
+        max="8"
+        value={decimalPlaces}
+        onChange={e => setDecimalPlaces(parseInt(e.target.value))} />
+    </div>
+    <div className="field">
+      <label>Theme</label>
+      <select
+        value={theme}
+        onChange={e => setTheme(e.target.value as any)}>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </div>
+    <div className="buttons">
+      <span onClick={() => close()}>Close</span>
+    </div>
+  </div>;
+};
