@@ -48,7 +48,7 @@ export class App extends React.Component<{}, State> {
     ipcRenderer.on('open-help', () => this.showHelp());
 
     window.onkeyup = e => {
-      if (e.which === 27) { // escape
+      if (e.key === 'Escape') {
         this.setState({
           showPreferences: false,
           showHelp: false,
