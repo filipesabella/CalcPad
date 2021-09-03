@@ -212,7 +212,7 @@ export class App extends React.Component<{}, State> {
     if (document.documentElement) {
       const style = document.documentElement.style;
       style.setProperty('--font-size', preferences.fontSize + 'px');
-      style.setProperty('--line-height', preferences.fontSize + 10 + 'px');
+      style.setProperty('--line-height', preferences.fontSize + 12 + 'px');
 
       const isDark = preferences.theme === 'dark';
       style.setProperty('--text-color', isDark
