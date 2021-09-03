@@ -4,7 +4,7 @@
   "author": "Filipe Sabella <no-reply@filipesabella.github.io>",
   "repository": "https://github.com/filipesabella/CalcPad",
   "version": "1.0.5",
-  "main": "main.js",
+  "main": "src/electron/main.js",
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -28,7 +28,7 @@
       }
     ],
     "files": [
-      "main.js",
+      "src/electron/*",
       "build/*"
     ]
   },
@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "convert-units": "^2.3.4",
-    "electron-window-state": "^5.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "typeface-roboto-mono": "^1.1.13"

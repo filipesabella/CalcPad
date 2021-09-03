@@ -9,7 +9,7 @@ const {
 
 const path = require('path');
 const url = require('url');
-const windowStateKeeper = require('electron-window-state');
+const windowStateKeeper = require('./window-state.js');
 
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
