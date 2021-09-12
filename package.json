@@ -13,7 +13,7 @@
     "test": "mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
-    "ship": "yarn run build && cp assets/* build/ && crossenv GH_TOKEN=`cat token` electron-build -wl -p always"
+    "ship": "yarn run build && co ./assets/* ./build/ && electron-builder -wl"
   },
   "build": {
     "appId": "filipesabella.CalcPad",
