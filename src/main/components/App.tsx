@@ -145,7 +145,8 @@ export class App extends React.Component<{}, State> {
 
     dialog.showSaveDialog(null, {
       title: 'Save'
-    }, (file: string) => {
+    }).then((result: any) => {
+      const file = result.filePath;
       file && store.saveFile(file, this.state.value);
     });
   }
@@ -154,7 +155,8 @@ export class App extends React.Component<{}, State> {
     dialog.showOpenDialog(null, {
       title: 'Open',
       properties: ['openFile'],
-    }, (files: string) => {
+    }).then((result: any) => {
+      const files = result.filePaths;
       if (!files || files.length === 0) return; // user cancelled
 
       const contents = store.open(files[0]);
