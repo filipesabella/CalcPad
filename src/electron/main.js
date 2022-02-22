@@ -177,3 +177,7 @@ ipcMain.handle('path.join', (_, path1, path2) => {
 ipcMain.handle('dialog', (_, fn, options) => {
   return electron.dialog[fn].apply(null, options);
 });
+
+ipcMain.handle('setWindowTitle', (_, title) => {
+  BrowserWindow.getAllWindows()[0].setTitle(title);
+});

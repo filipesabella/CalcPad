@@ -83,7 +83,7 @@ export class Store {
     this.setLastFile(file);
   }
 
-  public loadPreferences(): Preferences {
+  public preferences(): Preferences {
     return this.config.preferences;
   }
 
