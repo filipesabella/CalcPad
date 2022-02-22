@@ -4,9 +4,9 @@ const {
   app,
   BrowserWindow,
   Menu,
-  dialog,
 } = electron;
 
+const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('./window-state.js');
@@ -35,10 +35,11 @@ app.on('ready', () => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
-      webSecurity: false,
+      webSecurity: true,
     }
   });
   mainWindowState.manage(mainWindow);
+  mainWindow.webContents.toggleDevTools();
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, '../../build/index.html'),
@@ -53,7 +54,25 @@ app.on('ready', () => {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-  })
+  });
+
+  electron.session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-eval'",
+          "style-src 'self' 'unsafe-inline'",
+          "font-src 'self' data:",
+          "img-src 'self' data:",
+          "connect-src 'self' ws: wss:",
+          "media-src 'self'",
+          "base-uri 'self'",
+        ].join(';'),
+      }
+    });
+  });
 
   const menu = Menu.buildFromTemplate([{
     label: 'CalcPad',
@@ -125,4 +144,36 @@ app.on('activate', function() {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+// whoa
+const { ipcMain } = electron;
+
+ipcMain.handle('electron.app.getPath', (_, path) => {
+  return electron.app.getPath(path);
+});
+
+ipcMain.handle('fs', (_, fn, args) => {
+  // heck
+  return fs[fn].apply(null, args);
+});
+
+ipcMain.handle('fs.mkdirPSync', (_, dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+});
+
+ipcMain.handle('fs.touch', (_, file) => {
+  if (!fs.existsSync(file)) {
+    fs.closeSync(fs.openSync(file, 'w'));
+  }
+})
+
+ipcMain.handle('path.join', (_, path1, path2) => {
+  return path.join(path1, path2);
+});
+
+ipcMain.handle('dialog', (_, fn, options) => {
+  return electron.dialog[fn].apply(null, options);
 });

@@ -1,8 +1,6 @@
 import { Preferences } from './components/PreferencesDialog';
 
-const electron = window.require('electron');
-const path = electron.remote.require('path');
-const fs = electron.remote.require('fs');
+const { ipcRenderer } = window.require('electron');
 
 interface Config {
   lastFile: string | null;
@@ -15,32 +13,29 @@ export class Store {
   private tempFile: string;
   private config: Config;
 
-  constructor() {
-    const userDataPath = electron.remote.app.getPath('userData');
-    this.configFile = path.join(userDataPath, 'config.json');
-    this.tempFile = path.join(userDataPath, 'scratch-file.txt');
+  constructor() { }
 
-    try {
-      fs.mkdirSync(userDataPath);
-    } catch (e) {
-      // directory already exists, ignore
-    }
+  async init(): Promise<void> {
+    const userDataPath = await ipcRenderer
+      .invoke('electron.app.getPath', 'userData');
+    this.configFile = await ipcRenderer
+      .invoke('path.join', userDataPath, 'config.json');
+    this.tempFile = await ipcRenderer
+      .invoke('path.join', userDataPath, 'scratch-file.txt');
 
-    // touch
-    if (!fs.existsSync(this.tempFile)) {
-      fs.closeSync(fs.openSync(this.tempFile, 'w'));
-    }
+    await ipcRenderer.invoke('fs.mkdirPSync', userDataPath);
 
-    // touch
-    if (!fs.existsSync(this.configFile)) {
-      fs.closeSync(fs.openSync(this.configFile, 'w'));
-    }
+    await ipcRenderer.invoke('fs.touch', this.tempFile);
+    await ipcRenderer.invoke('fs.touch', this.configFile);
 
-    this.config = parseDataFile(this.configFile);
+    this.config = await parseDataFile(this.configFile);
 
-    if (!fs.existsSync(this.config.lastFile)) {
+    const lastFileExists = await ipcRenderer
+      .invoke('fs', 'existsSync', [this.config.lastFile]);
+
+    if (!lastFileExists) {
       this.config.lastFile = null;
-      this.storeConfig();
+      await this.storeConfig();
     }
   }
 
@@ -48,24 +43,31 @@ export class Store {
     return this.config.lastFile || this.tempFile;
   }
 
-  public getLastFileContent(): string {
-    return fs.readFileSync(this.getLastFile()).toString();
+  public async getLastFileContent(): Promise<string> {
+    const contents = await ipcRenderer
+      .invoke('fs', 'readFileSync', [this.getLastFile()]);
+
+    return String.fromCharCode.apply(null, contents);
   }
 
   public isTempFile(): boolean {
     return this.config.lastFile === null;
   }
 
-  public save(content: string) {
+  public async save(content: string): Promise<void> {
     if (this.isTempFile()) {
-      fs.writeFileSync(this.tempFile, content);
+      await ipcRenderer.invoke('fs', 'writeFileSync', [this.tempFile, content]);
     } else {
-      fs.writeFileSync(this.getLastFile(), content);
+      await ipcRenderer.invoke('fs', 'writeFileSync', [this.getLastFile(), content]);
     }
   }
 
-  public open(file: string): string {
-    const contents = fs.readFileSync(file).toString();
+  public async open(file: string): Promise<string> {
+    const contents = String.fromCharCode.apply(
+      null,
+      await ipcRenderer
+        .invoke('fs', 'readFileSync', [file]));
+
     this.setLastFile(file);
     return contents;
   }
@@ -75,8 +77,9 @@ export class Store {
     this.save('');
   }
 
-  public saveFile(file: string, contents: string): void {
-    fs.writeFileSync(file, contents);
+  public async saveFile(file: string, contents: string): Promise<void> {
+    await ipcRenderer
+      .invoke('fs', 'writeFileSync', [file, contents]);
     this.setLastFile(file);
   }
 
@@ -84,18 +87,20 @@ export class Store {
     return this.config.preferences;
   }
 
-  public savePreferences(preferences: Preferences): void {
+  public async savePreferences(preferences: Preferences): Promise<void> {
     this.config.preferences = preferences;
-    this.storeConfig();
+    await this.storeConfig();
   }
 
-  private setLastFile(lastFile: string | null): void {
+  private async setLastFile(lastFile: string | null): Promise<void> {
     this.config.lastFile = lastFile;
-    this.storeConfig();
+    await this.storeConfig();
   }
 
-  private storeConfig() {
-    fs.writeFileSync(this.configFile, JSON.stringify(this.config));
+  private async storeConfig(): Promise<void> {
+    await ipcRenderer.invoke(
+      'fs', 'writeFileSync',
+      [this.configFile, JSON.stringify(this.config)]);
   }
 }
 
@@ -110,9 +115,13 @@ const defaults: Config = {
   }
 };
 
-function parseDataFile(filePath: string): Config {
+async function parseDataFile(filePath: string): Promise<Config> {
   try {
-    const stored = JSON.parse(fs.readFileSync(filePath));
+    const dataFileContents = String.fromCharCode.apply(
+      null,
+      await ipcRenderer
+        .invoke('fs', 'readFileSync', [filePath]));
+    const stored = JSON.parse(dataFileContents);
     return {
       ...defaults,
       ...stored,
@@ -121,7 +130,7 @@ function parseDataFile(filePath: string): Config {
         ...stored.preferences,
       }
     } as Config;
-  } catch (_) {
+  } catch {
     return defaults;
   }
 }

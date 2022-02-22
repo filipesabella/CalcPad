@@ -45,9 +45,9 @@ export function textToResults(
             results.concat(formattedNumber),
             assignments + (isAssignment(line) ? parsedLine + '\n' : '')];
         } catch (e) {
+          // many exceptions occur as the user is typing
           // console.error(parsedLine);
           // console.error(e);
-          // hehe :v
           return [results.concat('-'), assignments];
         }
       }, [[], ''])[0];

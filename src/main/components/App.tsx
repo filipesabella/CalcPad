@@ -5,12 +5,12 @@ import { Store } from '../store';
 import { Help } from './Help';
 import { Preferences, PreferencesDialog } from './PreferencesDialog';
 
-const { remote, ipcRenderer } = window.require('electron');
-const { dialog } = remote;
+const { ipcRenderer } = window.require('electron');
 
 require('../styles/app.less');
 
 interface State {
+  loading: boolean;
   results: string[];
   value: string;
   currentLine: number;
@@ -28,16 +28,14 @@ export class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    const value = store.getLastFileContent();
-    const preferences = store.loadPreferences();
-
     this.state = {
-      results: textToResults(value, preferences),
-      value,
+      loading: true,
+      results: [],
+      value: '',
       currentLine: 0,
       showPreferences: false,
       showHelp: false,
-      preferences,
+      preferences: {} as any,
     };
 
     // sent by the menus
@@ -57,11 +55,31 @@ export class App extends React.Component<{}, State> {
     };
   }
 
+  public componentDidMount(): void {
+    this.resizeTextArea();
+
+    store.init().then(async () => {
+      const value = await store.getLastFileContent();
+      const preferences = store.loadPreferences();
+
+      this.setState({
+        loading: false,
+        results: textToResults(value, preferences),
+        value,
+        currentLine: 0,
+        showPreferences: false,
+        showHelp: false,
+        preferences,
+      });
+    });
+  }
+
   public render(): React.ReactNode {
     this.setTitle();
     this.resizeTextArea();
 
     const {
+      loading,
       value,
       results,
       currentLine,
@@ -72,6 +90,10 @@ export class App extends React.Component<{}, State> {
     this.setPreferences(this.state.preferences);
 
     const linesToRender = value.split('\n').map(textToNode);
+
+    if (loading) {
+      return <div>loading</div>;
+    }
 
     return <div className="app">
       <div className="texts" ref={this.textRef}>
@@ -101,10 +123,6 @@ export class App extends React.Component<{}, State> {
     </div>;
   }
 
-  public componentDidMount(): void {
-    this.resizeTextArea();
-  }
-
   private resizeTextArea(): void {
     if (this.textAreaRef.current) {
       this.textAreaRef.current.style.height =
@@ -132,7 +150,7 @@ export class App extends React.Component<{}, State> {
       setTimeout(() => {
         this.setState({
           currentLine: this.state.value
-            .substr(0, ref.selectionStart)
+            .substring(0, ref.selectionStart)
             .split('\n').length - 1,
         });
       }, 0);
@@ -143,7 +161,7 @@ export class App extends React.Component<{}, State> {
     // we already save on change
     if (!store.isTempFile()) return;
 
-    dialog.showSaveDialog(null, {
+    ipcRenderer.invoke('dialog', 'showSaveDialog', {
       title: 'Save'
     }).then((result: any) => {
       const file = result.filePath;
@@ -152,14 +170,14 @@ export class App extends React.Component<{}, State> {
   }
 
   private showOpenDialog(): void {
-    dialog.showOpenDialog(null, {
+    ipcRenderer.invoke('dialog', 'showOpenDialog', {
       title: 'Open',
       properties: ['openFile'],
-    }).then((result: any) => {
+    }).then(async (result: any) => {
       const files = result.filePaths;
       if (!files || files.length === 0) return; // user cancelled
 
-      const contents = store.open(files[0]);
+      const contents = await store.open(files[0]);
 
       this.setState({
         value: contents,
@@ -180,11 +198,13 @@ export class App extends React.Component<{}, State> {
   }
 
   private setTitle() {
-    const title = store.isTempFile()
-      ? 'CalcPad'
-      : 'CalcPad - ' + store.getLastFile();
+    // TODO
+    // const title = store.isTempFile()
+    //   ? 'CalcPad'
+    //   : 'CalcPad - ' + store.getLastFile();
 
-    remote.BrowserWindow.getAllWindows()[0].setTitle(title);
+    // TODO
+    // remote.BrowserWindow.getAllWindows()[0].setTitle(title);
   }
 
   private showPreferences(): void {
