@@ -8,8 +8,6 @@ Runs on linux and windows.
 
 Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for linux or windows.
 
-It auto-updates from then on.
-
 # Functionality
 
 ## Simple math
