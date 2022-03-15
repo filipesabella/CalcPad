@@ -48,6 +48,7 @@ export const App = ({ store }: { store: Store }) => {
   const newFile = () => {
     store.newFile();
     setValue('');
+    setTitle();
   };
 
   const closePreferencesDialog = () => {
@@ -66,7 +67,7 @@ export const App = ({ store }: { store: Store }) => {
 
   const setTitle = () => {
     const title = store.isTempFile()
-      ? 'CalcPad'
+      ? 'CalcPad - Untitled'
       : 'CalcPad - ' + store.getLastFile();
 
     ipcRenderer.invoke('setWindowTitle', title);
