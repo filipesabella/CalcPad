@@ -1,15 +1,8 @@
 :root {
   --font-size: 18px;
   --line-height: 34px;
+  --dialog-bg-color: rgb(33, 34, 38);
   --text-color: rgb(227, 230, 232);
-  --result-text-color: rgb(155, 207, 77);
-  --bg-color: rgb(33, 34, 38);
-  --current-line-bg-color: rgb(39, 41, 45);
-}
-
-@font-face {
-  font-family: 'RobotoMono';
-  src: url('Roboto_Mono/RobotoMono-Regular.ttf') format('truetype');
 }
 
 html,
@@ -25,97 +18,17 @@ body {
 
 .app {
   flex: 1;
-  background: var(--bg-color);
-  font-family: 'RobotoMono';
-
-  textarea,
-  .texts {
-    font-family: 'RobotoMono';
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-  }
-
-  textarea {
-    border: 0;
-    outline: 0;
-    width: 80%;
-    resize: none;
-    color: transparent;
-    background: transparent;
-    caret-color: var(--text-color);
-    padding: 1em;
-  }
-
-  .texts {
-    background: var(--bg-color);
-    padding-top: 1em;
-
-    .line {
-      display: flex;
-      flex-direction: row;
-      padding: 0 1em;
-
-      &.current {
-        background: var(--current-line-bg-color);
-      }
-
-      .text {
-        width: 80%;
-        color: var(--text-color);
-        flex: 1;
-
-        div {
-          height: var(--line-height);
-          white-space: pre;
-        }
-
-        span {
-          div {
-            display: inline-block;
-          }
-        }
-
-        .variable {
-          color: rgb(115, 189, 234);
-        }
-
-        .comment {
-          color: rgb(246, 195, 80);
-        }
-
-        .keyword {
-          color: rgb(193, 211, 210);
-        }
-      }
-
-      .result {
-        width: 20%;
-        color: var(--result-text-color);
-        text-align: right;
-        vertical-align: bottom;
-        display: flex;
-        flex-direction: column;
-
-        div {
-          height: var(--line-height);
-        }
-      }
-    }
-  }
+  font-family: 'JetBrains Mono';
 
   .preferencesDialog {
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     padding: 1.5em;
-    background: var(--current-line-bg-color);
-    border: 1px solid black;
+    background: var(--dialog-bg-color);
     color: var(--text-color);
+    border: 1px solid black;
 
     .field {
       margin-bottom: 1em;
@@ -148,7 +61,6 @@ body {
         text-decoration: underline;
 
         &:hover {
-          color: var(--result-text-color);
           cursor: pointer;
         }
       }
@@ -156,12 +68,12 @@ body {
   }
 
   .help {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    background: var(--bg-color);
+    background: var(--dialog-bg-color);
     color: var(--text-color);
     padding: 2em;
     overflow: auto;
@@ -177,13 +89,13 @@ body {
 
     code {
       font-size: 1.4em;
-      font-family: 'RobotoMono';
+      font-family: 'JetBrains Mono';
     }
 
     .closeButton {
       position: fixed;
       top: 1em;
-      right: 1em;
+      right: 2em;
       text-decoration: underline;
       cursor: pointer;
     }

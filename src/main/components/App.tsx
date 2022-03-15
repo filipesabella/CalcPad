@@ -1,24 +1,20 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { textToResults } from '../evaluator';
-import { textToNode } from '../renderer';
 import { Store } from '../store';
+import '../styles/app.less';
+import * as darkTheme from './DarkTheme';
+import { Editor } from './Editor';
 import { Help } from './Help';
+import * as lightTheme from './LightTheme';
 import { Preferences, PreferencesDialog } from './PreferencesDialog';
 
 const { ipcRenderer } = window.require('electron');
 
-require('../styles/app.less');
-
 export const App = ({ store }: { store: Store }) => {
-  const textRef: React.RefObject<HTMLDivElement> = React.createRef();
-  const textAreaRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
-
-  const [results, setResults] = useState([] as string[]);
   const [value, setValue] = useState('');
-  const [currentLine, setCurrentLine] = useState(0);
   const [showPreferences, setShowPreferences] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [preferences, setPreferences] = useState(store.preferences());
 
   useEffect(() => {
     // sent by the menus
@@ -37,62 +33,25 @@ export const App = ({ store }: { store: Store }) => {
 
     store.getLastFileContent().then(value => {
       setValue(value);
-      setResults(textToResults(value, store.preferences()));
     });
+
+    configureCSSVars(preferences);
 
     setTitle();
   }, []);
 
-  useEffect(() => {
-    resizeTextArea(textAreaRef, textRef);
-  }, [value]);
-
-  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setValue(value);
-    setResults(textToResults(
-      value,
-      store.preferences()));
-
-    store.save(value);
-  };
-
-  const cursorChanged = () => {
-    if (textAreaRef.current) {
-      const ref = textAreaRef.current;
-      // using timeout otherwise it lags one event because of the
-      // keydown instead of keyup
-      setTimeout(() => {
-        setCurrentLine(value
-          .substring(0, ref.selectionStart)
-          .split('\n').length - 1);
-      }, 0);
-    }
-  };
-
   const newFile = () => {
     store.newFile();
-    setResults([]);
     setValue('');
-    setCurrentLine(0);
   };
 
-  const closePreferencesDialog = () => {
-    setShowPreferences(false);
-    textAreaRef.current!.focus();
-  };
-
-  const closeHelp = () => {
-    setShowHelp(false);
-    textAreaRef.current!.focus();
-  };
+  const closePreferencesDialog = () => setShowPreferences(false);
+  const closeHelp = () => setShowHelp(false);
 
   const savePreferences = (preferences: Preferences) => {
     setPreferences(preferences);
+    configureCSSVars(preferences);
     store.savePreferences(preferences);
-
-    // recalculate results as precision might have been changed
-    setResults(textToResults(value, preferences));
   };
 
   const setTitle = () => {
@@ -126,34 +85,15 @@ export const App = ({ store }: { store: Store }) => {
       const contents = await store.open(files[0]);
 
       setValue(contents);
-      setResults(textToResults(
-        contents,
-        store.preferences()));
       setTitle();
     });
   };
 
-  const linesToRender = value.split('\n').map(textToNode);
-
   return <div className="app">
-    <div className="texts" ref={textRef}>
-      {linesToRender.map((line, i) =>
-        <div key={i}
-          className={'line ' + (currentLine === i ? 'current' : '')}>
-          <div className="text">{line}</div>
-          <div className="result">{results[i]}</div>
-        </div>)}
-    </div>
-    <textarea
-      id="textarea"
-      spellCheck={false}
-      className="mousetrap"
-      autoFocus={true}
-      onChange={e => onChange(e)}
-      onClick={_ => cursorChanged()}
-      onKeyDown={_ => cursorChanged()}
+    {!showHelp && <Editor
+      store={store}
       value={value}
-      ref={textAreaRef}></textarea>
+      preferences={preferences} />}
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}
       close={() => closePreferencesDialog()}
@@ -163,36 +103,20 @@ export const App = ({ store }: { store: Store }) => {
   </div>;
 };
 
-function resizeTextArea(
-  textAreaRef: React.RefObject<HTMLTextAreaElement>,
-  textRef: React.RefObject<HTMLDivElement>): void {
-  if (textAreaRef.current) {
-    textAreaRef.current.style.height =
-      textRef.current!.clientHeight + 10 + 'px';
-  }
-}
-
-function setPreferences(preferences: Preferences): void {
+function configureCSSVars(preferences: Preferences): void {
   if (document.documentElement) {
     const style = document.documentElement.style;
     style.setProperty('--font-size', preferences.fontSize + 'px');
-    style.setProperty('--line-height', preferences.fontSize + 12 + 'px');
 
     const isDark = preferences.theme === 'dark';
+    const colors = isDark ? darkTheme.colors : lightTheme.colors;
+
     style.setProperty('--text-color', isDark
-      ? 'rgb(227, 230, 232)'
-      : 'rgb(109, 125, 141)');
+      ? colors.light
+      : colors.medium);
 
-    style.setProperty('--result-text-color', isDark
-      ? 'rgb(155, 207, 77)'
-      : 'rgb(155, 207, 77)');
-
-    style.setProperty('--bg-color', isDark
-      ? 'rgb(33, 34, 38)'
-      : 'rgb(255, 255, 255)');
-
-    style.setProperty('--current-line-bg-color', isDark
-      ? 'rgb(39, 41, 45)'
-      : 'rgb(250, 250, 250)');
+    style.setProperty('--dialog-bg-color', isDark
+      ? colors.background
+      : colors.darkBackground);
   }
 }

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { Store } from '../store';
 import { App } from './App';
+require('typeface-jetbrains-mono');
 
 const store = new Store();
 store.init().then(() => {
