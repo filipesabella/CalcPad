@@ -84,6 +84,6 @@ export const Editor = ({
     return () => view.destroy();
   }, [value, preferences]);
 
-  return <div ref={editor}></div>;
+  return <div className="editor" ref={editor}></div>;
 };
 
