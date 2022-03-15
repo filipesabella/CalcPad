@@ -17,7 +17,8 @@ export const Help = (props: Props) => {
 
     <h1>Assignments</h1>
     <p><code>salary = 100k</code></p>
-    <p><code>salaryAfterTax = 33% off salary</code></p>
+    <p><code>tax = 33</code></p>
+    <p><code>salaryAfterTax = tax% off salary</code></p>
 
     <h1>Multipliers</h1>
     <p><code>1K</code></p>
