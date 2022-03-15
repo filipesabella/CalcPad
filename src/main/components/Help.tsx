@@ -46,6 +46,11 @@ export const Help = (props: Props) => {
     <p><code>E / 2</code></p>
     <p><code>PI * 3</code></p>
 
+    <h1>Ternary if statement</h1>
+    <p><code>money = 5k</code></p>
+    <p><code>tax = money &gt; 5k ? 15 : 10</code></p>
+    <p><code>total = tax% off money</code></p>
+
     <h1>Functions</h1>
     <p><code>sqrt(9)</code></p>
     <p><code>round(1.4)</code></p>

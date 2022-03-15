@@ -25,7 +25,8 @@ It auto-updates from then on.
 
 ```
 salary = 100k
-salaryAfterTax = 33% off salary
+tax = 33
+salaryAfterTax = tax% off salary
 ```
 
 ## Multipliers
@@ -58,6 +59,14 @@ All supported units [here](https://github.com/ben-ng/convert-units#supported-uni
 ```
 E / 2
 PI * 3
+```
+
+## Ternary if statement
+
+```
+money = 5k
+tax = money &gt; 5k ? 15 : 10
+total = tax% off money
 ```
 
 ## Functions
