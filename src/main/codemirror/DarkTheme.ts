@@ -80,3 +80,4 @@ const darkHighlightStyle = HighlightStyle.define([{
 const dark = [darkTheme, darkHighlightStyle];
 
 export { dark, darkHighlightStyle, darkTheme, colors };
+

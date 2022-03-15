@@ -74,3 +74,4 @@ const lightHighlightStyle = HighlightStyle.define([{
 const light = [lightTheme, lightHighlightStyle];
 
 export { light, lightHighlightStyle, lightTheme, colors };
+

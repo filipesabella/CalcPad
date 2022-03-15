@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '../styles/Help.less';
 
 interface Props {
   close: () => void;

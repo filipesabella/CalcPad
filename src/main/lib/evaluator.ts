@@ -1,4 +1,4 @@
-import { Preferences } from './components/PreferencesDialog';
+import { Preferences } from '../components/PreferencesDialog';
 import { isAssignment, isComment, parse } from './parser';
 
 const formatter = new Intl.NumberFormat();

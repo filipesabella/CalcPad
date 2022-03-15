@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 import { Preferences } from '../main/components/PreferencesDialog';
-import { textToResults } from '../main/evaluator';
+import { textToResults } from '../main/lib/evaluator';
 
 const prefs: Preferences = {
   fontSize: 18,

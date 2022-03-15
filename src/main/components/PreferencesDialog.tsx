@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import '../styles/PreferencesDialog.less';
 
 export type Theme = 'dark' | 'light';
 export interface Preferences {

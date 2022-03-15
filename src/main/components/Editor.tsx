@@ -17,15 +17,15 @@ import {
 } from '@codemirror/view';
 import * as React from 'react';
 import { useRef } from 'react';
-import { textToResults } from '../evaluator';
-import { calcpadlang } from '../lib/calpadlang';
+import { calcpadlang } from '../codemirror/calpadlang';
+import { completions } from '../codemirror/Completions';
+import { dark } from '../codemirror/DarkTheme';
+import { light } from '../codemirror/LightTheme';
+import { rightGutter } from '../codemirror/ResultsGutter';
+import { textToResults } from '../lib/evaluator';
 import '../styles/Editor.less';
 import { CodeMirror } from './CodeMirror';
-import { completions } from './Completions';
-import { dark } from './DarkTheme';
-import { light } from './LightTheme';
 import { Preferences } from './PreferencesDialog';
-import { rightGutter } from './ResultsGutter';
 
 interface Props {
   value: string;

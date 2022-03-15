@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
-import { parse } from '../main/parser';
+import { parse } from '../main/lib/parser';
 
 describe('parser', () => {
   it('normalises numbers', () => {

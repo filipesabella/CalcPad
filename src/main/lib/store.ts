@@ -1,4 +1,4 @@
-import { Preferences } from './components/PreferencesDialog';
+import { Preferences } from '../components/PreferencesDialog';
 
 const { ipcRenderer } = window.require('electron');
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Store } from '../store';
-import '../styles/app.less';
-import * as darkTheme from './DarkTheme';
+import * as darkTheme from '../codemirror/DarkTheme';
+import * as lightTheme from '../codemirror/LightTheme';
+import { Store } from '../lib/store';
+import '../styles/App.less';
 import { Editor } from './Editor';
 import { Help } from './Help';
-import * as lightTheme from './LightTheme';
 import { Preferences, PreferencesDialog } from './PreferencesDialog';
 
 const { ipcRenderer } = window.require('electron');
