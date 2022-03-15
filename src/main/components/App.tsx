@@ -94,7 +94,6 @@ export const App = ({ store }: { store: Store }) => {
       if (!files || files.length === 0) return; // user cancelled
 
       const contents = await store.open(files[0]);
-
       setValue(contents);
       setTitle();
     });
@@ -102,6 +101,9 @@ export const App = ({ store }: { store: Store }) => {
 
   return <div className="app">
     {!showHelp && !showPreferences && <Editor
+      // this `key` ensures that the Editor fully unmounts when changing
+      // files, and thus not messing up the history and state
+      key={store.getLastFile()}
       value={value}
       onUpdate={updateValue}
       preferences={preferences} />}
