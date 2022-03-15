@@ -1,4 +1,4 @@
-// all copied and adapterd from
+// all copied and adapted from
 // https://github.com/codemirror/gutter/blob/c864e4a09219a10e8f3f503e68534a8f0c28bb20/src/index.ts#L441
 
 import { RangeCursor, RangeSet, RangeValue } from '@codemirror/rangeset';
