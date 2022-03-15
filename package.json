@@ -11,7 +11,7 @@
     "start-server": "parcel ./src/main/index.html -d build/",
     "start-electron": "cross-env ELECTRON_START_URL=http://localhost:1234 electron .",
     "test": "mocha -r ts-node/register src/test/**.spec.ts",
-    "test:watch": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
+    "test:watch": "mocha -r ts-node/register --watch-extensions ts --watch src/test/**/*.spec.ts",
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
     "ship-windows": "yarn run build && copy .\\assets\\* .\\build\\ && electron-builder -w",
     "ship-linux": "yarn run build && copy .\\assets\\* .\\build\\  && electron-builder -l deb rpm AppImage snap"

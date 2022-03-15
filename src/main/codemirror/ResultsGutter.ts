@@ -399,7 +399,6 @@ export function rightGutter(results: (lineNumber: number) => string) {
     domEventHandlers: {
       'click': (view: EditorView, line: BlockInfo, event: Event) => {
         // TODO select the whole result? maybe send to clipboard?
-        // console.log('asd', line);
         return true;
       }
     },

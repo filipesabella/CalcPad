@@ -23,7 +23,7 @@ describe('parser', () => {
   });
 
   it('parses comments', () => {
-    assert.strictEqual(parse('# abc'), '// # abc');
+    assert.strictEqual(parse('# abc'), '// abc');
   });
 
   describe('parses constants', () => {
