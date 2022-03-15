@@ -2,7 +2,7 @@ CalcPad is a different take on the calculator.
 
 Runs on linux and windows.
 
-![screenshot](https://raw.githubusercontent.com/filipesabella/CalcPad/master/screenshot.png)
+![screenshot](https://user-images.githubusercontent.com/33415/158484266-0da3076b-1aaa-4f19-8001-dcb1612d37e8.png)
 
 # Installation
 
