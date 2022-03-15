@@ -32,10 +32,9 @@ export const mathFunctions = [
  * Parses input text into a string that can be `eval`d.
  */
 export function parse(text: string): string {
+  text = text.replace(/#/g, '//');
   if (isAssignment(text)) {
     return parseAssignment(text);
-  } else if (isComment(text)) {
-    return '// ' + text;
   } else {
     // the order here is important
     return [
