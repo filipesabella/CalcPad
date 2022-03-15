@@ -16,6 +16,11 @@ export const App = ({ store }: { store: Store }) => {
   const [showHelp, setShowHelp] = useState(false);
   const [preferences, setPreferences] = useState(store.preferences());
 
+  const updateValue = (value: string) => {
+    setValue(value);
+    store.save(value);
+  };
+
   useEffect(() => {
     // sent by the menus
     ipcRenderer.on('new-file', () => newFile());
@@ -45,8 +50,13 @@ export const App = ({ store }: { store: Store }) => {
     setValue('');
   };
 
-  const closePreferencesDialog = () => setShowPreferences(false);
-  const closeHelp = () => setShowHelp(false);
+  const closePreferencesDialog = () => {
+    setShowPreferences(false);
+  };
+
+  const closeHelp = () => {
+    setShowHelp(false);
+  };
 
   const savePreferences = (preferences: Preferences) => {
     setPreferences(preferences);
@@ -90,9 +100,9 @@ export const App = ({ store }: { store: Store }) => {
   };
 
   return <div className="app">
-    {!showHelp && <Editor
-      store={store}
+    {!showHelp && !showPreferences && <Editor
       value={value}
+      onUpdate={updateValue}
       preferences={preferences} />}
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}

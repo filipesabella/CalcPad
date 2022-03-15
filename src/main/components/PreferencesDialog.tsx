@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
+export type Theme = 'dark' | 'light';
 export interface Preferences {
   fontSize: number;
   decimalPlaces: number;
   decimalSeparator: string;
   thousandsSeparator: string;
-  theme: 'dark' | 'light';
+  theme: Theme;
 }
 
 interface Props {
