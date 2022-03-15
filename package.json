@@ -60,7 +60,7 @@
     "convert-units": "^2.3.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typeface-roboto-mono": "^1.1.13"
+    "typeface-jetbrains-mono": "^2.0.1"
   },
   "resolutions": {
     "set-value": "^2.0.1",
