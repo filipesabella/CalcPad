@@ -4,9 +4,9 @@ Just create a pull-request.
 
 ## Running it locally
 
-`yarn dev`
+`yarn start-server`
 
-`yarn run start-dev`
+`yarn start-electron`
 
 ## Running the tests
 
