@@ -86,7 +86,7 @@ export const App = ({ store }: { store: Store }) => {
       title: 'Save'
     }).then((result: any) => {
       const file = result.filePath;
-      file && store.saveFile(file, value);
+      file && store.saveFile(file, value || '');
     });
   };
 
