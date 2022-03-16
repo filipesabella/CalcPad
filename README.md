@@ -10,6 +10,12 @@ Download the [latest release](https://github.com/filipesabella/CalcPad/releases/
 
 # Functionality
 
+## Editor
+
+* Autocomplete with `ctrl+space`
+* Multiple selections with `ctrl+d`
+* Find & replace with `ctrl+f`
+
 ## Simple math
 
 ```

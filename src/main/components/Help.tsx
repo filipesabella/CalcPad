@@ -7,6 +7,13 @@ interface Props {
 
 export const Help = (props: Props) => {
   return <div className="help">
+    <h1>Editor</h1>
+    <p>
+      - Autocomplete with <code>ctrl+space</code><br />
+      - Multiple selections with <code>ctrl+d</code><br />
+      - Find & replace with <code>ctrl+f</code>
+    </p>
+
     <h1>Simple math</h1>
     <p><code>1 + 1</code></p>
     <p><code>10 / .3</code></p>
@@ -80,8 +87,11 @@ export const Help = (props: Props) => {
     </p>
 
     <h1>External functions</h1>
-    <p>In the menu <i>Edit -&gt; Edit functions file</i>, you can declare any javascript
-      function that will become available to the editor itself.<br/>
+    <p>
+      In the menu <i>Edit -&gt; Edit functions file</i>, you can declare any javascript
+      function that will become available to the editor itself.
+    </p>
+    <p>
       You must restart CalcPad after editing that file for the changes to come
       into effect.
     </p>
