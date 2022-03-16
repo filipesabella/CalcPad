@@ -13,7 +13,7 @@
     "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234 electron .",
     "test": "cross-env NODE_ENV=dev mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "cross-env NODE_ENV=dev mocha -r ts-node/register --watch-extensions ts --watch --watch-files src 'src/**/**.spec.ts'",
-    "build-web": "BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/main/html/index-web.html",
+    "build-web": "rm -rf docs && BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/main/html/index-web.html",
     "build-desktop": "parcel build ./src/main/html/index-desktop.html -d build/ --public-url ./",
     "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\assets\\* .\\build\\ && electron-builder -w",
     "ship-linux": "rm -rf dist build && yarn build-desktop && cp -r ./assets/* ./build/  && electron-builder -l deb rpm AppImage snap",
