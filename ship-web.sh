@@ -1,5 +1,3 @@
-set -e
-
 git checkout build
 git merge master -m "Merge master"
 yarn build-web
