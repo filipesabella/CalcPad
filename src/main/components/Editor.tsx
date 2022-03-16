@@ -6,7 +6,6 @@ import {
 import { EditorState } from '@codemirror/basic-setup';
 import { defaultKeymap } from '@codemirror/commands';
 import { commentKeymap } from '@codemirror/comment';
-import { history, historyKeymap, redo } from '@codemirror/history';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
 import { StreamLanguage } from '@codemirror/stream-parser';
 import {
@@ -64,12 +63,9 @@ export const Editor = ({
       }),
       autocompletion({ override: [completions] }),
       preferences.theme === 'dark' ? dark : light,
-      history(),
       keymap.of([
         ...defaultKeymap,
         ...searchKeymap,
-        ...historyKeymap,
-        { key: 'Mod-Shift-z', run: redo, preventDefault: true },
         ...commentKeymap,
         ...completionKeymap,
         { key: 'Tab', run: acceptCompletion }
