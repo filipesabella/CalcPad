@@ -1,12 +1,14 @@
 CalcPad is a different take on the calculator.
 
-Runs on linux and windows.
+Runs on linux, mac, and windows.
 
 ![screenshot](https://user-images.githubusercontent.com/33415/158484266-0da3076b-1aaa-4f19-8001-dcb1612d37e8.png)
 
 # Installation
 
 Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for linux or windows.
+
+I don't have access to a mac computer, if you want it, clone this repo and run `yarn ship-mac`.
 
 # Functionality
 
