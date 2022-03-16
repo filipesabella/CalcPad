@@ -58,9 +58,7 @@ export const Editor = ({
       highlightSelectionMatches(),
       EditorView.lineWrapping,
       StreamLanguage.define(calcpadlang),
-      rightGutter(lineNumber => {
-        return resultsRef.current[lineNumber - 1];
-      }),
+      rightGutter(lineNumber => resultsRef.current[lineNumber - 1]),
       autocompletion({ override: [completions] }),
       preferences.theme === 'dark' ? dark : light,
       keymap.of([
