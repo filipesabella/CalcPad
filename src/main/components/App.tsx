@@ -11,7 +11,8 @@ import { Preferences, PreferencesDialog } from './PreferencesDialog';
 const { ipcRenderer } = window.require('electron');
 
 export const App = ({ store }: { store: Store }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(null as string | null);
+  const [externalFunctions, setExternalFunctions] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [preferences, setPreferences] = useState(store.preferences());
@@ -36,8 +37,12 @@ export const App = ({ store }: { store: Store }) => {
       }
     };
 
-    store.getLastFileContent().then(value => {
-      setValue(value);
+    store.readExternalFunctionsFile().then(value => {
+      setExternalFunctions(value);
+
+      store.getLastFileContent().then(value => {
+        setValue(value);
+      });
     });
 
     configureCSSVars(preferences);
@@ -100,13 +105,14 @@ export const App = ({ store }: { store: Store }) => {
   };
 
   return <div className="app">
-    {!showHelp && !showPreferences && <Editor
+    {value !== null && !showHelp && !showPreferences && <Editor
       // this `key` ensures that the Editor fully unmounts when changing
       // files, and thus not messing up the history and state
       key={store.getLastFile()}
       value={value}
       onUpdate={updateValue}
-      preferences={preferences} />}
+      preferences={preferences}
+      externalFunctions={externalFunctions} />}
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}
       close={() => closePreferencesDialog()}

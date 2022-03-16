@@ -92,6 +92,13 @@ export class Store {
     await this.storeConfig();
   }
 
+  public async readExternalFunctionsFile(): Promise<string> {
+    const contents = await ipcRenderer
+      .invoke('fs.readExternalFunctionsFile', []);
+
+    return String.fromCharCode.apply(null, contents);
+  }
+
   private async setLastFile(lastFile: string | null): Promise<void> {
     this.config.lastFile = lastFile;
     await this.storeConfig();

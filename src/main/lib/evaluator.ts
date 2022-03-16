@@ -14,6 +14,7 @@ const formatter = new Intl.NumberFormat();
  */
 export function textToResults(
   text: string,
+  externalFunctions: string,
   { decimalPlaces,
     decimalSeparator,
     thousandsSeparator }: Preferences): string[] {
@@ -27,7 +28,7 @@ export function textToResults(
         }
 
         try {
-          const result = eval(assignments + parsedLine);
+          const result = eval(externalFunctions + assignments + parsedLine);
 
           const numberToDisplay = Math.round(result) !== result
             ? result.toFixed(decimalPlaces)

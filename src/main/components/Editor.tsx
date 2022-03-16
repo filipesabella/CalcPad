@@ -31,17 +31,20 @@ interface Props {
   value: string;
   onUpdate: (value: string) => void;
   preferences: Preferences;
+  externalFunctions: string;
 }
 
 export const Editor = ({
   value,
   onUpdate,
-  preferences, }: Props) => {
-  const resultsRef = useRef(textToResults(value, preferences));
-  resultsRef.current = textToResults(value, preferences);
+  preferences,
+  externalFunctions, }: Props) => {
+  const results = textToResults(value, externalFunctions, preferences);
+  const resultsRef = useRef(results);
+  resultsRef.current = results;
 
   const onChange = (value: string) => {
-    resultsRef.current = textToResults(value, preferences);
+    resultsRef.current = textToResults(value, externalFunctions, preferences);
     onUpdate(value);
   };
 

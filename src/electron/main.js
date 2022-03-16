@@ -130,16 +130,7 @@ app.on('ready', () => {
       type: 'separator'
     }, {
       label: 'Edit functions file',
-      click: () => {
-        const functionsFileName = 'calcpad-function.js';
-        const file =
-          path.join(electron.app.getPath('userData'), functionsFileName);
-        if (!fs.existsSync(file)) {
-          // touch it
-          fs.closeSync(fs.openSync(file, 'w'))
-        }
-        shell.openPath(file);
-      },
+      click: () => shell.openPath(externalFunctionsFile()),
     }, {
       type: 'separator'
     }, {
@@ -166,6 +157,17 @@ app.on('activate', function() {
   }
 });
 
+function externalFunctionsFile() {
+  const functionsFileName = 'calcpad-function.js';
+  const file =
+    path.join(electron.app.getPath('userData'), functionsFileName);
+  if (!fs.existsSync(file)) {
+    // touch it
+    fs.closeSync(fs.openSync(file, 'w'))
+  }
+  return file;
+}
+
 // whoa
 const {
   ipcMain
@@ -190,7 +192,11 @@ ipcMain.handle('fs.touch', (_, file) => {
   if (!fs.existsSync(file)) {
     fs.closeSync(fs.openSync(file, 'w'));
   }
-})
+});
+
+ipcMain.handle('fs.readExternalFunctionsFile', () => {
+  return fs.readFileSync(externalFunctionsFile());
+});
 
 ipcMain.handle('path.join', (_, path1, path2) => {
   return path.join(path1, path2);
