@@ -8,7 +8,8 @@
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "start-server": "parcel ./src/main/index.html -d build/",
+    "start-web": "parcel ./src/main/html/index-web.html -d build/",
+    "start-server": "parcel ./src/main/html/index-desktop.html -d build/",
     "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234 electron .",
     "test": "cross-env NODE_ENV=dev mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "cross-env NODE_ENV=dev mocha -r ts-node/register --watch-extensions ts --watch --watch-files src 'src/**/**.spec.ts'",
