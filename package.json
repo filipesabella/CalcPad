@@ -16,7 +16,7 @@
     "build-web": "BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/html/index-web.html",
     "build-desktop": "parcel build ./src/main/html/index-desktop.html -d build/ --public-url ./",
     "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\assets\\* .\\build\\ && electron-builder -w",
-    "ship-linux-from-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\assets\\* .\\build\\  && electron-builder -l deb rpm AppImage snap",
+    "ship-linux": "rm -rf dist build && yarn build-desktop && cp -r ./assets/* ./build/  && electron-builder -l deb rpm AppImage snap",
     "ship-mac": "rm -rf dist/ && yarn build-desktop && cp ./assets/* ./build  && electron-builder -l dmg"
   },
   "build": {
