@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import * as darkTheme from '../codemirror/DarkTheme';
-import * as lightTheme from '../codemirror/LightTheme';
-import { Store } from '../lib/store';
-import '../styles/App.less';
-import { Editor } from './Editor';
-import { Help } from './Help';
-import { Preferences, PreferencesDialog } from './PreferencesDialog';
+import { FileStore } from '../../lib/store';
+import '../../styles/App.less';
+import { configureCSSVars } from '../common';
+import { Editor } from '../Editor';
+import { Help } from '../Help';
+import { Preferences, PreferencesDialog } from '../PreferencesDialog';
 
 const { ipcRenderer } = window.require('electron');
 
-export const App = ({ store }: { store: Store }) => {
+export const App = ({ store }: { store: FileStore }) => {
   const [value, setValue] = useState(null as string | null);
   const [externalFunctions, setExternalFunctions] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
@@ -115,27 +114,9 @@ export const App = ({ store }: { store: Store }) => {
       externalFunctions={externalFunctions} />}
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}
-      close={() => closePreferencesDialog()}
-      save={(preferences: Preferences) => savePreferences(preferences)}
+      close={closePreferencesDialog}
+      save={savePreferences}
     />}
     {showHelp && <Help close={() => closeHelp()} />}
   </div>;
 };
-
-function configureCSSVars(preferences: Preferences): void {
-  if (document.documentElement) {
-    const style = document.documentElement.style;
-    style.setProperty('--font-size', preferences.fontSize + 'px');
-
-    const isDark = preferences.theme === 'dark';
-    const colors = isDark ? darkTheme.colors : lightTheme.colors;
-
-    style.setProperty('--text-color', isDark
-      ? colors.light
-      : colors.medium);
-
-    style.setProperty('--dialog-bg-color', isDark
-      ? colors.background
-      : colors.darkBackground);
-  }
-}

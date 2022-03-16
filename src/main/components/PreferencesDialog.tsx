@@ -11,6 +11,14 @@ export interface Preferences {
   theme: Theme;
 }
 
+export const defaultPreferences: Preferences = {
+  fontSize: 18,
+  decimalPlaces: 2,
+  theme: 'dark',
+  decimalSeparator: '.',
+  thousandsSeparator: ',',
+};
+
 interface Props {
   preferences: Preferences;
   close: () => void;

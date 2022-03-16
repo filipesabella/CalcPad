@@ -1,4 +1,4 @@
-import { Preferences } from '../components/PreferencesDialog';
+import { defaultPreferences, Preferences } from '../components/PreferencesDialog';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -8,7 +8,7 @@ interface Config {
 }
 
 // horrible mixed bag of user preferences and file handling
-export class Store {
+export class FileStore {
   private configFile: string;
   private tempFile: string;
   private config: Config;
@@ -113,13 +113,7 @@ export class Store {
 
 const defaults: Config = {
   lastFile: null,
-  preferences: {
-    fontSize: 18,
-    decimalPlaces: 2,
-    theme: 'dark',
-    decimalSeparator: '.',
-    thousandsSeparator: ',',
-  }
+  preferences: defaultPreferences,
 };
 
 async function parseDataFile(filePath: string): Promise<Config> {

@@ -20,5 +20,38 @@ body {
   flex: 1;
   display: flex;
   font-family: 'JetBrains Mono';
-  background: var(--dialog-bg-color);
+  background-color: var(--dialog-bg-color);
+
+  .menuButton {
+    position: fixed;
+    bottom: .2em;
+    right: .2em;
+    color: var(--text-color);
+    font-size: 2em;
+    user-select: none;
+    cursor: pointer;
+    text-align: right;
+
+    &:hover {
+      background: var(--dialog-bg-color);
+      cursor: auto;
+
+      .menu {
+        display: block;
+      }
+    }
+
+    .menu {
+      display: none;
+      padding: 0 .3em;
+      p {
+        cursor: pointer;
+        font-size: .6em;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
