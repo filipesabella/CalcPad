@@ -16,7 +16,8 @@
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
     "ship-windows": "yarn run build && copy .\\assets\\* .\\build\\ && electron-builder -w",
     "ship-linux-from-windows": "yarn run build && copy .\\assets\\* .\\build\\  && electron-builder -l deb rpm AppImage snap",
-    "ship-mac": "yarn run build && cp ./assets/* ./build  && electron-builder -l dmg"
+    "ship-mac": "yarn run build && cp ./assets/* ./build  && electron-builder -l dmg",
+    "build-web": "BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/html/index-web.html"
   },
   "build": {
     "appId": "filipesabella.CalcPad",
