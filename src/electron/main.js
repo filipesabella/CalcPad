@@ -39,7 +39,10 @@ app.on('ready', () => {
     }
   });
   mainWindowState.manage(mainWindow);
-  mainWindow.webContents.toggleDevTools();
+
+  if (process.env.NODE_ENV === 'dev') {
+    mainWindow.webContents.toggleDevTools();
+  }
 
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, '../../build/index.html'),
