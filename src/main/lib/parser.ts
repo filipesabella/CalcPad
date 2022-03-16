@@ -7,11 +7,9 @@
 // format as a language and compile that down to javascript.
 const convert = require('convert-units');
 
-try {
-  // fails when running tests, it's necessary to put it in the window
-  // so that the evaluator can access the `convert` function
+if (process.env.NODE_ENV !== 'dev') {
   (window as any).convert = convert;
-} catch { }
+}
 
 export const mathFunctions = [
   'abs',

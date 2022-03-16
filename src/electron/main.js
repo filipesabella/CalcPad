@@ -150,7 +150,9 @@ app.on('activate', function() {
 });
 
 // whoa
-const { ipcMain } = electron;
+const {
+  ipcMain
+} = electron;
 
 ipcMain.handle('electron.app.getPath', (_, path) => {
   return electron.app.getPath(path);
