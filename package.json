@@ -3,7 +3,7 @@
   "description": "A diffent take on the calculator",
   "author": "Filipe Sabella <no-reply@filipesabella.github.io>",
   "repository": "https://github.com/filipesabella/CalcPad",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "main": "src/electron/main.js",
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
