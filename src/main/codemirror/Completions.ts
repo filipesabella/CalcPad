@@ -10,8 +10,8 @@ export function completions(context: CompletionContext) {
     return null;
   } else {
     const vars = Array.from(
-      context.state.doc.toString().matchAll(/\n(\w*)\s+=.*/g),
-      (m: string[]) => m[1]
+      context.state.doc.toString().matchAll(/(^|\n)(\w*)\s+=.*/g),
+      (m: string[]) => m[2]
     ).map(v => ({ label: v, type: 'variable' }));
 
     return {
