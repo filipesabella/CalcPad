@@ -15,7 +15,8 @@
     "test:watch": "cross-env NODE_ENV=dev mocha -r ts-node/register --watch-extensions ts --watch --watch-files src 'src/**/**.spec.ts'",
     "build": "parcel build ./src/main/index.html -d build/ --public-url ./",
     "ship-windows": "yarn run build && copy .\\assets\\* .\\build\\ && electron-builder -w",
-    "ship-linux": "yarn run build && copy .\\assets\\* .\\build\\  && electron-builder -l deb rpm AppImage snap"
+    "ship-linux-from-windows": "yarn run build && copy .\\assets\\* .\\build\\  && electron-builder -l deb rpm AppImage snap",
+    "ship-mac": "yarn run build && cp ./assets/* ./build  && electron-builder -l dmg"
   },
   "build": {
     "appId": "filipesabella.CalcPad",
