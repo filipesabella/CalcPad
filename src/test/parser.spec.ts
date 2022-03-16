@@ -118,4 +118,27 @@ describe('parser', () => {
         'Math.sqrt(1.5) + convert(9)');
     });
   });
+
+  // this will only get worse with time
+  describe('special cases', () => {
+    it('case #1', () => {
+      assert.strictEqual(parse('10% of min(1, 2)'), 'Math.min(1, 2) * 10 / 100');
+      assert.strictEqual(parse('10% off min(1, 2)'), 'Math.min(1, 2) - Math.min(1, 2) * 10 / 100');
+      assert.strictEqual(parse('10% on min(1, 2)'), 'Math.min(1, 2) * 10 / 100 + Math.min(1, 2)');
+    });
+
+    it('case #2', () => {
+      assert.strictEqual(parse('(5 + 10)% of 3'), '3 * (5 + 10) / 100');
+      assert.strictEqual(parse('(a + b * c)% of 3'), '3 * (a + b * c) / 100');
+      assert.strictEqual(parse('min(1, 2)% of 3'), '3 * Math.min(1, 2) / 100');
+
+      assert.strictEqual(parse('(5 + 10)% off 3'), '3 - 3 * (5 + 10) / 100');
+      assert.strictEqual(parse('(a + b * c)% off 3'), '3 - 3 * (a + b * c) / 100');
+      assert.strictEqual(parse('min(1, 2)% off 3'), '3 - 3 * Math.min(1, 2) / 100');
+
+      assert.strictEqual(parse('(5 + 10)% on 3'), '3 * (5 + 10) / 100 + 3');
+      assert.strictEqual(parse('(a + b * c)% on 3'), '3 * (a + b * c) / 100 + 3');
+      assert.strictEqual(parse('min(1, 2)% on 3'), '3 * Math.min(1, 2) / 100 + 3');
+    });
+  });
 });

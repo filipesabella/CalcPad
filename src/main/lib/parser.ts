@@ -88,9 +88,9 @@ function parseMultipliers(text: string): string {
 
 function parsePercentages(text: string): string {
   const expressions: [RegExp, string][] = [
-    [/(|\w+|\d+\.?\d*)%\s+of\s+(\(.*?\)|(\w+|\d+\.?\d*))/, '$2 * $1 / 100'],
-    [/(|\w+|\d+\.?\d*)%\s+on\s+(\(.*?\)|(\w+|\d+\.?\d*))/, '$2 * $1 / 100 + $2'],
-    [/(|\w+|\d+\.?\d*)%\s+off\s+(\(.*?\)|(\w+|\d+\.?\d*))/, '$2 - $2 * $1 / 100'],
+    [/(\w*\.?\w*\(.+\)|\w+|\d+\.?\d*)%\s+of\s+(\w*\.?\w*\(.*?\)|(\w+|\d+\.?\d*))/, '$2 * $1 / 100'],
+    [/(\w*\.?\w*\(.+\)|\w+|\d+\.?\d*)%\s+on\s+(\w*\.?\w*\(.*?\)|(\w+|\d+\.?\d*))/, '$2 * $1 / 100 + $2'],
+    [/(\w*\.?\w*\(.+\)|\w+|\d+\.?\d*)%\s+off\s+(\w*\.?\w*\(.*?\)|(\w+|\d+\.?\d*))/, '$2 - $2 * $1 / 100'],
   ];
 
   return expressions.reduce((text, [regex, replacement]) => {
