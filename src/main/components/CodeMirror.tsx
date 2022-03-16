@@ -1,4 +1,5 @@
 // copied from from https://github.com/tbjgolden/react-codemirror6/blob/main/src/CodeMirrorLite/index.tsx
+// some changes to handle history not triggering the expected events
 import { EditorState, Extension, Transaction } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import * as React from 'react';
@@ -56,7 +57,7 @@ export const CodeMirror = ({
             '&': { alignSelf: 'stretch', flex: '1 0 auto' }
           }),
           extensionsRef.current,
-          EditorState.transactionFilter.of((tr: Transaction) => {
+          EditorState.transactionExtender.of((tr: Transaction) => {
             const editorView = view;
             if (editorView !== undefined) {
               const prevDoc = editorView.state.doc.toString();
@@ -66,26 +67,13 @@ export const CodeMirror = ({
               } else {
                 changeHandlerRef.current = (newValue: string) => {
                   changeHandlerRef.current = null;
-                  if (newValue === nextDoc) {
-                    editorView.dispatch(
-                      editorView.state.update({
-                        changes: tr.changes,
-                        selection: tr.selection,
-                        effects: tr.effects,
-                        scrollIntoView: tr.scrollIntoView,
-                        filter: false
-                      })
-                    );
-                    return true;
-                  } else {
-                    return false;
-                  }
+                  return newValue === nextDoc;
                 };
                 onChangeRef.current?.(nextDoc);
-                return [];
+                return null;
               }
             } else {
-              return [];
+              return null;
             }
           })
         ]
