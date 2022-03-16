@@ -78,6 +78,13 @@ export const Help = (props: Props) => {
         tan
       </code>
     </p>
+
+    <h1>External functions</h1>
+    <p>In the menu <i>Edit -&gt; Edit functions file</i>, you can declare any javascript
+      function that will become available to the editor itself.<br/>
+      You must restart CalcPad after editing that file for the changes to come
+      into effect.
+    </p>
     <div
       className="closeButton"
       onClick={_ => props.close()}>Close</div>

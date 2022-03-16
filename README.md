@@ -84,3 +84,11 @@ abs acos asin atan atan2 ceil cos exp floor log max min pow random round sin sqr
 ## Comments
 
 ```# a comment```
+
+
+## External functions
+
+In the menu _Edit -> Edit functions file_, you can declare any javascript function
+that will become available to the editor itself.  
+You must restart CalcPad after
+editing that file for the changes to come into effect.
