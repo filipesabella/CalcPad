@@ -4,6 +4,7 @@ const {
   app,
   BrowserWindow,
   Menu,
+  shell,
 } = electron;
 
 const fs = require('fs');
@@ -125,6 +126,22 @@ app.on('ready', () => {
       role: 'delete'
     }, {
       role: 'selectall'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Edit functions file',
+      click: () => {
+        const functionsFileName = 'calcpad-function.js';
+        const file =
+          path.join(electron.app.getPath('userData'), functionsFileName);
+        if (!fs.existsSync(file)) {
+          // touch it
+          fs.closeSync(fs.openSync(file, 'w'))
+        }
+        shell.openPath(file);
+      },
+    }, {
+      type: 'separator'
     }, {
       role: 'toggledevtools'
     }, ]
