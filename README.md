@@ -10,6 +10,11 @@ Download the [latest release](https://github.com/filipesabella/CalcPad/releases/
 
 I don't have access to a mac computer, if you want it, clone this repo and run `yarn ship-mac`.
 
+## Web version
+
+There's an experimental web version [here](http://filipesabella.com/CalcPad/). The layout won't work on phones for now.
+It stores everything using the browser's LocalStorage - no file handling or http requests.
+
 # Functionality
 
 ## Editor
