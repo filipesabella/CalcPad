@@ -4,8 +4,8 @@
   "description": "A different take on the calculator.",
   "display": "standalone",
   "start_url": "index.html",
-  "background_color": "#648787",
-  "theme_color": "#a4ab9f",
+  "background_color": "#242528",
+  "theme_color": "#BFD982",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
