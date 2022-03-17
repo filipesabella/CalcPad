@@ -12,8 +12,11 @@ I don't have access to a mac computer, if you want it, clone this repo and run `
 
 ## Web version
 
-There's an experimental web version [here](http://filipesabella.com/CalcPad/). The layout won't work on phones for now.
-It stores everything using the browser's LocalStorage - no file handling or http requests.
+There's a slightly simpler web version [here](http://filipesabella.com/CalcPad/).
+
+It doesn't do any kind of file handling or http requests, as everything is stored using the browser's LocalStorage.
+
+It works ok on phones, and you can install it as an application.
 
 # Functionality
 
