@@ -8,13 +8,13 @@
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "start-web": "parcel ./src/main/html/index-web.html -d build/",
-    "start-server": "parcel ./src/main/html/index-desktop.html -d build/",
+    "start-web": "parcel ./src/html/index-web.html -d build/",
+    "start-server": "parcel ./src/html/index-desktop.html -d build/",
     "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234 electron .",
     "test": "cross-env NODE_ENV=dev mocha -r ts-node/register src/test/**.spec.ts",
     "test:watch": "cross-env NODE_ENV=dev mocha -r ts-node/register --watch-extensions ts --watch --watch-files src 'src/**/**.spec.ts'",
-    "build-web": "rm -rf docs && BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/main/html/index-web.html",
-    "build-desktop": "parcel build ./src/main/html/index-desktop.html -d build/ --public-url ./",
+    "build-web": "rm -rf docs && BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/html/index-web.html",
+    "build-desktop": "parcel build ./src/html/index-desktop.html -d build/ --public-url ./",
     "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\assets\\* .\\build\\ && electron-builder -w",
     "ship-linux": "rm -rf dist build && yarn build-desktop && cp -r ./assets/* ./build/  && electron-builder -l deb rpm AppImage snap",
     "ship-mac": "rm -rf dist/ && yarn build-desktop && cp ./assets/* ./build  && electron-builder -l dmg"
@@ -60,11 +60,11 @@
     "@codemirror/commands": "^0.19.8",
     "@codemirror/lang-javascript": "^0.19.7",
     "@codemirror/stream-parser": "^0.19.7",
+    "@fontsource/jetbrains-mono": "^4.5.3",
     "@parcel/service-worker": "^2.3.2",
     "convert-units": "^2.3.4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "typeface-jetbrains-mono": "^2.0.1"
+    "react-dom": "^17.0.2"
   },
   "resolutions": {
     "set-value": "^2.0.1",

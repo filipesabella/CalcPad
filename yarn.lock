@@ -1223,6 +1223,11 @@
     dir-compare "^2.4.0"
     fs-extra "^9.0.1"
 
+"@fontsource/jetbrains-mono@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/jetbrains-mono/-/jetbrains-mono-4.5.3.tgz#2e909e7d831398f2cdd7c1c2be72b1b29fa80357"
+  integrity sha512-R+dpCzt9b7O6ldKFXLvjZNQ2F+5i2/ctRgauRGvEj/3zBQVmnrjPeqPndYsZ1vz6Jg0K8TOS9JeMQavjoBHPwA==
+
 "@iarna/toml@^2.2.0":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
@@ -7342,11 +7347,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typeface-jetbrains-mono@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/typeface-jetbrains-mono/-/typeface-jetbrains-mono-2.0.1.tgz#706c66bd556362443c6686f2472508eb07e10d2a"
-  integrity sha512-r5ehb53K0x7VWFkk35jD1Hpnk09qm26wJM7H+mclj+eXX35IAoDC7x1NDDCKy0kpyvLo7xoEEY3d9Slj1Ar8vQ==
 
 typescript@^4.5.5:
   version "4.5.5"
