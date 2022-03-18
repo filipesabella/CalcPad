@@ -8,8 +8,6 @@ Runs on linux, mac, and windows.
 
 Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for linux or windows.
 
-I don't have access to a mac computer, if you want it, clone this repo and run `yarn ship-mac`.
-
 ## Web version
 
 There's a slightly simpler web version [here](http://filipesabella.com/CalcPad/).
