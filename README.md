@@ -6,7 +6,7 @@ Runs on linux, mac, and windows.
 
 # Installation
 
-Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for linux or windows.
+Download the [latest release](https://github.com/filipesabella/CalcPad/releases/latest) for your platform.
 
 ## Web version
 
