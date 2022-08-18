@@ -14,7 +14,13 @@ There's a slightly simpler web version [here](http://filipesabella.com/CalcPad/)
 
 It doesn't do any kind of file handling or http requests, as everything is stored using the browser's LocalStorage.
 
-It works ok on phones, and you can install it as an application.
+It works ok on phones, and you can install it as an pwa.
+
+### Self-hosting the web version
+
+Since the app is fully offline, you can simply either download the latest [built files](https://github.com/filipesabella/CalcPad/tree/build/docs), or build them yourself with `npm build-web` - the files will be in the `docs/` directory.
+
+Alternatively you can use shmup's [redbean](https://github.com/shmup/redbean-calcpad) build.
 
 # Functionality
 
