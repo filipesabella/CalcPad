@@ -14,7 +14,7 @@ There's a slightly simpler web version [here](http://filipesabella.com/CalcPad/)
 
 It doesn't do any kind of file handling or http requests, as everything is stored using the browser's LocalStorage.
 
-It works ok on phones, and you can install it as an pwa.
+It works ok on phones, and you can install it as a PWA.
 
 ### Self-hosting the web version
 
