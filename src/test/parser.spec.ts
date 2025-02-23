@@ -117,6 +117,14 @@ describe('parser', () => {
       assert.strictEqual(parse('sqrt(1.5) + convert(9)'),
         'Math.sqrt(1.5) + convert(9)');
     });
+
+    it('parses nested functions', () => {
+      assert.strictEqual(parse('sqrt(pow(2, 3))'), 'Math.sqrt(Math.pow(2, 3))');
+      assert.strictEqual(parse('sqrt(pow(2, 3)) / 1k'),
+        'Math.sqrt(Math.pow(2, 3)) / 1000');
+      assert.strictEqual(parse('pow(sqrt(pow(2, 3)), 5 / 3) / 1k'),
+        'Math.pow(Math.sqrt(Math.pow(2, 3)), 5 / 3) / 1000');
+    });
   });
 
   // this will only get worse with time

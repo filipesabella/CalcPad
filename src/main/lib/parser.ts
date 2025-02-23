@@ -119,8 +119,15 @@ function parseConstants(text: string): string {
 
 function parseFunctions(text: string): string {
   const regex = new RegExp(
-    `(\\b)(${mathFunctions.join('|')})\\s*\\((.*?)\\)`, 'g');
-  return text.replace(regex, '$1Math.$2($3)');
+    `(\\b)(?<!Math\\.)(${mathFunctions.join('|')})\\s*\\((.*?)\\)`, 'g');
+
+  let nested = text;
+  let sanity = 0;
+  while (nested.match(regex) && sanity++ < 20) {
+    nested = nested.replace(regex, '$1Math.$2($3)');
+  }
+
+  return nested;
 }
 
 function parseConversions() {
