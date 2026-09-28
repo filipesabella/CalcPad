@@ -45,6 +45,7 @@ export const App = ({ store }: { store: FileStore }) => {
       openHelp: () => setShowHelp(true),
       editFunctionsFile: () =>
         store.externalFunctionsFile().then(file => openPath(file)),
+      checkForUpdates: () => checkForUpdates({ quiet: false }),
     });
 
     window.onkeyup = e => {
@@ -67,7 +68,7 @@ export const App = ({ store }: { store: FileStore }) => {
 
     setTitle();
 
-    checkForUpdates();
+    checkForUpdates({ quiet: true });
   }, []);
 
   const newFile = () => {

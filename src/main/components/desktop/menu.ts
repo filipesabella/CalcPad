@@ -12,6 +12,7 @@ export interface MenuActions {
   openPreferences: () => void;
   openHelp: () => void;
   editFunctionsFile: () => void;
+  checkForUpdates: () => void;
 }
 
 export async function setupMenu(actions: MenuActions): Promise<void> {
@@ -33,7 +34,11 @@ export async function setupMenu(actions: MenuActions): Promise<void> {
     items: [
       await Submenu.new({
         text: 'CalcPad',
-        items: [await predefined('Quit')],
+        items: [
+          await item('Check for updates', actions.checkForUpdates),
+          await predefined('Separator'),
+          await predefined('Quit'),
+        ],
       }),
       await Submenu.new({
         text: 'File',
