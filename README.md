@@ -18,7 +18,7 @@ It works ok on phones, and you can install it as a PWA.
 
 ### Self-hosting the web version
 
-Since the app is fully offline, you can simply either download the latest [built files](https://github.com/filipesabella/CalcPad/tree/build/docs), or build them yourself with `npm build-web` - the files will be in the `docs/` directory.
+Since the app is fully offline, you can simply either download the latest [built files](https://github.com/filipesabella/CalcPad/tree/build/docs), or build them yourself with `yarn build-web` - the files will be in the `docs/` directory.
 
 Alternatively you can use shmup's [redbean](https://github.com/shmup/redbean-calcpad) build.
 
