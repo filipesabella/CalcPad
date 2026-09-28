@@ -42,3 +42,13 @@ Code is formatted with [dprint](https://dprint.dev/):
 - `yarn build-web` - web version, output in `docs/`
 - `yarn ship-linux`, `yarn ship-mac`, `yarn ship-windows` - desktop installers,
   output in `src-tauri/target/release/bundle/`
+
+## Releasing
+
+Bump the version in `package.json`, `src-tauri/tauri.conf.json` and
+`src-tauri/Cargo.toml`, commit, then tag and push:
+
+`git tag -a vX.Y.Z -m vX.Y.Z && git push origin master vX.Y.Z`
+
+The `Release` GitHub workflow builds the macOS, Windows and Linux installers
+and attaches them to a draft release, ready to be edited and published.
