@@ -1,4 +1,5 @@
-import { HighlightStyle, tags } from '@codemirror/highlight';
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { tags } from '@lezer/highlight';
 import { EditorView } from '@codemirror/view';
 
 const colors = {
@@ -77,7 +78,7 @@ const darkHighlightStyle = HighlightStyle.define([{
   color: colors.dark,
 }]);
 
-const dark = [darkTheme, darkHighlightStyle];
+const dark = [darkTheme, syntaxHighlighting(darkHighlightStyle)];
 
 export { dark, darkHighlightStyle, darkTheme, colors };
 

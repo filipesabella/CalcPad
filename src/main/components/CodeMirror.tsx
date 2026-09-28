@@ -17,7 +17,7 @@ export const CodeMirror = ({
   value: string
   onChange?: (value: string) => void
   extensions?: Extension
-}): JSX.Element => {
+}): React.JSX.Element => {
   // This ref is needed to allow changes to prevent binding the
   // initial value to the EditorView init effect, to allow
   // the new value to be the starting value when reinitialized

@@ -3,15 +3,13 @@ import {
   autocompletion,
   completionKeymap
 } from '@codemirror/autocomplete';
-import { EditorState } from '@codemirror/basic-setup';
-import { defaultKeymap } from '@codemirror/commands';
-import { commentKeymap } from '@codemirror/comment';
 import {
-  history, historyField, historyKeymap, redo
-} from '@codemirror/history';
+  defaultKeymap, history, historyField, historyKeymap, redo
+} from '@codemirror/commands';
+import { StreamLanguage } from '@codemirror/language';
 import { Diagnostic, linter } from '@codemirror/lint';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
-import { StreamLanguage } from '@codemirror/stream-parser';
+import { EditorState } from '@codemirror/state';
 import {
   drawSelection,
   EditorView,
@@ -74,7 +72,6 @@ export const Editor = ({
       keymap.of([
         ...defaultKeymap,
         ...searchKeymap,
-        ...commentKeymap,
         ...completionKeymap,
         { key: 'Tab', run: acceptCompletion },
         ...historyKeymap,

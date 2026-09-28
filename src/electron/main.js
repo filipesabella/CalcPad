@@ -35,7 +35,6 @@ app.on('ready', () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
       webSecurity: true,
     }
   });

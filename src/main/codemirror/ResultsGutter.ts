@@ -1,9 +1,8 @@
 // all copied and adapted from
 // https://github.com/codemirror/gutter/blob/c864e4a09219a10e8f3f503e68534a8f0c28bb20/src/index.ts#L441
 
-import { RangeCursor, RangeSet, RangeValue } from '@codemirror/rangeset';
-import { Extension, Facet, MapMode } from '@codemirror/state';
-import { BlockInfo, BlockType, Direction, EditorView, PluginField, ViewPlugin, ViewUpdate } from '@codemirror/view';
+import { Extension, Facet, MapMode, RangeCursor, RangeSet, RangeValue } from '@codemirror/state';
+import { BlockInfo, BlockType, Direction, EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 
 abstract class RightGutterMarker extends RangeValue {
   compare(other: RightGutterMarker) {
@@ -206,9 +205,10 @@ const gutterView = ViewPlugin.fromClass(class {
     this.dom.remove();
   }
 }, {
-  provide: PluginField.scrollMargins.from(value => {
-    if (value.gutters.length === 0 || !value.fixed) return null;
-    return value.view.textDirection === Direction.LTR ? {left: value.dom.offsetWidth} : {right: value.dom.offsetWidth};
+  provide: plugin => EditorView.scrollMargins.of(view => {
+    let value = view.plugin(plugin);
+    if (!value || value.gutters.length === 0 || !value.fixed) return null;
+    return view.textDirection === Direction.LTR ? {right: value.dom.offsetWidth} : {left: value.dom.offsetWidth};
   })
 });
 
