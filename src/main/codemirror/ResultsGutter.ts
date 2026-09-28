@@ -188,11 +188,16 @@ const gutterView = ViewPlugin.fromClass(
         this.view.viewport.from,
       );
       let classSet: RightGutterMarker[] = [];
+      // FS: view.documentPadding.top is parseInt'ed by codemirror, so a
+      // fractional padding (e.g. 0.1em) misaligns the gutter by a sub-pixel
+      const paddingTop = parseFloat(
+        getComputedStyle(this.view.contentDOM).paddingTop,
+      ) || 0;
       let contexts = this.gutters.map(gutter =>
         new UpdateContext(
           gutter,
           this.view.viewport,
-          -this.view.documentPadding.top,
+          -paddingTop,
         )
       );
       for (let line of this.view.viewportLineBlocks) {
