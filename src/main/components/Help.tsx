@@ -19,6 +19,7 @@ export const Help = (props: Props) => {
     <p><code>10 / .3</code></p>
     <p><code>2 ^ 3</code></p>
     <p><code>(10 + 5) / 7</code></p>
+    <p><code>10 mod 3</code></p>
 
     <h1>Comments</h1>
     <p><code># a comment</code></p>

@@ -1,8 +1,9 @@
 import { CompletionContext } from '@codemirror/autocomplete';
+import { constants, mathFunctions } from '../lib/lang/builtins';
 
-const allMathFunctions = Object
-  .getOwnPropertyNames(Math)
-  .map(n => ({ label: n, type: 'function' }));
+const builtins = mathFunctions
+  .map(n => ({ label: n, type: 'function' }))
+  .concat(constants.map(n => ({ label: n, type: 'constant' })));
 
 export function completions(context: CompletionContext) {
   const word = context.matchBefore(/\w*/);
@@ -16,7 +17,7 @@ export function completions(context: CompletionContext) {
 
     return {
       from: word.from,
-      options: allMathFunctions.concat(vars),
+      options: builtins.concat(vars),
     };
   }
 }

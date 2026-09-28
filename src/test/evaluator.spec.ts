@@ -30,6 +30,28 @@ describe('textToResults', () => {
     assert.deepStrictEqual(
       textToResults('10 / 3', externalFunctions, { ...prefs, decimalPlaces: 3 }),
       ['3.333']);
+    assert.deepStrictEqual(
+      textToResults('10 / 3', externalFunctions, { ...prefs, decimalPlaces: 5 }),
+      ['3.33333']);
+    assert.deepStrictEqual(
+      textToResults('10 / 4', externalFunctions, prefs),
+      ['2.5']);
+  });
+
+  it('uses the separators from the preferences', () => {
+    assert.deepStrictEqual(
+      textToResults('1234567.891', externalFunctions, {
+        ...prefs,
+        decimalSeparator: ',',
+        thousandsSeparator: '.',
+      }),
+      ['1.234.567,89']);
+  });
+
+  it('shows nothing for errors', () => {
+    assert.deepStrictEqual(
+      textToResults('1 +\nfoo\n1 > 2', externalFunctions, prefs),
+      ['', '', '']);
   });
 
   it('ignores comments', () => {

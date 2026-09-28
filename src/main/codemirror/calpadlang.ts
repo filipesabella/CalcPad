@@ -1,12 +1,13 @@
 // adapted from https://github.com/codemirror/legacy-modes/blob/main/mode/lua.js
+import { constants, keywords as keywordList, mathFunctions } from '../lib/lang/builtins';
 
-function wordRE(words: string[]) {
-  return new RegExp('^(?:' + words.join('|') + ')$', 'i');
+function wordRE(words: readonly string[], flags = '') {
+  return new RegExp('^(?:' + words.join('|') + ')$', flags);
 }
 
-const builtins = wordRE(Object.getOwnPropertyNames(Math));
+const builtins = wordRE(mathFunctions.concat(constants));
 
-const keywords = wordRE(['in','to']);
+const keywords = wordRE(keywordList, 'i');
 
 function normal(stream: any, state: any) {
   const ch = stream.next();

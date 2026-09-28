@@ -37,6 +37,7 @@ Alternatively you can use shmup's [redbean](https://github.com/shmup/redbean-cal
 10 / .3
 2 ^ 3
 (10 + 5) / 7
+10 mod 3
 ```
 
 ## Assignments

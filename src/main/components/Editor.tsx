@@ -9,6 +9,7 @@ import { commentKeymap } from '@codemirror/comment';
 import {
   history, historyField, historyKeymap, redo
 } from '@codemirror/history';
+import { Diagnostic, linter } from '@codemirror/lint';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
 import { StreamLanguage } from '@codemirror/stream-parser';
 import {
@@ -25,6 +26,7 @@ import { dark } from '../codemirror/DarkTheme';
 import { light } from '../codemirror/LightTheme';
 import { rightGutter } from '../codemirror/ResultsGutter';
 import { textToResults } from '../lib/evaluator';
+import { evaluate } from '../lib/lang/evaluate';
 import '../styles/Editor.less';
 import { CodeMirror } from './CodeMirror';
 import { Preferences } from './PreferencesDialog';
@@ -44,6 +46,8 @@ export const Editor = ({
   const results = textToResults(value, externalFunctions, preferences);
   const resultsRef = useRef(results);
   resultsRef.current = results;
+  const externalFunctionsRef = useRef(externalFunctions);
+  externalFunctionsRef.current = externalFunctions;
 
   const onChange = (value: string) => {
     resultsRef.current = textToResults(value, externalFunctions, preferences);
@@ -62,6 +66,7 @@ export const Editor = ({
       EditorView.lineWrapping,
       StreamLanguage.define(calcpadlang),
       rightGutter(lineNumber => resultsRef.current[lineNumber - 1]),
+      linter(view => diagnostics(view, externalFunctionsRef.current)),
       autocompletion({ override: [completions] }),
       preferences.theme === 'dark' ? dark : light,
       history(),
@@ -78,3 +83,20 @@ export const Editor = ({
     ]} />;
 };
 
+
+function diagnostics(view: EditorView, externalFunctions: string): Diagnostic[] {
+  const doc = view.state.doc;
+  return evaluate(doc.toString(), externalFunctions)
+    .reduce<Diagnostic[]>((all, result, i) => {
+      if (result.kind !== 'error') {
+        return all;
+      }
+      const line = doc.line(i + 1);
+      return all.concat({
+        from: line.from + result.span.from,
+        to: Math.min(line.from + result.span.to, line.to),
+        severity: 'error',
+        message: result.message,
+      });
+    }, []);
+}
