@@ -1,6 +1,11 @@
+import { configDir, join } from '@tauri-apps/api/path';
+import {
+  exists,
+  mkdir,
+  readTextFile,
+  writeTextFile,
+} from '@tauri-apps/plugin-fs';
 import { defaultPreferences, Preferences } from '../components/PreferencesDialog';
-
-const { ipcRenderer } = window.require('electron');
 
 interface Config {
   lastFile: string | null;
@@ -11,27 +16,27 @@ interface Config {
 export class FileStore {
   private configFile: string;
   private tempFile: string;
+  private functionsFile: string;
   private config: Config;
 
   constructor() { }
 
   async init(): Promise<void> {
-    const userDataPath = await ipcRenderer
-      .invoke('electron.app.getPath', 'userData');
-    this.configFile = await ipcRenderer
-      .invoke('path.join', userDataPath, 'config.json');
-    this.tempFile = await ipcRenderer
-      .invoke('path.join', userDataPath, 'scratch-file.txt');
+    // same directory electron used, so existing data carries over
+    const userDataPath = await join(await configDir(), 'CalcPad');
+    this.configFile = await join(userDataPath, 'config.json');
+    this.tempFile = await join(userDataPath, 'scratch-file.txt');
+    this.functionsFile = await join(userDataPath, 'calcpad-function.js');
 
-    await ipcRenderer.invoke('fs.mkdirPSync', userDataPath);
+    await mkdir(userDataPath, { recursive: true });
 
-    await ipcRenderer.invoke('fs.touch', this.tempFile);
-    await ipcRenderer.invoke('fs.touch', this.configFile);
+    await touch(this.tempFile);
+    await touch(this.configFile);
 
     this.config = await parseDataFile(this.configFile);
 
-    const lastFileExists = await ipcRenderer
-      .invoke('fs', 'existsSync', [this.config.lastFile]);
+    const lastFileExists = this.config.lastFile !== null
+      && await exists(this.config.lastFile).catch(() => false);
 
     if (!lastFileExists) {
       this.config.lastFile = null;
@@ -39,15 +44,12 @@ export class FileStore {
     }
   }
 
-  public getLastFile(): string | null {
+  public getLastFile(): string {
     return this.config.lastFile || this.tempFile;
   }
 
   public async getLastFileContent(): Promise<string> {
-    const contents = await ipcRenderer
-      .invoke('fs', 'readFileSync', [this.getLastFile()]);
-
-    return String.fromCharCode.apply(null, contents);
+    return readTextFile(this.getLastFile());
   }
 
   public isTempFile(): boolean {
@@ -55,19 +57,11 @@ export class FileStore {
   }
 
   public async save(content: string): Promise<void> {
-    if (this.isTempFile()) {
-      await ipcRenderer.invoke('fs', 'writeFileSync', [this.tempFile, content]);
-    } else {
-      await ipcRenderer.invoke('fs', 'writeFileSync', [this.getLastFile(), content]);
-    }
+    await writeTextFile(this.getLastFile(), content);
   }
 
   public async open(file: string): Promise<string> {
-    const contents = String.fromCharCode.apply(
-      null,
-      await ipcRenderer
-        .invoke('fs', 'readFileSync', [file]));
-
+    const contents = await readTextFile(file);
     this.setLastFile(file);
     return contents;
   }
@@ -78,8 +72,7 @@ export class FileStore {
   }
 
   public async saveFile(file: string, contents: string): Promise<void> {
-    await ipcRenderer
-      .invoke('fs', 'writeFileSync', [file, contents]);
+    await writeTextFile(file, contents);
     this.setLastFile(file);
   }
 
@@ -92,11 +85,13 @@ export class FileStore {
     await this.storeConfig();
   }
 
-  public async readExternalFunctionsFile(): Promise<string> {
-    const contents = await ipcRenderer
-      .invoke('fs.readExternalFunctionsFile', []);
+  public async externalFunctionsFile(): Promise<string> {
+    await touch(this.functionsFile);
+    return this.functionsFile;
+  }
 
-    return String.fromCharCode.apply(null, contents);
+  public async readExternalFunctionsFile(): Promise<string> {
+    return readTextFile(await this.externalFunctionsFile());
   }
 
   private async setLastFile(lastFile: string | null): Promise<void> {
@@ -105,9 +100,7 @@ export class FileStore {
   }
 
   private async storeConfig(): Promise<void> {
-    await ipcRenderer.invoke(
-      'fs', 'writeFileSync',
-      [this.configFile, JSON.stringify(this.config)]);
+    await writeTextFile(this.configFile, JSON.stringify(this.config));
   }
 }
 
@@ -116,13 +109,15 @@ const defaults: Config = {
   preferences: defaultPreferences,
 };
 
+async function touch(file: string): Promise<void> {
+  if (!await exists(file)) {
+    await writeTextFile(file, '');
+  }
+}
+
 async function parseDataFile(filePath: string): Promise<Config> {
   try {
-    const dataFileContents = String.fromCharCode.apply(
-      null,
-      await ipcRenderer
-        .invoke('fs', 'readFileSync', [filePath]));
-    const stored = JSON.parse(dataFileContents);
+    const stored = JSON.parse(await readTextFile(filePath));
     return {
       ...defaults,
       ...stored,
