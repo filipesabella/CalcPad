@@ -48,6 +48,22 @@ describe('textToResults', () => {
       ['1.234.567,89']);
   });
 
+  it('uses scientific notation for numbers too small or large to show', () => {
+    assert.deepStrictEqual(
+      textToResults(
+        '6.62e-34\n-1 / 3 * 1e-10\n1.5e21\n0.004\n0.006\n0\n1 / 0',
+        externalFunctions,
+        prefs),
+      ['6.62e-34', '-3.33e-11', '1.5e+21', '4e-3', '0.01', '0', '∞']);
+    assert.deepStrictEqual(
+      textToResults('6.62e-34', externalFunctions, {
+        ...prefs,
+        decimalPlaces: 5,
+        decimalSeparator: ',',
+      }),
+      ['6,62e-34']);
+  });
+
   it('shows nothing for errors', () => {
     assert.deepStrictEqual(
       textToResults('1 +\nfoo\n1 > 2', externalFunctions, prefs),

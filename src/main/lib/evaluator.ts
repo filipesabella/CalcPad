@@ -29,6 +29,17 @@ function formatResult(
     return '';
   }
 
+  const magnitude = Math.abs(result.value);
+  const roundsToZero = magnitude !== 0
+    && magnitude < 0.5 * Math.pow(10, -decimalPlaces);
+  if (roundsToZero || (magnitude >= 1e21 && magnitude !== Infinity)) {
+    // 6.62e-34, 1.5e+21
+    return result.value
+      .toExponential(decimalPlaces)
+      .replace(/\.?0+e/, 'e')
+      .replace('.', decimalSeparator);
+  }
+
   return new Intl.NumberFormat(undefined, {
     maximumFractionDigits: decimalPlaces,
   })
