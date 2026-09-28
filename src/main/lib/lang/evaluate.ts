@@ -1,12 +1,15 @@
-import { Line, Span } from './ast';
+import {
+  Line,
+  Span,
+} from './ast';
 import { compile } from './codegen';
 import { parseProgram } from './parser';
 import { convertUnits } from './units';
 
 export type LineResult =
   | { readonly kind: 'empty' }
-  | { readonly kind: 'value'; readonly value: number }
-  | { readonly kind: 'error'; readonly message: string; readonly span: Span };
+  | { readonly kind: 'value', readonly value: number }
+  | { readonly kind: 'error', readonly message: string, readonly span: Span };
 
 type Scope = { readonly [name: string]: number };
 
@@ -48,7 +51,8 @@ const runtime = {
  */
 export function evaluate(
   text: string,
-  externalFunctions: string): readonly LineResult[] {
+  externalFunctions: string,
+): readonly LineResult[] {
   const program = parseProgram(text);
   const functions = instantiate(compile(program), externalFunctions);
 
@@ -57,12 +61,14 @@ export function evaluate(
       const [result, nextScope] = evaluateLine(line, functions[i], scope);
       return [results.concat([result]), nextScope];
     },
-    [[], {}])[0];
+    [[], {}],
+  )[0];
 }
 
 function instantiate(
   source: string,
-  externalFunctions: string): readonly (LineFunction | null)[] {
+  externalFunctions: string,
+): readonly (LineFunction | null)[] {
   try {
     return new Function('$rt', externalFunctions + '\n' + source)(runtime);
   } catch (e) {
@@ -77,7 +83,8 @@ function instantiate(
 function evaluateLine(
   line: Line,
   fn: LineFunction | null,
-  scope: Scope): [LineResult, Scope] {
+  scope: Scope,
+): [LineResult, Scope] {
   switch (line.kind) {
     case 'empty':
       return [{ kind: 'empty' }, scope];

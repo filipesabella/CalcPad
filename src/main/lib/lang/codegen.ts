@@ -1,5 +1,12 @@
-import { Expr, Line, Program } from './ast';
-import { isConstant, isMathFunction } from './builtins';
+import {
+  Expr,
+  Line,
+  Program,
+} from './ast';
+import {
+  isConstant,
+  isMathFunction,
+} from './builtins';
 
 /**
  * Compiles a program into the body of a javascript function which
@@ -16,7 +23,8 @@ export function compile(program: Program): string {
       lines.concat(compileLine(line, scope)),
       line.kind === 'assignment' ? new Set(scope).add(line.name) : scope,
     ],
-    [[], new Set()]);
+    [[], new Set()],
+  );
 
   return 'return [\n' + lines.map(l => '  ' + l + ',\n').join('') + '];';
 }
@@ -43,15 +51,25 @@ export function compileExpr(expr: Expr, scope: ReadonlySet<string>): string {
     case 'unary':
       return `(${expr.operator}${recur(expr.operand)})`;
     case 'binary':
-      return `(${recur(expr.left)} ${jsOperators[expr.operator] || expr.operator} ${recur(expr.right)})`;
+      return `(${recur(expr.left)} ${
+        jsOperators[expr.operator] || expr.operator
+      } ${recur(expr.right)})`;
     case 'percentage':
-      return `$rt.percentage.${expr.operator}(${recur(expr.percentage)}, ${recur(expr.base)})`;
+      return `$rt.percentage.${expr.operator}(${recur(expr.percentage)}, ${
+        recur(expr.base)
+      })`;
     case 'conversion':
-      return `$rt.convert(${recur(expr.value)}, ${JSON.stringify(expr.from)}, ${JSON.stringify(expr.to)})`;
+      return `$rt.convert(${recur(expr.value)}, ${JSON.stringify(expr.from)}, ${
+        JSON.stringify(expr.to)
+      })`;
     case 'conditional':
-      return `(${recur(expr.test)} ? ${recur(expr.consequent)} : ${recur(expr.alternate)})`;
+      return `(${recur(expr.test)} ? ${recur(expr.consequent)} : ${
+        recur(expr.alternate)
+      })`;
     case 'call':
-      return `${compileCallee(expr.callee, scope)}(${expr.args.map(recur).join(', ')})`;
+      return `${compileCallee(expr.callee, scope)}(${
+        expr.args.map(recur).join(', ')
+      })`;
   }
 }
 
@@ -63,15 +81,19 @@ const jsOperators: { readonly [operator: string]: string } = {
 };
 
 function compileIdentifier(name: string, scope: ReadonlySet<string>): string {
-  return scope.has(name) ? `$rt.lookup($s, ${JSON.stringify(name)})`
-    : isConstant(name) ? `Math.${name}`
-      : compileExternal(name);
+  return scope.has(name)
+    ? `$rt.lookup($s, ${JSON.stringify(name)})`
+    : isConstant(name)
+    ? `Math.${name}`
+    : compileExternal(name);
 }
 
 function compileCallee(name: string, scope: ReadonlySet<string>): string {
-  return scope.has(name) ? `$rt.lookup($s, ${JSON.stringify(name)})`
-    : isMathFunction(name) ? `Math.${name}`
-      : compileExternal(name);
+  return scope.has(name)
+    ? `$rt.lookup($s, ${JSON.stringify(name)})`
+    : isMathFunction(name)
+    ? `Math.${name}`
+    : compileExternal(name);
 }
 
 // names that can't be safely emitted as-is fail when evaluated
@@ -82,11 +104,52 @@ function compileExternal(name: string): string {
 }
 
 const reserved = [
-  'arguments', 'await', 'break', 'case', 'catch', 'class', 'const', 'continue',
-  'debugger', 'default', 'delete', 'do', 'else', 'enum', 'eval', 'export',
-  'extends', 'false', 'finally', 'for', 'function', 'if', 'implements',
-  'import', 'in', 'instanceof', 'interface', 'let', 'new', 'null', 'package',
-  'private', 'protected', 'public', 'return', 'static', 'super', 'switch',
-  'this', 'throw', 'true', 'try', 'typeof', 'var', 'void', 'while', 'with',
+  'arguments',
+  'await',
+  'break',
+  'case',
+  'catch',
+  'class',
+  'const',
+  'continue',
+  'debugger',
+  'default',
+  'delete',
+  'do',
+  'else',
+  'enum',
+  'eval',
+  'export',
+  'extends',
+  'false',
+  'finally',
+  'for',
+  'function',
+  'if',
+  'implements',
+  'import',
+  'in',
+  'instanceof',
+  'interface',
+  'let',
+  'new',
+  'null',
+  'package',
+  'private',
+  'protected',
+  'public',
+  'return',
+  'static',
+  'super',
+  'switch',
+  'this',
+  'throw',
+  'true',
+  'try',
+  'typeof',
+  'var',
+  'void',
+  'while',
+  'with',
   'yield',
 ];

@@ -1,13 +1,23 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import { open, save } from '@tauri-apps/plugin-dialog';
+import {
+  open,
+  save,
+} from '@tauri-apps/plugin-dialog';
 import { openPath } from '@tauri-apps/plugin-opener';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/hooks';
 import { FileStore } from '../../lib/store';
 import '../../styles/App.less';
 import { configureCSSVars } from '../common';
 import { Editor } from '../Editor';
 import { Help } from '../Help';
-import { Preferences, PreferencesDialog } from '../PreferencesDialog';
+import {
+  Preferences,
+  PreferencesDialog,
+} from '../PreferencesDialog';
 import { setupMenu } from './menu';
 
 export const App = ({ store }: { store: FileStore }) => {
@@ -119,8 +129,7 @@ export const App = ({ store }: { store: FileStore }) => {
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}
       close={closePreferencesDialog}
-      save={savePreferences}
-    />}
+      save={savePreferences} />}
     {showHelp && <Help close={() => closeHelp()} />}
   </div>;
 };

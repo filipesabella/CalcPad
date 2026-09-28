@@ -7,69 +7,80 @@ export interface Span {
 }
 
 export type BinaryOperator =
-  | '+' | '-' | '*' | '/' | '^' | 'mod'
-  | '<' | '<=' | '>' | '>=' | '==' | '!='
-  | '&&' | '||';
+  | '+'
+  | '-'
+  | '*'
+  | '/'
+  | '^'
+  | 'mod'
+  | '<'
+  | '<='
+  | '>'
+  | '>='
+  | '=='
+  | '!='
+  | '&&'
+  | '||';
 
 export type UnaryOperator = '-' | '+' | '!';
 
 export type PercentageOperator = 'of' | 'on' | 'off';
 
 export type Expr =
-  | { readonly kind: 'number'; readonly value: number; readonly span: Span }
-  | { readonly kind: 'identifier'; readonly name: string; readonly span: Span }
+  | { readonly kind: 'number', readonly value: number, readonly span: Span }
+  | { readonly kind: 'identifier', readonly name: string, readonly span: Span }
   | {
-    readonly kind: 'unary';
-    readonly operator: UnaryOperator;
-    readonly operand: Expr;
-    readonly span: Span;
+    readonly kind: 'unary',
+    readonly operator: UnaryOperator,
+    readonly operand: Expr,
+    readonly span: Span,
   }
   | {
-    readonly kind: 'binary';
-    readonly operator: BinaryOperator;
-    readonly left: Expr;
-    readonly right: Expr;
-    readonly span: Span;
+    readonly kind: 'binary',
+    readonly operator: BinaryOperator,
+    readonly left: Expr,
+    readonly right: Expr,
+    readonly span: Span,
   }
   | {
-    readonly kind: 'percentage';
-    readonly operator: PercentageOperator;
-    readonly percentage: Expr;
-    readonly base: Expr;
-    readonly span: Span;
+    readonly kind: 'percentage',
+    readonly operator: PercentageOperator,
+    readonly percentage: Expr,
+    readonly base: Expr,
+    readonly span: Span,
   }
   | {
-    readonly kind: 'conversion';
-    readonly value: Expr;
+    readonly kind: 'conversion',
+    readonly value: Expr,
     // unit abbreviations as understood by `convert-units`
-    readonly from: string;
-    readonly to: string;
-    readonly span: Span;
+    readonly from: string,
+    readonly to: string,
+    readonly span: Span,
   }
   | {
-    readonly kind: 'conditional';
-    readonly test: Expr;
-    readonly consequent: Expr;
-    readonly alternate: Expr;
-    readonly span: Span;
+    readonly kind: 'conditional',
+    readonly test: Expr,
+    readonly consequent: Expr,
+    readonly alternate: Expr,
+    readonly span: Span,
   }
   | {
-    readonly kind: 'call';
-    readonly callee: string;
-    readonly args: readonly Expr[];
-    readonly span: Span;
+    readonly kind: 'call',
+    readonly callee: string,
+    readonly args: readonly Expr[],
+    readonly span: Span,
   };
 
 export type Line =
   | { readonly kind: 'empty' }
-  | { readonly kind: 'expression'; readonly expression: Expr }
+  | { readonly kind: 'expression', readonly expression: Expr }
   | {
-    readonly kind: 'assignment';
-    readonly name: string;
-    readonly expression: Expr;
-    readonly span: Span;
+    readonly kind: 'assignment',
+    readonly name: string,
+    readonly expression: Expr,
+    readonly span: Span,
   }
-  | { readonly kind: 'error'; readonly message: string; readonly span: Span };
+  | { readonly kind: 'error', readonly message: string, readonly span: Span };
 
 export type Program = readonly Line[];
 

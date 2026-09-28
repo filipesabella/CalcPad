@@ -17,9 +17,17 @@ export interface MenuActions {
 export async function setupMenu(actions: MenuActions): Promise<void> {
   const item = (text: string, action: () => void, accelerator?: string) =>
     MenuItem.new({ text, action, accelerator });
-  const predefined = (item: 'Separator' | 'Undo' | 'Redo' | 'Cut' | 'Copy'
-    | 'Paste' | 'SelectAll' | 'Quit') =>
-    PredefinedMenuItem.new({ item });
+  const predefined = (
+    item:
+      | 'Separator'
+      | 'Undo'
+      | 'Redo'
+      | 'Cut'
+      | 'Copy'
+      | 'Paste'
+      | 'SelectAll'
+      | 'Quit',
+  ) => PredefinedMenuItem.new({ item });
 
   const menu = await Menu.new({
     items: [

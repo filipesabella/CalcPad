@@ -1,5 +1,7 @@
-import { defaultPreferences, Preferences } from '../components/PreferencesDialog';
-
+import {
+  defaultPreferences,
+  Preferences,
+} from '../components/PreferencesDialog';
 
 const contentKey = 'calcpad-content';
 const preferencesKey = 'calcpad-preferences';

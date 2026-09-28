@@ -41,20 +41,25 @@ const lowercase = (s: string) => s.toLowerCase();
 
 // reversed so that the first unit wins,
 // `convert-units` describes `cm2` as "centimeter" as well
-const byName: ReadonlyMap<string, string> = new Map(abbreviations
-  .reduce<[string, string][]>((pairs, abbr) => {
-    const { singular, plural } = convert().describe(abbr as convert.Unit);
-    return pairs.concat([singular, plural]
-      .map(name => [lowercase(name), abbr] as [string, string]));
-  }, [])
-  .reverse());
+const byName: ReadonlyMap<string, string> = new Map(
+  abbreviations
+    .reduce<[string, string][]>((pairs, abbr) => {
+      const { singular, plural } = convert().describe(abbr as convert.Unit);
+      return pairs.concat([singular, plural]
+        .map(name => [lowercase(name), abbr] as [string, string]));
+    }, [])
+    .reverse(),
+);
 
 // `KM` -> `km`, but only when there's no ambiguity like `mb` -> `Mb`/`MB`
 const byLowercaseAbbreviation: ReadonlyMap<string, string> = new Map(
   abbreviations
-    .filter(abbr => abbreviations
-      .filter(other => lowercase(other) === lowercase(abbr)).length === 1)
-    .map(abbr => [lowercase(abbr), abbr] as [string, string]));
+    .filter(abbr =>
+      abbreviations
+        .filter(other => lowercase(other) === lowercase(abbr)).length === 1
+    )
+    .map(abbr => [lowercase(abbr), abbr] as [string, string]),
+);
 
 /**
  * Returns the `convert-units` abbreviation for the given unit name,
@@ -62,9 +67,11 @@ const byLowercaseAbbreviation: ReadonlyMap<string, string> = new Map(
  */
 export function resolveUnit(name: string): string | undefined {
   const key = lowercase(name);
-  return abbreviations.indexOf(name) !== -1 ? name
-    : aliases.hasOwnProperty(key) ? aliases[key]
-      : byName.get(key) || byLowercaseAbbreviation.get(key);
+  return abbreviations.indexOf(name) !== -1
+    ? name
+    : aliases.hasOwnProperty(key)
+    ? aliases[key]
+    : byName.get(key) || byLowercaseAbbreviation.get(key);
 }
 
 export function convertUnits(value: number, from: string, to: string): number {

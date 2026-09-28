@@ -1,6 +1,12 @@
 import * as assert from 'assert';
-import { describe, it } from 'mocha';
-import { evaluate, LineResult } from '../main/lib/lang/evaluate';
+import {
+  describe,
+  it,
+} from 'mocha';
+import {
+  evaluate,
+  LineResult,
+} from '../main/lib/lang/evaluate';
 
 const externalFunctions = `
   function sum(a, b) { return a + b; }

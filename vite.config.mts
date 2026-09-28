@@ -1,7 +1,10 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { defineConfig, Plugin } from 'vite';
+import {
+  defineConfig,
+  Plugin,
+} from 'vite';
 
 const root = resolve(import.meta.dirname, 'src');
 
@@ -13,13 +16,18 @@ const serviceWorker = (): Plugin => ({
   generateBundle(_, bundle) {
     const files = Object.values(bundle);
     const version = files
-      .reduce((hash, file) =>
-        hash.update(file.type === 'chunk' ? file.code : file.source),
-        createHash('sha256'))
+      .reduce(
+        (hash, file) =>
+          hash.update(file.type === 'chunk' ? file.code : file.source),
+        createHash('sha256'),
+      )
       .digest('hex')
       .slice(0, 16);
     const source = readFileSync(resolve(root, 'service-worker.js'), 'utf8')
-      .replace('__MANIFEST__', JSON.stringify(files.map(f => f.fileName).sort()))
+      .replace(
+        '__MANIFEST__',
+        JSON.stringify(files.map(f => f.fileName).sort()),
+      )
       .replace('__VERSION__', JSON.stringify(version));
     this.emitFile({ type: 'asset', fileName: 'service-worker.js', source });
   },

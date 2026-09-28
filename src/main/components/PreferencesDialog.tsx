@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'preact/hooks';
+import {
+  useEffect,
+  useState,
+} from 'preact/hooks';
 import '../styles/PreferencesDialog.less';
 
 export type Theme = 'dark' | 'light';
@@ -26,13 +29,14 @@ interface Props {
 
 export const PreferencesDialog = ({ preferences, save, close }: Props) => {
   const [fontSize, setFontSize] = useState(preferences.fontSize);
-  const [decimalPlaces, setDecimalPlaces] =
-    useState(preferences.decimalPlaces);
+  const [decimalPlaces, setDecimalPlaces] = useState(preferences.decimalPlaces);
   const [theme, setTheme] = useState(preferences.theme);
-  const [decimalSeparator, setDecimalSeparator] =
-    useState(preferences.decimalSeparator);
-  const [thousandsSeparator, setThousandsSeparator] =
-    useState(preferences.thousandsSeparator);
+  const [decimalSeparator, setDecimalSeparator] = useState(
+    preferences.decimalSeparator,
+  );
+  const [thousandsSeparator, setThousandsSeparator] = useState(
+    preferences.thousandsSeparator,
+  );
 
   useEffect(() => {
     save({

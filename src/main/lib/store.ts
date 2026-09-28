@@ -1,11 +1,17 @@
-import { configDir, join } from '@tauri-apps/api/path';
+import {
+  configDir,
+  join,
+} from '@tauri-apps/api/path';
 import {
   exists,
   mkdir,
   readTextFile,
   writeTextFile,
 } from '@tauri-apps/plugin-fs';
-import { defaultPreferences, Preferences } from '../components/PreferencesDialog';
+import {
+  defaultPreferences,
+  Preferences,
+} from '../components/PreferencesDialog';
 
 interface Config {
   lastFile: string | null;
@@ -19,7 +25,7 @@ export class FileStore {
   private functionsFile: string;
   private config: Config;
 
-  constructor() { }
+  constructor() {}
 
   async init(): Promise<void> {
     // same directory electron used, so existing data carries over
@@ -124,7 +130,7 @@ async function parseDataFile(filePath: string): Promise<Config> {
       preferences: {
         ...defaults.preferences,
         ...stored.preferences,
-      }
+      },
     } as Config;
   } catch {
     return defaults;

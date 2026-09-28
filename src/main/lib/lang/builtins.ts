@@ -21,8 +21,15 @@ export const mathFunctions: readonly string[] = [
 
 export const constants: readonly string[] = ['PI', 'E'];
 
-export const keywords: readonly string[] =
-  ['in', 'to', 'of', 'on', 'off', 'mod', 'billion'];
+export const keywords: readonly string[] = [
+  'in',
+  'to',
+  'of',
+  'on',
+  'off',
+  'mod',
+  'billion',
+];
 
 export const multipliers: { readonly [suffix: string]: number } = {
   k: 1e3,

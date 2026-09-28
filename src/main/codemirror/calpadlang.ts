@@ -1,5 +1,9 @@
 // adapted from https://github.com/codemirror/legacy-modes/blob/main/mode/lua.js
-import { constants, keywords as keywordList, mathFunctions } from '../lib/lang/builtins';
+import {
+  constants,
+  keywords as keywordList,
+  mathFunctions,
+} from '../lib/lang/builtins';
 
 function wordRE(words: readonly string[], flags = '') {
   return new RegExp('^(?:' + words.join('|') + ')$', flags);
@@ -15,8 +19,9 @@ function normal(stream: any, state: any) {
     stream.skipToEnd();
     return 'comment';
   }
-  if (ch === '"' || ch === '\'')
+  if (ch === '"' || ch === '\'') {
     return (state.cur = string(ch))(stream, state);
+  }
   if (/\d/.test(ch)) {
     stream.eatWhile(/[\w._%]/);
     return 'number';
@@ -53,6 +58,6 @@ export const calcpadlang = {
     return style;
   },
   languageData: {
-    commentTokens: { line: '#' }
-  }
+    commentTokens: { line: '#' },
+  },
 };

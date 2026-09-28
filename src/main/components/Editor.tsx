@@ -1,20 +1,30 @@
 import {
   acceptCompletion,
   autocompletion,
-  completionKeymap
+  completionKeymap,
 } from '@codemirror/autocomplete';
 import {
-  defaultKeymap, history, historyField, historyKeymap, redo
+  defaultKeymap,
+  history,
+  historyField,
+  historyKeymap,
+  redo,
 } from '@codemirror/commands';
 import { StreamLanguage } from '@codemirror/language';
-import { Diagnostic, linter } from '@codemirror/lint';
-import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
+import {
+  Diagnostic,
+  linter,
+} from '@codemirror/lint';
+import {
+  highlightSelectionMatches,
+  searchKeymap,
+} from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
 import {
   drawSelection,
   EditorView,
   highlightActiveLine,
-  keymap
+  keymap,
 } from '@codemirror/view';
 import { useRef } from 'preact/hooks';
 import { calcpadlang } from '../codemirror/calpadlang';
@@ -39,7 +49,8 @@ export const Editor = ({
   value,
   onUpdate,
   preferences,
-  externalFunctions, }: Props) => {
+  externalFunctions,
+}: Props) => {
   const results = textToResults(value, externalFunctions, preferences);
   const resultsRef = useRef(results);
   resultsRef.current = results;
@@ -79,8 +90,10 @@ export const Editor = ({
     ]} />;
 };
 
-
-function diagnostics(view: EditorView, externalFunctions: string): Diagnostic[] {
+function diagnostics(
+  view: EditorView,
+  externalFunctions: string,
+): Diagnostic[] {
   const doc = view.state.doc;
   return evaluate(doc.toString(), externalFunctions)
     .reduce<Diagnostic[]>((all, result, i) => {

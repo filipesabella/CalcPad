@@ -1,23 +1,33 @@
 // copied from from https://github.com/tbjgolden/react-codemirror6/blob/main/src/CodeMirrorLite/index.tsx
 // some changes to handle history not triggering the expected events
-import { EditorState, Extension, Transaction } from '@codemirror/state';
+import {
+  EditorState,
+  Extension,
+  Transaction,
+} from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import type { JSX } from 'preact';
-import { useEffect, useRef } from 'preact/hooks';
+import {
+  useEffect,
+  useRef,
+} from 'preact/hooks';
 
 export const CodeMirror = ({
   value: valueProp,
   onChange: onChangeProp,
   extensions = [],
   ...props
-}: Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  'value' | 'onChange' | 'extensions'
-> & {
-  value: string
-  onChange?: (value: string) => void
-  extensions?: Extension
-}): JSX.Element => {
+}:
+  & Omit<
+    JSX.HTMLAttributes<HTMLDivElement>,
+    'value' | 'onChange' | 'extensions'
+  >
+  & {
+    value: string,
+    onChange?: (value: string) => void,
+    extensions?: Extension,
+  }): JSX.Element =>
+{
   // This ref is needed to allow changes to prevent binding the
   // initial value to the EditorView init effect, to allow
   // the new value to be the starting value when reinitialized
@@ -39,9 +49,11 @@ export const CodeMirror = ({
   const editorParentElRef = useRef<HTMLDivElement | null>(null);
 
   // This ref contains the CodeMirror EditorView instance
-  const editorRef = useRef<null | {
-    view: EditorView
-  }>(null);
+  const editorRef = useRef<
+    null | {
+      view: EditorView,
+    }
+  >(null);
 
   // This ref is used to store pending changes, which enables
   // controlled input behavior.
@@ -54,7 +66,7 @@ export const CodeMirror = ({
         doc: valueRef.current,
         extensions: [
           EditorView.theme({
-            '&': { alignSelf: 'stretch', flex: '1 0 auto' }
+            '&': { alignSelf: 'stretch', flex: '1 0 auto' },
           }),
           extensionsRef.current,
           EditorState.transactionExtender.of((tr: Transaction) => {
@@ -75,15 +87,15 @@ export const CodeMirror = ({
             } else {
               return null;
             }
-          })
-        ]
+          }),
+        ],
       });
       view = new EditorView({
         state,
-        parent: editorParentElRef.current
+        parent: editorParentElRef.current,
       });
       editorRef.current = {
-        view
+        view,
       };
     }
 
@@ -104,10 +116,10 @@ export const CodeMirror = ({
           changes: {
             from: 0,
             to: editorRef.current.view.state.doc.toString().length,
-            insert: valueProp
+            insert: valueProp,
           },
-          filter: false
-        })
+          filter: false,
+        }),
       );
     }
   }, [valueProp]);

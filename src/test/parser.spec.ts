@@ -1,6 +1,12 @@
 import * as assert from 'assert';
-import { describe, it } from 'mocha';
-import { Expr, Line } from '../main/lib/lang/ast';
+import {
+  describe,
+  it,
+} from 'mocha';
+import {
+  Expr,
+  Line,
+} from '../main/lib/lang/ast';
 import { parseLine } from '../main/lib/lang/parser';
 
 // compact representation of the AST, ignoring spans
@@ -19,7 +25,9 @@ function show(expr: Expr): string {
     case 'conversion':
       return `(${show(expr.value)} ${expr.from} in ${expr.to})`;
     case 'conditional':
-      return `(${show(expr.test)} ? ${show(expr.consequent)} : ${show(expr.alternate)})`;
+      return `(${show(expr.test)} ? ${show(expr.consequent)} : ${
+        show(expr.alternate)
+      })`;
     case 'call':
       return `${expr.callee}(${expr.args.map(show).join(', ')})`;
   }
@@ -73,10 +81,14 @@ describe('parser', () => {
     assert.strictEqual(parse('-2 ^ 2'), '(-(2 ^ 2))');
     assert.strictEqual(parse('2 ^ -1'), '(2 ^ (-1))');
     assert.strictEqual(parse('10 mod 3 + 1'), '((10 mod 3) + 1)');
-    assert.strictEqual(parse('1 + 2 < 4 && !a || b == 1'),
-      '((((1 + 2) < 4) && (!a)) || (b == 1))');
-    assert.strictEqual(parse('a > 1 ? b : c ? d : e'),
-      '((a > 1) ? b : (c ? d : e))');
+    assert.strictEqual(
+      parse('1 + 2 < 4 && !a || b == 1'),
+      '((((1 + 2) < 4) && (!a)) || (b == 1))',
+    );
+    assert.strictEqual(
+      parse('a > 1 ? b : c ? d : e'),
+      '((a > 1) ? b : (c ? d : e))',
+    );
   });
 
   it('parses constants as identifiers', () => {
@@ -110,9 +122,14 @@ describe('parser', () => {
     assert.strictEqual(parse('x m in cm'), '(x m in cm)');
     assert.strictEqual(parse('(1 + 1) m in cm'), '((1 + 1) m in cm)');
     assert.strictEqual(parse('2 * 1m in cm'), '(2 * (1 m in cm))');
-    assert.strictEqual(parse('1m in cm + 1ft in cm'),
-      '((1 m in cm) + (1 ft in cm))');
-    assert.strictEqual(parse('1 xyz in cm'), 'error: Unknown unit \'xyz\' at 2-5');
+    assert.strictEqual(
+      parse('1m in cm + 1ft in cm'),
+      '((1 m in cm) + (1 ft in cm))',
+    );
+    assert.strictEqual(
+      parse('1 xyz in cm'),
+      'error: Unknown unit \'xyz\' at 2-5',
+    );
     assert.strictEqual(parse('1 m in'), 'error: Unexpected end of line at 4-6');
   });
 
@@ -123,27 +140,36 @@ describe('parser', () => {
     assert.strictEqual(parse('10% of 1K'), '(10% of 1000)');
     assert.strictEqual(parse('4.8% of a'), '(4.8% of a)');
     assert.strictEqual(parse('10% of (14 / 2)'), '(10% of (14 / 2))');
-    assert.strictEqual(parse('10% of 14 + 5% of 20'),
-      '((10% of 14) + (5% of 20))');
+    assert.strictEqual(
+      parse('10% of 14 + 5% of 20'),
+      '((10% of 14) + (5% of 20))',
+    );
     assert.strictEqual(parse('10% off 100 + 50'), '((10% off 100) + 50)');
     assert.strictEqual(parse('(a + b * c)% on 3'), '((a + (b * c))% on 3)');
     assert.strictEqual(parse('min(1, 2)% off 3'), '(min(1, 2)% off 3)');
     assert.strictEqual(parse('10% of min(1, 2)'), '(10% of min(1, 2))');
-    assert.strictEqual(parse('10 % 3'),
-      'error: Expected \'of\', \'on\' or \'off\' after \'%\' at 3-4');
+    assert.strictEqual(
+      parse('10 % 3'),
+      'error: Expected \'of\', \'on\' or \'off\' after \'%\' at 3-4',
+    );
   });
 
   it('parses function calls', () => {
     assert.strictEqual(parse('sqrt(9)'), 'sqrt(9)');
     assert.strictEqual(parse('sqrt ( 9 )'), 'sqrt(9)');
     assert.strictEqual(parse('random()'), 'random()');
-    assert.strictEqual(parse('pow(sqrt(pow(2, 3)), 5 / 3) / 1k'),
-      '(pow(sqrt(pow(2, 3)), (5 / 3)) / 1000)');
+    assert.strictEqual(
+      parse('pow(sqrt(pow(2, 3)), 5 / 3) / 1k'),
+      '(pow(sqrt(pow(2, 3)), (5 / 3)) / 1000)',
+    );
     assert.strictEqual(parse('pow(2, 3'), 'error: Expected \')\' at 7-8');
   });
 
   it('reports errors with their position', () => {
-    assert.strictEqual(parse('1 + @'), 'error: Unexpected character \'@\' at 4-5');
+    assert.strictEqual(
+      parse('1 + @'),
+      'error: Unexpected character \'@\' at 4-5',
+    );
     assert.strictEqual(parse('1 2'), 'error: Unexpected \'2\' at 2-3');
     assert.strictEqual(parse('1 +'), 'error: Unexpected end of line at 2-3');
   });

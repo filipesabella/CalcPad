@@ -1,5 +1,8 @@
 import { Preferences } from '../components/PreferencesDialog';
-import { evaluate, LineResult } from './lang/evaluate';
+import {
+  evaluate,
+  LineResult,
+} from './lang/evaluate';
 
 /**
  * Receives
@@ -15,16 +18,16 @@ import { evaluate, LineResult } from './lang/evaluate';
 export function textToResults(
   text: string,
   externalFunctions: string,
-  preferences: Preferences): string[] {
+  preferences: Preferences,
+): string[] {
   return evaluate(text, externalFunctions)
     .map(result => formatResult(result, preferences));
 }
 
 function formatResult(
   result: LineResult,
-  { decimalPlaces,
-    decimalSeparator,
-    thousandsSeparator }: Preferences): string {
+  { decimalPlaces, decimalSeparator, thousandsSeparator }: Preferences,
+): string {
   if (result.kind !== 'value') {
     return '';
   }
@@ -45,8 +48,11 @@ function formatResult(
   })
     .formatToParts(result.value)
     .map(part =>
-      part.type === 'group' ? thousandsSeparator
-        : part.type === 'decimal' ? decimalSeparator
-          : part.value)
+      part.type === 'group'
+        ? thousandsSeparator
+        : part.type === 'decimal'
+        ? decimalSeparator
+        : part.value
+    )
     .join('');
 }

@@ -17,8 +17,27 @@ const identifierRegex = /^[\p{L}_][\p{L}\p{N}_]*/u;
 
 // longest first
 const operators = [
-  '==', '!=', '<=', '>=', '&&', '||',
-  '+', '-', '*', '/', '^', '%', '(', ')', ',', '?', ':', '=', '<', '>', '!',
+  '==',
+  '!=',
+  '<=',
+  '>=',
+  '&&',
+  '||',
+  '+',
+  '-',
+  '*',
+  '/',
+  '^',
+  '%',
+  '(',
+  ')',
+  ',',
+  '?',
+  ':',
+  '=',
+  '<',
+  '>',
+  '!',
 ];
 
 /**
@@ -41,11 +60,13 @@ export function tokenize(line: string): readonly Token[] {
     } else if (rest[0] === '#') {
       break;
     } else {
-      const [type, text]: [TokenType, string] =
-        number ? ['number', number[0]]
-          : identifier ? ['identifier', identifier[0]]
-            : operator ? ['operator', operator]
-              : unexpected(rest, pos);
+      const [type, text]: [TokenType, string] = number
+        ? ['number', number[0]]
+        : identifier
+        ? ['identifier', identifier[0]]
+        : operator
+        ? ['operator', operator]
+        : unexpected(rest, pos);
 
       tokens.push({ type, text, from: pos, to: pos + text.length });
       pos += text.length;

@@ -9,7 +9,10 @@ import {
   Span,
 } from './ast';
 import { multipliers } from './builtins';
-import { Token, tokenize } from './lexer';
+import {
+  Token,
+  tokenize,
+} from './lexer';
 import { resolveUnit } from './units';
 
 /**
@@ -21,8 +24,8 @@ interface Parsed<T> {
 }
 
 type Infix =
-  | { kind: 'binary'; operator: BinaryOperator; precedence: number }
-  | { kind: 'percentage'; operator: PercentageOperator; precedence: number };
+  | { kind: 'binary', operator: BinaryOperator, precedence: number }
+  | { kind: 'percentage', operator: PercentageOperator, precedence: number };
 
 // `^` and unary operators bind tighter than all of these,
 // see `parseUnary` and `parsePower`
@@ -70,11 +73,15 @@ export function parseLine(line: string): Line {
   }
 }
 
-const span = (start: Span, end: Span = start): Span =>
-  ({ from: start.from, to: end.to });
+const span = (start: Span, end: Span = start): Span => ({
+  from: start.from,
+  to: end.to,
+});
 
-const error = (message: string, where: Span): LangError =>
-  ({ message, span: span(where) });
+const error = (message: string, where: Span): LangError => ({
+  message,
+  span: span(where),
+});
 
 function parseStatement(tokens: readonly Token[]): Line {
   const at = (pos: number): Token | undefined => tokens[pos];
@@ -160,7 +167,8 @@ function parseStatement(tokens: readonly Token[]): Line {
 
   const continueBinary = (
     minPrecedence: number,
-    left: Parsed<Expr>): Parsed<Expr> => {
+    left: Parsed<Expr>,
+  ): Parsed<Expr> => {
     const infix = infixAt(left.pos);
     if (!infix || infix.precedence < minPrecedence) {
       return left;
@@ -194,8 +202,10 @@ function parseStatement(tokens: readonly Token[]): Line {
   // -2 ^ 2 is -(2 ^ 2)
   const parseUnary = (pos: number): Parsed<Expr> => {
     const token = at(pos);
-    if (token && token.type === 'operator'
-      && (token.text === '-' || token.text === '+' || token.text === '!')) {
+    if (
+      token && token.type === 'operator'
+      && (token.text === '-' || token.text === '+' || token.text === '!')
+    ) {
       const operand = parseUnary(pos + 1);
       return {
         node: {
@@ -292,19 +302,21 @@ function parseStatement(tokens: readonly Token[]): Line {
     const primary = parsePrimary(pos);
     const literal = at(pos) as Token;
     const suffix = at(primary.pos);
-    if (primary.node.kind !== 'number' || literal.type !== 'number'
-      || !suffix || suffix.type !== 'identifier') {
+    if (
+      primary.node.kind !== 'number' || literal.type !== 'number'
+      || !suffix || suffix.type !== 'identifier'
+    ) {
       return primary;
     }
 
     // `273K in C` is kelvin, `1K m in cm` is a thousand meters
-    const multiplier =
-      suffix.text.toLowerCase() === 'billion' ? billion
-        : multipliers.hasOwnProperty(suffix.text)
+    const multiplier = suffix.text.toLowerCase() === 'billion'
+      ? billion
+      : multipliers.hasOwnProperty(suffix.text)
           && suffix.from === literal.to
           && !isOneOf(primary.pos + 1, conversionKeywords)
-          ? multipliers[suffix.text]
-          : undefined;
+      ? multipliers[suffix.text]
+      : undefined;
 
     return multiplier === undefined ? primary : {
       node: {
@@ -361,7 +373,8 @@ function parseStatement(tokens: readonly Token[]): Line {
 
   const parseArguments = (
     pos: number,
-    args: readonly Expr[]): Parsed<readonly Expr[]> => {
+    args: readonly Expr[],
+  ): Parsed<readonly Expr[]> => {
     if (args.length === 0 && is(pos, ')')) {
       return { node: args, pos: pos + 1 };
     }

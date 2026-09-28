@@ -1,5 +1,8 @@
 import { CompletionContext } from '@codemirror/autocomplete';
-import { constants, mathFunctions } from '../lib/lang/builtins';
+import {
+  constants,
+  mathFunctions,
+} from '../lib/lang/builtins';
 
 const builtins = mathFunctions
   .map(n => ({ label: n, type: 'function' }))
@@ -12,7 +15,7 @@ export function completions(context: CompletionContext) {
   } else {
     const vars = Array.from(
       context.state.doc.toString().matchAll(/(^|\n)(\w*)\s+=.*/g),
-      (m: string[]) => m[2]
+      (m: string[]) => m[2],
     ).map(v => ({ label: v, type: 'variable' }));
 
     return {
