@@ -1,5 +1,7 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'preact/hooks';
 import '../styles/PreferencesDialog.less';
 
 export type Theme = 'dark' | 'light';
@@ -27,13 +29,14 @@ interface Props {
 
 export const PreferencesDialog = ({ preferences, save, close }: Props) => {
   const [fontSize, setFontSize] = useState(preferences.fontSize);
-  const [decimalPlaces, setDecimalPlaces] =
-    useState(preferences.decimalPlaces);
+  const [decimalPlaces, setDecimalPlaces] = useState(preferences.decimalPlaces);
   const [theme, setTheme] = useState(preferences.theme);
-  const [decimalSeparator, setDecimalSeparator] =
-    useState(preferences.decimalSeparator);
-  const [thousandsSeparator, setThousandsSeparator] =
-    useState(preferences.thousandsSeparator);
+  const [decimalSeparator, setDecimalSeparator] = useState(
+    preferences.decimalSeparator,
+  );
+  const [thousandsSeparator, setThousandsSeparator] = useState(
+    preferences.thousandsSeparator,
+  );
 
   useEffect(() => {
     save({
@@ -50,7 +53,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
       <label>Theme</label>
       <select
         value={theme}
-        onChange={e => setTheme(e.target.value as any)}>
+        onChange={e => setTheme(e.currentTarget.value as any)}>
         <option value="dark">Dark</option>
         <option value="light">Light</option>
       </select>
@@ -62,7 +65,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
         type="number"
         min="8"
         value={fontSize}
-        onChange={e => setFontSize(parseInt(e.target.value))} />
+        onInput={e => setFontSize(parseInt(e.currentTarget.value))} />
       px
     </div>
     <div className="field">
@@ -72,7 +75,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
         className="separator"
         maxLength={1}
         value={decimalSeparator}
-        onChange={e => setDecimalSeparator(e.target.value)} />
+        onInput={e => setDecimalSeparator(e.currentTarget.value)} />
     </div>
     <div className="field">
       <label>Thousands Separator</label>
@@ -81,7 +84,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
         className="separator"
         maxLength={1}
         value={thousandsSeparator}
-        onChange={e => setThousandsSeparator(e.target.value)} />
+        onInput={e => setThousandsSeparator(e.currentTarget.value)} />
     </div>
     <div className="field">
       <label>Decimal Places</label>
@@ -91,7 +94,7 @@ export const PreferencesDialog = ({ preferences, save, close }: Props) => {
         min="2"
         max="8"
         value={decimalPlaces}
-        onChange={e => setDecimalPlaces(parseInt(e.target.value))} />
+        onInput={e => setDecimalPlaces(parseInt(e.currentTarget.value))} />
     </div>
     <div className="buttons">
       <span onClick={() => close()}>Close</span>

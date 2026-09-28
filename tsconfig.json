@@ -1,43 +1,18 @@
 {
-  "externalTranspiler": "babel",
-  "compileOnSave": true,
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.mts"],
   "compilerOptions": {
-    "outDir": "build",
-    "target": "es6",
-    "module": "commonjs",
-    "noImplicitAny": true,
-    "lib": ["es6", "dom"],
+    "target": "es2022",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "vite/client"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "noEmit": true,
+    "strict": false,
     "strictNullChecks": true,
-    "removeComments": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
-  },
-  "exclude": [
-    "node_modules",
-    "build"
-  ],
-  "formatCodeOptions": {
-    "indentSize": 2,
-    "tabSize": 2,
-    "newLineCharacter": "\r\n",
-    "convertTabsToSpaces": true,
-    "insertSpaceAfterCommaDelimiter": true,
-    "insertSpaceAfterSemicolonInForStatements": true,
-    "insertSpaceBeforeAndAfterBinaryOperators": true,
-    "insertSpaceAfterKeywordsInControlFlowStatements": true,
-    "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
-    "placeOpenBraceOnNewLineForFunctions": false,
-    "placeOpenBraceOnNewLineForControlBlocks": false
+    "noFallthroughCasesInSwitch": true
   }
 }

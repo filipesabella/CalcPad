@@ -1,12 +1,19 @@
 // adapted from https://github.com/codemirror/legacy-modes/blob/main/mode/lua.js
+import {
+  constants,
+  keywords as keywordList,
+  mathFunctions,
+} from '../lib/lang/builtins';
 
-function wordRE(words: string[]) {
-  return new RegExp('^(?:' + words.join('|') + ')$', 'i');
+function wordRE(words: readonly string[], flags = '') {
+  return new RegExp('^(?:' + words.join('|') + ')$', flags);
 }
 
-const builtins = wordRE(Object.getOwnPropertyNames(Math));
+const builtins = wordRE(mathFunctions);
 
-const keywords = wordRE(['in','to']);
+const builtinConstants = wordRE(constants, 'i');
+
+const keywords = wordRE(keywordList, 'i');
 
 function normal(stream: any, state: any) {
   const ch = stream.next();
@@ -14,8 +21,9 @@ function normal(stream: any, state: any) {
     stream.skipToEnd();
     return 'comment';
   }
-  if (ch === '"' || ch === '\'')
+  if (ch === '"' || ch === '\'') {
     return (state.cur = string(ch))(stream, state);
+  }
   if (/\d/.test(ch)) {
     stream.eatWhile(/[\w._%]/);
     return 'number';
@@ -47,11 +55,13 @@ export const calcpadlang = {
     let style = state.cur(stream, state);
     if (style == 'variable') {
       if (keywords.test(word)) style = 'keyword';
-      else if (builtins.test(word)) style = 'builtin';
+      else if (builtins.test(word) || builtinConstants.test(word)) {
+        style = 'builtin';
+      }
     }
     return style;
   },
   languageData: {
-    commentTokens: { line: '#' }
-  }
+    commentTokens: { line: '#' },
+  },
 };

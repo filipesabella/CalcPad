@@ -1,11 +1,16 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'preact/hooks';
 import { LocalStorageStore } from '../../lib/LocalStorageStore';
 import '../../styles/App.less';
 import { configureCSSVars } from '../common';
 import { Editor } from '../Editor';
 import { Help } from '../Help';
-import { Preferences, PreferencesDialog } from '../PreferencesDialog';
+import {
+  Preferences,
+  PreferencesDialog,
+} from '../PreferencesDialog';
 
 export const App = ({ store }: { store: LocalStorageStore }) => {
   const [value, setValue] = useState(null as string | null);
@@ -22,7 +27,7 @@ export const App = ({ store }: { store: LocalStorageStore }) => {
     window.onkeyup = e => {
       if (e.key === 'Escape') {
         closeDialogs();
-     }
+      }
     };
 
     setValue(store.getContent());
@@ -51,8 +56,7 @@ export const App = ({ store }: { store: LocalStorageStore }) => {
     {showPreferences && <PreferencesDialog
       preferences={preferences}
       close={closeDialogs}
-      save={savePreferences}
-    />}
+      save={savePreferences} />}
     {showHelp && <Help close={() => closeDialogs()} />}
     <div className="menuButton">
       <div className="menu">

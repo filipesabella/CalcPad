@@ -3,71 +3,52 @@
   "description": "A diffent take on the calculator",
   "author": "Filipe Sabella <no-reply@filipesabella.github.io>",
   "repository": "https://github.com/filipesabella/CalcPad",
-  "version": "2.0.1",
-  "main": "src/electron/main.js",
+  "version": "3.0.0",
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
-    "start-web": "parcel ./src/html/index-web.html -d build/",
-    "start-server": "parcel ./src/html/index-desktop.html -d build/",
-    "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234 electron .",
-    "test": "cross-env NODE_ENV=dev mocha -r ts-node/register src/test/**.spec.ts",
-    "test:watch": "cross-env NODE_ENV=dev mocha -r ts-node/register --watch-extensions ts --watch --watch-files src 'src/**/**.spec.ts'",
-    "build-web": "rm -rf docs && BASE_PATH=/calcpad parcel build --out-dir docs --public-url ./ src/html/index-web.html",
-    "build-desktop": "parcel build ./src/html/index-desktop.html -d build/ --public-url ./",
-    "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\src\\html\\assets\\* .\\build\\ && electron-builder -w",
-    "ship-linux": "rm -rf dist build && yarn build-desktop && cp -r ./src/html/assets/* ./build/ && electron-builder --linux deb rpm AppImage snap",
-    "ship-mac": "rm -rf dist build && yarn build-desktop && cp -r ./src/html/assets/* ./build/ && electron-builder --mac dmg"
-  },
-  "build": {
-    "appId": "filipesabella.CalcPad",
-    "mac": {
-      "category": "Utility"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "filipesabella",
-        "repo": "CalcPad"
-      }
-    ],
-    "files": [
-      "src/electron/*",
-      "build/*"
-    ]
+    "start-web": "vite --mode web",
+    "start-server": "vite --mode desktop",
+    "start-desktop": "tauri dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build-web": "vite build --mode web",
+    "build-desktop": "vite build --mode desktop",
+    "tauri": "tauri",
+    "ship-windows": "tauri build --bundles msi nsis",
+    "ship-linux": "tauri build --bundles deb rpm appimage",
+    "ship-mac": "tauri build --bundles dmg",
+    "typecheck": "tsc --noEmit",
+    "format": "dprint fmt"
   },
   "license": "ISC",
+  "packageManager": "yarn@4.18.0",
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/runtime": "^7.15.4",
-    "@types/electron": "^1.6.10",
-    "@types/mocha": "^9.1.0",
-    "@types/react": "^17.0.39",
-    "@types/react-dom": "^17.0.11",
-    "cross-env": "^7.0.3",
-    "electron": "^17.0.1",
-    "electron-builder": "^22.14.13",
-    "electron-reload": "^1.5.0",
-    "less": "^4.1.2",
-    "mocha": "^9.2.1",
-    "parcel-bundler": "^1.12.5",
-    "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
+    "@tauri-apps/cli": "^2.12.0",
+    "@types/convert-units": "^2.3.12",
+    "@types/node": "^24.19.0",
+    "dprint": "^0.57.4",
+    "less": "^4.9.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
   },
   "dependencies": {
-    "@codemirror/basic-setup": "^0.19.1",
-    "@codemirror/commands": "^0.19.8",
-    "@codemirror/lang-javascript": "^0.19.7",
-    "@codemirror/stream-parser": "^0.19.7",
-    "@fontsource/jetbrains-mono": "^4.5.3",
-    "@parcel/service-worker": "^2.3.2",
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/lint": "^6.9.7",
+    "@codemirror/search": "^6.7.2",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.13",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@lezer/highlight": "^1.2.5",
+    "@tauri-apps/api": "^2.12.0",
+    "@tauri-apps/plugin-dialog": "^2.8.0",
+    "@tauri-apps/plugin-fs": "^2.6.0",
+    "@tauri-apps/plugin-opener": "^2.6.0",
+    "@tauri-apps/plugin-process": "^2.4.0",
+    "@tauri-apps/plugin-updater": "^2.13.0",
     "convert-units": "^2.3.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  },
-  "resolutions": {
-    "set-value": "^2.0.1",
-    "kind-of": "^6.0.3"
+    "preact": "^10.29.8"
   }
 }

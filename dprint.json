@@ -1,0 +1,32 @@
+{
+  "typescript": {
+    "lineWidth": 80,
+    "useTabs": false,
+    "semiColons": "always",
+    "quoteStyle": "alwaysSingle",
+    "jsx.quoteStyle": "preferDouble",
+    "arrowFunction.useParentheses": "preferNone",
+    "typeLiteral.separatorKind": "comma",
+    "jsx.bracketPosition": "sameLine",
+    "jsx.multiLineParens": "never",
+    "importDeclaration.forceMultiLine": "whenMultiple"
+  },
+  "malva": {
+    "printWidth": 80,
+    "useTabs": false,
+    "indentWidth": 2,
+    "quotes": "alwaysSingle"
+  },
+  "excludes": [
+    "**/node_modules",
+    ".build",
+    ".yarn",
+    "build",
+    "docs",
+    "src-tauri"
+  ],
+  "plugins": [
+    "npm:@dprint/typescript@0.96.1",
+    "npm:dprint-plugin-malva@0.16.0"
+  ]
+}

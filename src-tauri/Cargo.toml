@@ -1,0 +1,28 @@
+[package]
+name = "calcpad"
+version = "3.0.0"
+description = "A diffent take on the calculator"
+authors = ["Filipe Sabella"]
+license = "ISC"
+repository = "https://github.com/filipesabella/CalcPad"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde_json = "1"
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-process = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-window-state = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

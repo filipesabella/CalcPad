@@ -10,13 +10,18 @@ export function configureCSSVars(preferences: Preferences): void {
     const isDark = preferences.theme === 'dark';
     const colors = isDark ? darkTheme.colors : lightTheme.colors;
 
-    style.setProperty('--text-color', isDark
-      ? colors.light
-      : colors.medium);
+    style.setProperty(
+      '--text-color',
+      isDark
+        ? colors.light
+        : colors.medium,
+    );
 
-    style.setProperty('--dialog-bg-color', isDark
-      ? colors.background
-      : colors.darkBackground);
+    style.setProperty(
+      '--dialog-bg-color',
+      isDark
+        ? colors.background
+        : colors.darkBackground,
+    );
   }
 }
-

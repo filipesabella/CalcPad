@@ -1,7 +1,8 @@
 import { Preferences } from '../components/PreferencesDialog';
-import { isAssignment, isComment, parse } from './parser';
-
-const formatter = new Intl.NumberFormat();
+import {
+  evaluate,
+  LineResult,
+} from './lang/evaluate';
 
 /**
  * Receives
@@ -10,46 +11,48 @@ const formatter = new Intl.NumberFormat();
  * a * 2
  *
  * and returns
- * [3, 20, 40]
+ * ['3', '20', '40']
+ *
+ * Lines that are empty, comments or errors return an empty string.
  */
 export function textToResults(
   text: string,
   externalFunctions: string,
-  { decimalPlaces,
-    decimalSeparator,
-    thousandsSeparator }: Preferences): string[] {
-  const lines = text.split('\n');
-  return lines
-    .map(line => [line, parse(line)])
-    .reduce<[string[], string]>(
-      ([results, assignments], [line, parsedLine]) => {
-        if (line.trim() === '' || isComment(line)) {
-          return [results.concat(''), assignments];
-        }
+  preferences: Preferences,
+): string[] {
+  return evaluate(text, externalFunctions)
+    .map(result => formatResult(result, preferences));
+}
 
-        try {
-          const result = eval(externalFunctions + assignments + parsedLine);
+function formatResult(
+  result: LineResult,
+  { decimalPlaces, decimalSeparator, thousandsSeparator }: Preferences,
+): string {
+  if (result.kind !== 'value') {
+    return '';
+  }
 
-          const numberToDisplay = Math.round(result) !== result
-            ? result.toFixed(decimalPlaces)
-            : result;
+  const magnitude = Math.abs(result.value);
+  const roundsToZero = magnitude !== 0
+    && magnitude < 0.5 * Math.pow(10, -decimalPlaces);
+  if (roundsToZero || (magnitude >= 1e21 && magnitude !== Infinity)) {
+    // 6.62e-34, 1.5e+21
+    return result.value
+      .toExponential(decimalPlaces)
+      .replace(/\.?0+e/, 'e')
+      .replace('.', decimalSeparator);
+  }
 
-          const formattedNumber = formatter
-            .formatToParts(numberToDisplay)
-            .map(part =>
-              part.type === 'group' ? thousandsSeparator
-                : part.type === 'decimal' ? decimalSeparator
-                  : part.value)
-            .join('');
-
-          return [
-            results.concat(formattedNumber),
-            assignments + (isAssignment(line) ? parsedLine + '\n' : '')];
-        } catch (e) {
-          // many exceptions occur as the user is typing
-          // console.error(parsedLine);
-          // console.error(e);
-          return [results.concat('-'), assignments];
-        }
-      }, [[], ''])[0];
+  return new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: decimalPlaces,
+  })
+    .formatToParts(result.value)
+    .map(part =>
+      part.type === 'group'
+        ? thousandsSeparator
+        : part.type === 'decimal'
+        ? decimalSeparator
+        : part.value
+    )
+    .join('');
 }

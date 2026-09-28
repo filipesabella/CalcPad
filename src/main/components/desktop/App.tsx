@@ -1,13 +1,25 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import {
+  open,
+  save,
+} from '@tauri-apps/plugin-dialog';
+import { openPath } from '@tauri-apps/plugin-opener';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/hooks';
 import { FileStore } from '../../lib/store';
 import '../../styles/App.less';
 import { configureCSSVars } from '../common';
 import { Editor } from '../Editor';
 import { Help } from '../Help';
-import { Preferences, PreferencesDialog } from '../PreferencesDialog';
-
-const { ipcRenderer } = window.require('electron');
+import {
+  Preferences,
+  PreferencesDialog,
+} from '../PreferencesDialog';
+import { setupMenu } from './menu';
+import { checkForUpdates } from './updater';
 
 export const App = ({ store }: { store: FileStore }) => {
   const [value, setValue] = useState(null as string | null);
@@ -15,19 +27,26 @@ export const App = ({ store }: { store: FileStore }) => {
   const [showPreferences, setShowPreferences] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [preferences, setPreferences] = useState(store.preferences());
+  // the menu actions are bound once, so they read the content from here
+  const valueRef = useRef(value);
 
   const updateValue = (value: string) => {
+    valueRef.current = value;
     setValue(value);
     store.save(value);
   };
 
   useEffect(() => {
-    // sent by the menus
-    ipcRenderer.on('new-file', () => newFile());
-    ipcRenderer.on('save-file', () => showSaveDialog());
-    ipcRenderer.on('open-file', () => showOpenDialog());
-    ipcRenderer.on('open-preferences', () => setShowPreferences(true));
-    ipcRenderer.on('open-help', () => setShowHelp(true));
+    setupMenu({
+      newFile,
+      saveFile: showSaveDialog,
+      openFile: showOpenDialog,
+      openPreferences: () => setShowPreferences(true),
+      openHelp: () => setShowHelp(true),
+      editFunctionsFile: () =>
+        store.externalFunctionsFile().then(file => openPath(file)),
+      checkForUpdates: () => checkForUpdates({ quiet: false }),
+    });
 
     window.onkeyup = e => {
       if (e.key === 'Escape') {
@@ -40,6 +59,7 @@ export const App = ({ store }: { store: FileStore }) => {
       setExternalFunctions(value);
 
       store.getLastFileContent().then(value => {
+        valueRef.current = value;
         setValue(value);
       });
     });
@@ -47,10 +67,13 @@ export const App = ({ store }: { store: FileStore }) => {
     configureCSSVars(preferences);
 
     setTitle();
+
+    checkForUpdates({ quiet: true });
   }, []);
 
   const newFile = () => {
     store.newFile();
+    valueRef.current = '';
     setValue('');
     setTitle();
   };
@@ -74,33 +97,28 @@ export const App = ({ store }: { store: FileStore }) => {
       ? 'CalcPad - Untitled'
       : 'CalcPad - ' + store.getLastFile();
 
-    ipcRenderer.invoke('setWindowTitle', title);
+    getCurrentWindow().setTitle(title);
   };
 
   const showSaveDialog = () => {
     // we already save on change
     if (!store.isTempFile()) return;
 
-    ipcRenderer.invoke('dialog', 'showSaveDialog', {
-      title: 'Save'
-    }).then((result: any) => {
-      const file = result.filePath;
-      file && store.saveFile(file, value || '');
+    save({ title: 'Save' }).then(file => {
+      file && store.saveFile(file, valueRef.current || '').then(setTitle);
     });
   };
 
   const showOpenDialog = () => {
-    ipcRenderer.invoke('dialog', 'showOpenDialog', {
-      title: 'Open',
-      properties: ['openFile'],
-    }).then(async (result: any) => {
-      const files = result.filePaths;
-      if (!files || files.length === 0) return; // user cancelled
+    open({ title: 'Open', multiple: false, directory: false })
+      .then(async file => {
+        if (!file) return; // user cancelled
 
-      const contents = await store.open(files[0]);
-      setValue(contents);
-      setTitle();
-    });
+        const contents = await store.open(file);
+        valueRef.current = contents;
+        setValue(contents);
+        setTitle();
+      });
   };
 
   return <div className="app">
@@ -115,8 +133,7 @@ export const App = ({ store }: { store: FileStore }) => {
     {showPreferences && <PreferencesDialog
       preferences={store.preferences()}
       close={closePreferencesDialog}
-      save={savePreferences}
-    />}
+      save={savePreferences} />}
     {showHelp && <Help close={() => closeHelp()} />}
   </div>;
 };

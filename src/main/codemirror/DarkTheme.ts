@@ -1,5 +1,9 @@
-import { HighlightStyle, tags } from '@codemirror/highlight';
+import {
+  HighlightStyle,
+  syntaxHighlighting,
+} from '@codemirror/language';
 import { EditorView } from '@codemirror/view';
+import { tags } from '@lezer/highlight';
 
 const colors = {
   light: 'hsl(95, 6.7%, 64.7%)',
@@ -16,15 +20,16 @@ const colors = {
 const darkTheme = EditorView.theme({
   '&': {
     color: 'rgba(214, 221, 209)',
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   '.cm-content': {
-    caretColor: colors.cursor
+    caretColor: colors.cursor,
   },
   '&.cm-focused .cm-cursor': { borderLeftColor: colors.cursor },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-    backgroundColor: colors.selection
-  },
+  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection':
+    {
+      backgroundColor: colors.selection,
+    },
   '.cm-panels': { backgroundColor: colors.darkBackground },
   '.cm-panels.cm-panels-top': { borderBottom: '2px solid black' },
   '.cm-panels.cm-panels-bottom': { borderTop: '2px solid black' },
@@ -32,16 +37,16 @@ const darkTheme = EditorView.theme({
     backgroundColor: colors.selection,
   },
   '.cm-searchMatch.cm-searchMatch-selected': {
-    backgroundColor: '#6199ff2f'
+    backgroundColor: '#6199ff2f',
   },
   '.cm-selectionMatch': { backgroundColor: colors.selection },
 
   '.cm-activeLine, .cm-activeLineGutter, .cm-activeLineRightGutter': {
-    backgroundColor: colors.highlightBackground
+    backgroundColor: colors.highlightBackground,
   },
   '.cm-tooltip': {
     border: 'none',
-    backgroundColor: colors.tooltipBackground
+    backgroundColor: colors.tooltipBackground,
   },
   '.cm-tooltip.cm-tooltip-autocomplete > ul': {
     fontFamily: 'inherit',
@@ -49,7 +54,7 @@ const darkTheme = EditorView.theme({
   '.cm-tooltip-autocomplete': {
     '& > ul > li[aria-selected]': {
       backgroundColor: colors.highlightBackground,
-    }
+    },
   },
   '.cm-right-gutters': {
     backgroundColor: 'rgb(41, 41, 46)',
@@ -57,17 +62,37 @@ const darkTheme = EditorView.theme({
   },
 }, { dark: true });
 
-
 const darkHighlightStyle = HighlightStyle.define([{
   tag: [
-    tags.name, tags.deleted, tags.character, tags.propertyName, tags.macroName,
-    tags.function(tags.variableName), tags.labelName, tags.color,
-    tags.constant(tags.name), tags.standard(tags.name),
-    tags.definition(tags.name), tags.separator, tags.typeName, tags.className,
-    tags.changed, tags.annotation, tags.modifier, tags.self,
-    tags.namespace, tags.operator, tags.operatorKeyword, tags.url, tags.escape,
-    tags.regexp, tags.link, tags.atom, tags.bool,
-    tags.special(tags.variableName)],
+    tags.name,
+    tags.deleted,
+    tags.character,
+    tags.propertyName,
+    tags.macroName,
+    tags.function(tags.variableName),
+    tags.labelName,
+    tags.color,
+    tags.constant(tags.name),
+    tags.standard(tags.name),
+    tags.definition(tags.name),
+    tags.separator,
+    tags.typeName,
+    tags.className,
+    tags.changed,
+    tags.annotation,
+    tags.modifier,
+    tags.self,
+    tags.namespace,
+    tags.operator,
+    tags.operatorKeyword,
+    tags.url,
+    tags.escape,
+    tags.regexp,
+    tags.link,
+    tags.atom,
+    tags.bool,
+    tags.special(tags.variableName),
+  ],
   color: colors.light,
 }, {
   tag: [tags.number, tags.string],
@@ -77,7 +102,6 @@ const darkHighlightStyle = HighlightStyle.define([{
   color: colors.dark,
 }]);
 
-const dark = [darkTheme, darkHighlightStyle];
+const dark = [darkTheme, syntaxHighlighting(darkHighlightStyle)];
 
-export { dark, darkHighlightStyle, darkTheme, colors };
-
+export { colors, dark, darkHighlightStyle, darkTheme };
