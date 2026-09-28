@@ -16,8 +16,7 @@ import {
   highlightActiveLine,
   keymap
 } from '@codemirror/view';
-import * as React from 'react';
-import { useRef } from 'react';
+import { useRef } from 'preact/hooks';
 import { calcpadlang } from '../codemirror/calpadlang';
 import { completions } from '../codemirror/Completions';
 import { dark } from '../codemirror/DarkTheme';

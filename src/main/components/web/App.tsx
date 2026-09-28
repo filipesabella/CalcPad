@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'preact/hooks';
 import { LocalStorageStore } from '../../lib/LocalStorageStore';
 import '../../styles/App.less';
 import { configureCSSVars } from '../common';

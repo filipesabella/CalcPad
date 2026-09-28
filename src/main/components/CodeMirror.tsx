@@ -2,8 +2,8 @@
 // some changes to handle history not triggering the expected events
 import { EditorState, Extension, Transaction } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import type { JSX } from 'preact';
+import { useEffect, useRef } from 'preact/hooks';
 
 export const CodeMirror = ({
   value: valueProp,
@@ -11,13 +11,13 @@ export const CodeMirror = ({
   extensions = [],
   ...props
 }: Omit<
-  React.HTMLAttributes<HTMLDivElement>,
+  JSX.HTMLAttributes<HTMLDivElement>,
   'value' | 'onChange' | 'extensions'
 > & {
   value: string
   onChange?: (value: string) => void
   extensions?: Extension
-}): React.JSX.Element => {
+}): JSX.Element => {
   // This ref is needed to allow changes to prevent binding the
   // initial value to the EditorView init effect, to allow
   // the new value to be the starting value when reinitialized

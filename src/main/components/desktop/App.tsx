@@ -1,8 +1,7 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { open, save } from '@tauri-apps/plugin-dialog';
 import { openPath } from '@tauri-apps/plugin-opener';
-import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { FileStore } from '../../lib/store';
 import '../../styles/App.less';
 import { configureCSSVars } from '../common';

@@ -1,11 +1,9 @@
 import '@fontsource/jetbrains-mono';
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import { render } from 'preact';
 import { LocalStorageStore } from '../../lib/LocalStorageStore';
 import { App } from './App';
 
-createRoot(document.getElementById('root')!)
-  .render(<App store={new LocalStorageStore()} />);
+render(<App store={new LocalStorageStore()} />, document.getElementById('root')!);
 
 if (import.meta.env.PROD) {
   navigator.serviceWorker.register('service-worker.js');
