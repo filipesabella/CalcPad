@@ -19,6 +19,7 @@ import {
   PreferencesDialog,
 } from '../PreferencesDialog';
 import { setupMenu } from './menu';
+import { checkForUpdates } from './updater';
 
 export const App = ({ store }: { store: FileStore }) => {
   const [value, setValue] = useState(null as string | null);
@@ -65,6 +66,8 @@ export const App = ({ store }: { store: FileStore }) => {
     configureCSSVars(preferences);
 
     setTitle();
+
+    checkForUpdates();
   }, []);
 
   const newFile = () => {

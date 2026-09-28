@@ -8,6 +8,8 @@
     "core:menu:default",
     "core:window:allow-set-title",
     "dialog:allow-open",
+    "dialog:allow-ask",
+    "dialog:allow-message",
     "dialog:allow-save",
     "fs:allow-exists",
     "fs:allow-mkdir",
@@ -24,6 +26,8 @@
     {
       "identifier": "opener:allow-open-path",
       "allow": [{ "path": "$CONFIG/CalcPad/*" }]
-    }
+    },
+    "process:allow-restart",
+    "updater:default"
   ]
 }

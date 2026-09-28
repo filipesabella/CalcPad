@@ -537,6 +537,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/plugin-process@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@tauri-apps/plugin-process@npm:2.4.0"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.12.0"
+  checksum: 10c0/b76f0918dd8f511083b511e27f26ac9d84bb0ec4db0013b9ebccbe20480ff9aa5ba725867781d334b0f7992349b4d266fecacf179991708d3cbf0eff9532bbb7
+  languageName: node
+  linkType: hard
+
+"@tauri-apps/plugin-updater@npm:^2.13.0":
+  version: 2.13.0
+  resolution: "@tauri-apps/plugin-updater@npm:2.13.0"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.12.0"
+  checksum: 10c0/520a2cdc2005401781245a83bb6c5ed182599b9dd1287e4829f6e90470b46af4db7a94566f092b2285e0d310c47bb43a7f94459121264d05bddeca98d38cfec3
+  languageName: node
+  linkType: hard
+
 "@types/chai@npm:^5.2.2":
   version: 5.2.3
   resolution: "@types/chai@npm:5.2.3"
@@ -762,6 +780,8 @@ __metadata:
     "@tauri-apps/plugin-dialog": "npm:^2.8.0"
     "@tauri-apps/plugin-fs": "npm:^2.6.0"
     "@tauri-apps/plugin-opener": "npm:^2.6.0"
+    "@tauri-apps/plugin-process": "npm:^2.4.0"
+    "@tauri-apps/plugin-updater": "npm:^2.13.0"
     "@types/convert-units": "npm:^2.3.12"
     "@types/node": "npm:^24.19.0"
     convert-units: "npm:^2.3.4"
