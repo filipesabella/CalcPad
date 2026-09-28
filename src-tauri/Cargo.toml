@@ -1,6 +1,6 @@
 [package]
 name = "calcpad"
-version = "2.0.1"
+version = "3.0.0"
 description = "A diffent take on the calculator"
 authors = ["Filipe Sabella"]
 license = "ISC"
