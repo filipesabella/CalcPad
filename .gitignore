@@ -1,5 +1,4 @@
 .cache
-.parcel-cache
 node_modules
 build
 dist

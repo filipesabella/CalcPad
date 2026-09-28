@@ -1,4 +1,4 @@
-const convert = require('convert-units');
+import convert from 'convert-units';
 
 // commonly used names that `convert-units` does not know about,
 // or that are ambiguous in it
@@ -43,7 +43,7 @@ const lowercase = (s: string) => s.toLowerCase();
 // `convert-units` describes `cm2` as "centimeter" as well
 const byName: ReadonlyMap<string, string> = new Map(abbreviations
   .reduce<[string, string][]>((pairs, abbr) => {
-    const { singular, plural } = convert().describe(abbr);
+    const { singular, plural } = convert().describe(abbr as convert.Unit);
     return pairs.concat([singular, plural]
       .map(name => [lowercase(name), abbr] as [string, string]));
   }, [])
@@ -68,5 +68,5 @@ export function resolveUnit(name: string): string | undefined {
 }
 
 export function convertUnits(value: number, from: string, to: string): number {
-  return convert(value).from(from).to(to);
+  return convert(value).from(from as convert.Unit).to(to as convert.Unit);
 }

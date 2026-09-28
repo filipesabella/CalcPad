@@ -3,7 +3,8 @@
   "compileOnSave": true,
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.tsx"
+    "./src/**/*.tsx",
+    "./vite.config.mts"
   ],
   "compilerOptions": {
     "outDir": "build",
@@ -13,7 +14,7 @@
     "lib": ["es2022", "dom", "dom.iterable"],
     "strictNullChecks": true,
     "strict": false,
-    "types": ["node", "mocha"],
+    "types": ["node", "mocha", "vite/client"],
     "removeComments": true,
     "jsx": "react",
     "moduleResolution": "bundler",

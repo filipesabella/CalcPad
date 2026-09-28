@@ -5,22 +5,19 @@
   "repository": "https://github.com/filipesabella/CalcPad",
   "version": "2.0.1",
   "main": "src/electron/main.js",
-  "targets": {
-    "main": false
-  },
   "email": "no-reply@filipesabella.github.io",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "start-web": "parcel ./src/html/index-web.html --dist-dir build/",
-    "start-server": "parcel ./src/html/index-desktop.html --dist-dir build/",
-    "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234 electron .",
+    "start-web": "vite --mode web",
+    "start-server": "vite --mode desktop",
+    "start-electron": "cross-env NODE_ENV=dev ELECTRON_START_URL=http://localhost:1234/index-desktop.html electron .",
     "test": "cross-env NODE_ENV=dev mocha --import=tsx \"src/test/**.spec.ts\"",
     "test:watch": "cross-env NODE_ENV=dev mocha --import=tsx --watch --watch-files src \"src/**/**.spec.ts\"",
-    "build-web": "rm -rf docs && parcel build --dist-dir docs --public-url ./ src/html/index-web.html",
-    "build-desktop": "parcel build ./src/html/index-desktop.html --dist-dir build/ --public-url ./",
-    "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && copy .\\src\\html\\assets\\* .\\build\\ && electron-builder -w",
-    "ship-linux": "rm -rf dist build && yarn build-desktop && cp -r ./src/html/assets/* ./build/ && electron-builder --linux deb rpm AppImage snap",
-    "ship-mac": "rm -rf dist build && yarn build-desktop && cp -r ./src/html/assets/* ./build/ && electron-builder --mac dmg",
+    "build-web": "vite build --mode web",
+    "build-desktop": "vite build --mode desktop",
+    "ship-windows": "rd /s /q dist && rd /s /q build && yarn build-desktop && electron-builder -w",
+    "ship-linux": "rm -rf dist build && yarn build-desktop && electron-builder --linux deb rpm AppImage snap",
+    "ship-mac": "rm -rf dist build && yarn build-desktop && electron-builder --mac dmg",
     "typecheck": "tsc --noEmit"
   },
   "build": {
@@ -43,8 +40,8 @@
   "license": "ISC",
   "devDependencies": {
     "@parcel/packager-raw-url": "2.16.4",
-    "@parcel/transformer-less": "^2.16.4",
     "@parcel/transformer-webmanifest": "2.16.4",
+    "@types/convert-units": "^2.3.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.19.0",
     "@types/react": "^19.3.0",
@@ -55,9 +52,9 @@
     "electron-reload": "2.0.0-alpha.1",
     "less": "^4.9.1",
     "mocha": "^12.0.2",
-    "parcel": "^2.16.4",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",
@@ -69,7 +66,6 @@
     "@codemirror/view": "^6.43.13",
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@lezer/highlight": "^1.2.5",
-    "@parcel/service-worker": "^2.16.4",
     "convert-units": "^2.3.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"

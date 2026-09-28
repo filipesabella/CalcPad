@@ -1,4 +1,6 @@
-import { manifest, version } from '@parcel/service-worker';
+// the manifest and version are filled in at build time, see vite.config.ts
+const manifest = __MANIFEST__;
+const version = __VERSION__;
 
 async function install() {
   const cache = await caches.open(version);

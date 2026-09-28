@@ -6,3 +6,7 @@ import { App } from './App';
 
 createRoot(document.getElementById('root')!)
   .render(<App store={new LocalStorageStore()} />);
+
+if (import.meta.env.PROD) {
+  navigator.serviceWorker.register('service-worker.js');
+}
