@@ -77,7 +77,10 @@ describe('evaluate', () => {
     assert.strictEqual(run('PI/2'), Math.PI / 2);
     assert.strictEqual(run('2*E'), 2 * Math.E);
     assert.strictEqual(run('PI = 3\nPI'), 3);
-    assert.strictEqual(lastResult('pi').kind, 'error');
+    assert.strictEqual(run('pi'), Math.PI);
+    assert.strictEqual(run('Pi * 2'), Math.PI * 2);
+    assert.strictEqual(run('e'), Math.E);
+    assert.strictEqual(run('e = 3\ne'), 3);
   });
 
   it('evaluates multipliers', () => {

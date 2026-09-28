@@ -9,7 +9,9 @@ function wordRE(words: readonly string[], flags = '') {
   return new RegExp('^(?:' + words.join('|') + ')$', flags);
 }
 
-const builtins = wordRE(mathFunctions.concat(constants));
+const builtins = wordRE(mathFunctions);
+
+const builtinConstants = wordRE(constants, 'i');
 
 const keywords = wordRE(keywordList, 'i');
 
@@ -53,7 +55,9 @@ export const calcpadlang = {
     let style = state.cur(stream, state);
     if (style == 'variable') {
       if (keywords.test(word)) style = 'keyword';
-      else if (builtins.test(word)) style = 'builtin';
+      else if (builtins.test(word) || builtinConstants.test(word)) {
+        style = 'builtin';
+      }
     }
     return style;
   },

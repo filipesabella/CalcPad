@@ -40,4 +40,6 @@ export const multipliers: { readonly [suffix: string]: number } = {
 export const isMathFunction = (name: string) =>
   mathFunctions.indexOf(name) !== -1;
 
-export const isConstant = (name: string) => constants.indexOf(name) !== -1;
+// constants are case-insensitive: `pi` and `Pi` are `PI`
+export const isConstant = (name: string) =>
+  constants.indexOf(name.toUpperCase()) !== -1;

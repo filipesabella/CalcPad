@@ -84,7 +84,7 @@ function compileIdentifier(name: string, scope: ReadonlySet<string>): string {
   return scope.has(name)
     ? `$rt.lookup($s, ${JSON.stringify(name)})`
     : isConstant(name)
-    ? `Math.${name}`
+    ? `Math.${name.toUpperCase()}`
     : compileExternal(name);
 }
 
