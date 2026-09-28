@@ -5,7 +5,7 @@
     "lib": ["es2022", "dom", "dom.iterable"],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "types": ["node", "mocha", "vite/client"],
+    "types": ["node", "vite/client"],
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "noEmit": true,

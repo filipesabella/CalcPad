@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import {
   describe,
   it,
-} from 'mocha';
+} from 'vitest';
 import {
   evaluate,
   LineResult,

@@ -9,8 +9,8 @@
     "start-web": "vite --mode web",
     "start-server": "vite --mode desktop",
     "start-desktop": "tauri dev",
-    "test": "cross-env NODE_ENV=dev mocha --import=tsx \"src/test/**.spec.ts\"",
-    "test:watch": "cross-env NODE_ENV=dev mocha --import=tsx --watch --watch-files src \"src/**/**.spec.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build-web": "vite build --mode web",
     "build-desktop": "vite build --mode desktop",
     "tauri": "tauri",
@@ -26,15 +26,12 @@
     "@parcel/transformer-webmanifest": "2.16.4",
     "@tauri-apps/cli": "^2.12.0",
     "@types/convert-units": "^2.3.12",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^24.19.0",
-    "cross-env": "^10.1.0",
     "dprint": "^0.57.4",
     "less": "^4.9.1",
-    "mocha": "^12.0.2",
-    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8.3.1"
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",
