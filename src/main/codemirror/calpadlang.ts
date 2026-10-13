@@ -38,7 +38,8 @@ function normal(stream: any, state: any) {
 function string(quote: any) {
   return function(stream: any, state: any) {
     let escaped = false, ch;
-    while ((ch = stream.next()) !== null) {
+    // `next` returns undefined at the end of the line
+    while ((ch = stream.next()) !== undefined) {
       if (ch === quote && !escaped) break;
       escaped = !escaped && ch === '\\';
     }
