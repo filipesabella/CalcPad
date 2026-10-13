@@ -70,7 +70,7 @@ export const Help = (props: Props) => {
       All supported units&nbsp;
       <a
         target="blank"
-        href="https://github.com/convert-units/convert-units#request-measures--units">
+        href="https://github.com/convert-units/convert-units/tree/v2.3.3#supported-units">
         here
       </a>.
     </p>

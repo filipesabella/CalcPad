@@ -63,7 +63,7 @@ salaryAfterTax = tax% off salary
 1 cup in tbs
 ```
 
-All supported units [here](https://github.com/ben-ng/convert-units#supported-units).
+All supported units [here](https://github.com/convert-units/convert-units/tree/v2.3.3#supported-units).
 
 ## Percentages
 
@@ -84,7 +84,7 @@ PI * 3
 
 ```
 money = 5k
-tax = money &gt; 5k ? 15 : 10
+tax = money > 5k ? 15 : 10
 total = tax% off money
 ```
 
